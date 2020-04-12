@@ -1,0 +1,224 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE BRA",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "brazil",
+        "1"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE USA",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "us",
+        "2"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE ITALY",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "italy",
+        "3"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE SPAIN",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "spain",
+        "4"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE CHINA",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "china",
+        "5"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE FRANCE",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "france",
+        "6"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE GERMANY",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "germany",
+        "7"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE IRAN",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "iran",
+        "8"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE UK",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "uk",
+        "9"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE TURKEY",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "turkey",
+        "10"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE BELGIUM",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "belgium",
+        "11"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE Switzerland",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "switzerland",
+        "12"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE Netherlands",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "netherlands",
+        "13"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE CANADA",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "canada",
+        "14"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "CAPTURE PORTUGAL",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\extractor.js",
+      "args": [
+        "portugal",
+        "15"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "WEB SERVER",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\server.js"
+    },
+    {
+      "name": "Web Server",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
+      "args": [
+        "${workspaceRoot}/src/server"
+      ],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

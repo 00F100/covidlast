@@ -1,0 +1,32 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "max-line-length": [
+      true,
+      120
+    ],
+    "curly": {
+      "severity": "off"
+    },
+    "variable-name": {
+      "severity": "off"
+    },
+    "no-string-literal": {
+      "severity": "off"
+    },
+    "object-literal-sort-keys": {
+      "severity": "off"
+    },
+    "member-ordering": {
+      "severity": "off"
+    }
+  },
+  "linterOptions": {
+    "exclude": [
+      "node_modules"
+    ]
+  }
+}
