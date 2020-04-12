@@ -1,7 +1,8 @@
 import * as express from 'express';
 import * as fs from 'fs';
-import { IApplication, IController } from '.';
-import { ControllerIndex } from './controllers';
+import { IApplication, IFactory } from '.';
+import { Factory } from './factory';
+import { ICollection } from './interfaces';
 
 const {
   VIEW_HOME
@@ -22,9 +23,20 @@ export class Application implements IApplication {
    */
   public static get = (): IApplication => {
     if (!Application.instance) {
-      Application.instance = new Application();
+      Application.instance = new Application(new Factory());
     }
     return Application.instance;
+  }
+
+  /**
+   * Method to construct instance of Application
+   *
+   * @param _factory IFactory
+   * @return void
+   */
+  public constructor(
+    private _factory: IFactory
+  ) {
   }
 
   /**
@@ -61,16 +73,23 @@ export class Application implements IApplication {
    */
   private routes = (dispach: express.Router): void => {
     dispach.get('/', (request: express.Request, response: express.Response) => {
-      const index = this.view('index', {
-        data: this.controller('index')
+      const home = this.view('home', {
+        cases: this.controller('home', request, response).toObject()
       });
-      response.send(index);
+      response.send(home);
     });
   }
 
-  private controller = (name: string): IController => {
-    if (name === 'index') return new ControllerIndex();
-    throw new Error(`Controller "${name}" not found`);
+  /**
+   * Method to get controller instance
+   *
+   * @param name string
+   * @param request express.Request
+   * @param response express.Response
+   * @return ICollection
+   */
+  private controller = (name: string, request: express.Request, response: express.Response): ICollection => {
+    return this._factory.getController(name, request, response).execute();
   }
 
   /**
@@ -99,7 +118,7 @@ export class Application implements IApplication {
    */
   private applyParams = (data: string, params: any): string => {
     for (const i in params) {
-      data = data.replace(`\[${i}\]`, params[i]);
+      data = data.replace(`\$\[${i}\]`, params[i]);
     }
     return data;
   }

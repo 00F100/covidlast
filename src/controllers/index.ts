@@ -1,5 +1,1 @@
-import { IController } from '../interfaces';
-
-export class ControllerIndex implements IController {
-
-}
+export * from './home';
