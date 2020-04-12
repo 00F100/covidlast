@@ -74,7 +74,7 @@ export class Application implements IApplication {
   private routes = (dispach: express.Router): void => {
     dispach.get('/', (request: express.Request, response: express.Response) => {
       const home = this.view('home', {
-        cases: this.controller('home', request, response).toObject()
+        cases: this.controller('cases', request, response).toObject()
       });
       response.send(home);
     });

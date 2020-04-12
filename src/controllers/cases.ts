@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { ICollection, IController } from '../interfaces';
 
-export class ControllerHome implements IController {
+export class ControllerCases implements IController {
   public constructor(
     private _collection: ICollection,
     private _request: express.Request,

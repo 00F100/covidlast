@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { IFactory } from '.';
-import { ControllerHome } from './controllers';
+import { ControllerCases } from './controllers';
 import { ICollection, IController } from './interfaces';
 
 export class Factory implements IFactory {
@@ -15,7 +15,7 @@ export class Factory implements IFactory {
    * @return IController
    */
   public getController = (name: string, request: express.Request, response: express.Response): IController => {
-    if (name === 'home') return new ControllerHome(this.getCollection(name), request, response);
+    if (name === 'cases') return new ControllerCases(this.getCollection(name), request, response);
     throw new Error(`Controller "${name}" not found`);
   }
 
@@ -26,7 +26,7 @@ export class Factory implements IFactory {
    * @return ICollection
    */
   public getCollection = (name: string): ICollection => {
-    if (name === 'home') return new CollectionHome();
+    if (name === 'cases') return new CollectionCases();
     throw new Error(`Collection "${name}" not found`);
   }
 }
