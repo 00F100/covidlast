@@ -1,0 +1,62 @@
+<html>
+        <head>
+            <title>COVID-19 - chart</title>
+        </head>
+        <body>
+        <div id="container"></div>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.2.7/highcharts.js"></script>
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+            <script type="text/javascript">
+            var vue = new Vue();
+            Highcharts.chart('container', {
+
+                title: {
+                    text: 'COVID-19'
+                },
+            
+                subtitle: {
+                    text: 'Source: worldometers.info/coronavirus'
+                },
+            
+                yAxis: {
+                    title: {
+                        text: 'Number of cases'
+                    }
+                },
+            
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                },
+            
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 0
+                    }
+                },
+            
+                series: '',
+            
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+            
+            });
+            </script>
+        </body>
+        </html>
