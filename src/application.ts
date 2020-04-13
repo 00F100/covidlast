@@ -74,7 +74,7 @@ export class Application implements IApplication {
   private routes = (dispach: express.Router): void => {
     dispach.get('/', (request: express.Request, response: express.Response) => {
       const home = this.view('home', {
-        cases: this.controller('cases', request, response).toObject()
+        cases: this.controller('cases', request, response).toJSON()
       });
       response.send(home);
     });
@@ -100,7 +100,7 @@ export class Application implements IApplication {
    * @return string
    */
   private view = (page: string, params: object): string => {
-    const file = `${__dirname}/view/templates/${page}.html`;
+    const file = `${__dirname}/view/${page}.html`;
     if (fs.existsSync(file)) {
       let data = fs.readFileSync(file).toString();
       data = this.applyParams(data, params);
