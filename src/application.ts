@@ -1,6 +1,7 @@
 import express from 'express';
 import * as fs from 'fs';
-import { IApplication, IFactory } from '.';
+import Log4js from 'log4js';
+import { IApplication, IFactory, Logger } from '.';
 import { Factory } from './factory';
 import { ICollection } from './interfaces';
 
@@ -19,7 +20,7 @@ export class Application implements IApplication {
    */
   public static get = (): IApplication => {
     if (!Application.instance) {
-      Application.instance = new Application(new Factory());
+      Application.instance = new Application(Logger.get(), new Factory());
     }
     return Application.instance;
   }
@@ -31,6 +32,7 @@ export class Application implements IApplication {
    * @return void
    */
   public constructor(
+    private _logger: Log4js.Logger,
     private _factory: IFactory
   ) {
   }
@@ -42,23 +44,18 @@ export class Application implements IApplication {
    * @return boolean
    */
   public listen = (port?: string | number): boolean => {
-    const dispach = express();
-    this.routes(dispach);
-    dispach.listen(this.port(port), () => console.log(`Application UP on port "${port}"`));
-    return true;
-  }
+    try {
+      this._logger.info(`Start web server in port "${port}"`);
+      const dispach = express();
+      this._logger.info(`Load routes`);
+      this.routes(dispach);
+      this._logger.info(`Listen port`);
+      dispach.listen(this.port(port), () => this._logger.info(`Application UP on port "${port}"`));
+      return true;
+    } catch (err) {
 
-  /**
-   * Method to get port of web server
-   *
-   * @param port string | number
-   * @return number
-   */
-  private port = (port?: string | number): number => {
-    if (!port) {
-      port = 3000;
     }
-    return +port;
+    return false;
   }
 
   /**
@@ -68,13 +65,14 @@ export class Application implements IApplication {
    * @return void
    */
   private routes = (dispach: express.Router): void => {
-    // mount home view before start server
+    // mount home view without request execution
     const home = this.view('home', {
       cases: this.controller('cases').toJSON()
     });
 
     // show home cache on execute request
     dispach.get('/', (request: express.Request, response: express.Response) => {
+      this._logger.debug(`Request to route ${request.path} by ${request.ip}`);
       response.send(home);
     });
   }
@@ -98,13 +96,15 @@ export class Application implements IApplication {
    * @throws Error
    * @return string
    */
-  private view = (page: string, params: object): string => {
+  private view = (page: string, params?: object): string => {
     const file = `${__dirname}/view/${page}.html`;
+    this._logger.debug(`Load view file from "${file}"`);
     if (fs.existsSync(file)) {
       let data = fs.readFileSync(file).toString();
-      data = this.applyParams(data, params);
+      data = this.applyParams(data, params || []);
       return data;
     }
+    this._logger.error(`File view not found "${file}"`);
     throw new Error(`View "${file}" not found`);
   }
 
@@ -115,12 +115,25 @@ export class Application implements IApplication {
    * @param params any
    * @return string
    */
-  private applyParams = (data: string, params: object): string => {
+  private applyParams = (data: string, params?: object): string => {
     for (const i in params) {
       if (typeof params[i] === 'string') {
         data = data.replace(`\$\[${i}\]`, params[i]);
       }
     }
     return data;
+  }
+
+  /**
+   * Method to get port of web server
+   *
+   * @param port string | number
+   * @return number
+   */
+  private port = (port?: string | number): number => {
+    if (!port) {
+      port = 3000;
+    }
+    return +port;
   }
 }

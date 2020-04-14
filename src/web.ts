@@ -1,4 +1,5 @@
 import { config as dotenv } from 'dotenv';
+import { Logger } from '.';
 import { Application } from './application';
 import { IApplication } from './interfaces';
 
@@ -13,7 +14,7 @@ const app: IApplication = Application.get();
 
 // start and listen on port ...
 if (app.listen(WEBSERVER_PORT || '')) {
-  console.log('web server success!');
+  Logger.get().info('Web server success!');
 } else {
-  console.log('web server fail!');
+  Logger.get().fatal('Web server error!');
 }

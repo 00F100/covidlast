@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "CAPTURE BRA",
+      "name": "CAPTURE (POC)",
       "skipFiles": [
         "<node_internals>/**"
       ],
@@ -20,196 +20,14 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "CAPTURE USA",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "us",
-        "2"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE ITALY",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "italy",
-        "3"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE SPAIN",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "spain",
-        "4"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE CHINA",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "china",
-        "5"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE FRANCE",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "france",
-        "6"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE GERMANY",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "germany",
-        "7"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE IRAN",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "iran",
-        "8"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE UK",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "uk",
-        "9"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE TURKEY",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "turkey",
-        "10"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE BELGIUM",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "belgium",
-        "11"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE Switzerland",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "switzerland",
-        "12"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE Netherlands",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "netherlands",
-        "13"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE CANADA",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "canada",
-        "14"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "CAPTURE PORTUGAL",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
-      "args": [
-        "portugal",
-        "15"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "WEB SERVER",
+      "name": "web server (POC)",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}\\poc\\server.js"
     },
     {
-      "name": "WEB Application",
+      "name": "Web server (SRC)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
