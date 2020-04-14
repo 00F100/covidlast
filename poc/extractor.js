@@ -1,7 +1,7 @@
 const https = require('https');
 const moment = require('moment');
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('database.sqlite');
+const db = new sqlite3.Database('infra/data/database.sqlite');
 
 let idCountry = 1;
 let country = 'brazil';

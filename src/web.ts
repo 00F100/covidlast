@@ -8,7 +8,10 @@ const {
   WEBSERVER_PORT
 } = process.env;
 
+// get application
 const app: IApplication = Application.get();
+
+// start and listen on port ...
 if (app.listen(WEBSERVER_PORT || '')) {
   console.log('web server success!');
 } else {

@@ -1,11 +1,41 @@
 import { Model } from '../model';
-import { IModelCountry, IModelData } from './interfaces';
+import { IModelData } from './interfaces';
 
 export class ModelData extends Model implements IModelData {
+
+  /**
+   * ID of data
+   * @param number
+   */
   public id: number = 0;
+
+  /**
+   * Number of cases
+   * @param number
+   */
   public cases: number = 0;
+
+  /**
+   * Number of deaths
+   * @param number
+   */
   public deaths: number = 0;
+
+  /**
+   * Timestamp captured data
+   * @param number
+   */
   public timestamp: number = 0;
-  public date: Date = new Date();
-  public country: IModelCountry = {};
+
+  /**
+   * Date captured data
+   * @param string
+   */
+  public date: string = '';
+
+  /**
+   * Name of country
+   * @param string
+   */
+  public name: string = '';
 }

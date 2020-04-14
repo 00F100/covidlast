@@ -11,7 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "brazil",
         "1"
@@ -24,7 +24,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "us",
         "2"
@@ -37,7 +37,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "italy",
         "3"
@@ -50,7 +50,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "spain",
         "4"
@@ -63,7 +63,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "china",
         "5"
@@ -76,7 +76,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "france",
         "6"
@@ -89,7 +89,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "germany",
         "7"
@@ -102,7 +102,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "iran",
         "8"
@@ -115,7 +115,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "uk",
         "9"
@@ -128,7 +128,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "turkey",
         "10"
@@ -141,7 +141,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "belgium",
         "11"
@@ -154,7 +154,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "switzerland",
         "12"
@@ -167,7 +167,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "netherlands",
         "13"
@@ -180,7 +180,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "canada",
         "14"
@@ -193,7 +193,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\extractor.js",
+      "program": "${workspaceFolder}\\poc\\extractor.js",
       "args": [
         "portugal",
         "15"
@@ -206,7 +206,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\server.js"
+      "program": "${workspaceFolder}\\poc\\server.js"
     },
     {
       "name": "WEB Application",

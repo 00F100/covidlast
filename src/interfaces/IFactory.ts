@@ -2,7 +2,7 @@ import * as express from 'express';
 import { IController } from '.';
 
 export interface IFactory {
-  
+
   /**
    * Method to create instance of controller
    *
@@ -11,5 +11,5 @@ export interface IFactory {
    * @param response express.Response
    * @return IController
    */
-  getController(name: string, request: express.Request, response: express.Response): IController
+  getController(name: string, request?: express.Request, response?: express.Response): IController
 }

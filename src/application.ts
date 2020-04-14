@@ -1,12 +1,8 @@
-import * as express from 'express';
+import express from 'express';
 import * as fs from 'fs';
 import { IApplication, IFactory } from '.';
 import { Factory } from './factory';
 import { ICollection } from './interfaces';
-
-const {
-  VIEW_HOME
-} = process.env;
 
 export class Application implements IApplication {
 
@@ -72,10 +68,13 @@ export class Application implements IApplication {
    * @return void
    */
   private routes = (dispach: express.Router): void => {
+    // mount home view before start server
+    const home = this.view('home', {
+      cases: this.controller('cases').toJSON()
+    });
+
+    // show home cache on execute request
     dispach.get('/', (request: express.Request, response: express.Response) => {
-      const home = this.view('home', {
-        cases: this.controller('cases', request, response).toJSON()
-      });
       response.send(home);
     });
   }
@@ -88,7 +87,7 @@ export class Application implements IApplication {
    * @param response express.Response
    * @return ICollection
    */
-  private controller = (name: string, request: express.Request, response: express.Response): ICollection => {
+  private controller = (name: string, request?: express.Request, response?: express.Response): ICollection => {
     return this._factory.getController(name, request, response).execute();
   }
 
@@ -116,9 +115,11 @@ export class Application implements IApplication {
    * @param params any
    * @return string
    */
-  private applyParams = (data: string, params: any): string => {
+  private applyParams = (data: string, params: object): string => {
     for (const i in params) {
-      data = data.replace(`\$\[${i}\]`, params[i]);
+      if (typeof params[i] === 'string') {
+        data = data.replace(`\$\[${i}\]`, params[i]);
+      }
     }
     return data;
   }
