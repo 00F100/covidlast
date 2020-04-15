@@ -5,6 +5,11 @@ import { IApplication, IFactory, Logger } from '.';
 import { Factory } from './factory';
 import { ICollection, IRoute, IRouter } from './interfaces';
 
+const {
+  DIR_NAME,
+  VIEW_INDEX
+} = process.env;
+
 export class Application implements IApplication {
 
   /**
@@ -47,6 +52,7 @@ export class Application implements IApplication {
     try {
       this._logger.info(`Start web server in port "${port}"`);
       const dispach = express();
+      dispach.use(express.static(VIEW_INDEX));
 
       this._logger.info('Load routes');
       this.routes(dispach);
@@ -81,7 +87,7 @@ export class Application implements IApplication {
    * @return string
    */
   public view = (page: string, params?: object): string => {
-    const file = `${__dirname}/view/${page}.html`;
+    const file = `${VIEW_INDEX}/${page}.html`;
     this._logger.debug(`Load view file from "${file}"`);
     if (fs.existsSync(file)) {
       let data = fs.readFileSync(file).toString();
@@ -99,10 +105,8 @@ export class Application implements IApplication {
    * @return void
    */
   private routes = (dispach: express.Router): void => {
-
     const router: IRouter = this._factory.getRouter();
     const routes: IRoute[] = router.mount(this);
-
     routes.map(route => {
       if (typeof route.beforeRequest === 'function') {
         this._logger.info(`Execute beforeRequest to route "${route.method} ${route.path}"`);

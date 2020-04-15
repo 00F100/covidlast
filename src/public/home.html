@@ -1,0 +1,111 @@
+<html>
+    <head>
+        <title>COVID-19 - chart</title>
+    </head>
+    <body>
+        <div id="application">
+            <countries :input="cases">
+                <div>
+                    aaaaaaaaaaaa
+                </div>
+            </countries>
+            <chart-population></chart-population>
+            <chart-percentual></chart-percentual>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.2.7/highcharts.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+        <script type="text/javascript">
+        var _localdata = JSON.parse('$[cases]');
+        Vue.component('countries', {
+            template: '<slot></slot>',
+            props: {
+                input: Array
+            }
+        });
+        
+        // <slot>
+        //             <p v-for="country in cases">{{ contry.name }}</p>
+        //         </slot>
+        Vue.component('chart-population', {
+            template: '<h1>grafico de populacao</h1>'
+        });
+        Vue.component('chart-percentual', {
+            template: '<h1>grafico de percentual da populacao</h1>'
+        });
+        new Vue({
+            el: '#application',
+            // computed: {
+            //     listCountries: function() {
+            //         console.log(_localdata);
+            //         // return this.cases;
+            //         return 'okokok';
+            //     }
+            // },
+            data: function() {
+                return {
+                    cases: this.getCountries(_localdata)
+                }
+            },
+            methods: {
+                getCountries: function(data) {
+                    const list = [];
+                    for (const i in data) {
+                        list.push(data[i].name);
+                    }
+                    return list;
+                }
+            }
+        });
+        // vue.
+        // Highcharts.chart('container', {
+
+        //     title: {
+        //         text: 'COVID-19'
+        //     },
+
+        //     subtitle: {
+        //         text: 'Source: worldometers.info/coronavirus'
+        //     },
+
+        //     yAxis: {
+        //         title: {
+        //             text: 'Number of cases'
+        //         }
+        //     },
+
+        //     legend: {
+        //         layout: 'horizontal',
+        //         align: 'center',
+        //         verticalAlign: 'bottom'
+        //     },
+
+        //     plotOptions: {
+        //         series: {
+        //             label: {
+        //                 connectorAllowed: false
+        //             },
+        //             pointStart: 0
+        //         }
+        //     },
+
+        //     series: $[cases],
+
+        //     responsive: {
+        //         rules: [{
+        //             condition: {
+        //                 maxWidth: 500
+        //             },
+        //             chartOptions: {
+        //                 legend: {
+        //                     layout: 'horizontal',
+        //                     align: 'center',
+        //                     verticalAlign: 'bottom'
+        //                 }
+        //             }
+        //         }]
+        //     }
+
+        // });
+        </script>
+    </body>
+</html>
