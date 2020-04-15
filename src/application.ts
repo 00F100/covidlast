@@ -117,17 +117,6 @@ export class Application implements IApplication {
         response.send(route.cache);
       });
     });
-
-    // // mount home view without request execution
-    // const home = this.view('home', {
-    //   cases: this.controller('cases').toJSON()
-    // });
-
-    // // show home cache on execute request
-    // dispach.get('/', (request: express.Request, response: express.Response) => {
-    //   this._logger.debug(`Request to route ${request.path} by ${request.ip}`);
-    //   response.send(home);
-    // });
   }
 
   /**
