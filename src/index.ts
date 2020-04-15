@@ -7,3 +7,4 @@ export * from './interfaces';
 export * from './logger';
 export * from './model';
 export * from './models';
+export * from './router';

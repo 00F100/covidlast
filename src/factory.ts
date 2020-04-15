@@ -1,10 +1,11 @@
 import express from 'express';
-import { IFactory, ModelCase } from '.';
+import { IFactory, ModelCase, Router } from '.';
 import { CollectionCases, CollectionDatas } from './collections';
 import { ControllerCases } from './controllers';
-import { ICollection, IController } from './interfaces';
+import { ICollection, IController, IRouter } from './interfaces';
 import { ModelData } from './models';
 import sqlite3 from 'better-sqlite3';
+import { ICollectionsDatas } from './collections/interfaces';
 
 const {
   DATASOURCE_lOCATION
@@ -30,6 +31,7 @@ export class Factory implements IFactory {
    * Method to create instance of collection
    *
    * @param name string
+   * @throws Error Collection not found
    * @return any
    */
   public getCollection = (name: string): any => {
@@ -42,5 +44,9 @@ export class Factory implements IFactory {
       () => { return new ModelCase() }
     );
     throw new Error(`Collection "${name}" not found`);
+  }
+
+  public getRouter = (): IRouter => {
+    return new Router();
   }
 }

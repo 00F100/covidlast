@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import Log4js from 'log4js';
 import { IApplication, IFactory, Logger } from '.';
 import { Factory } from './factory';
-import { ICollection } from './interfaces';
+import { ICollection, IRoute, IRouter } from './interfaces';
 
 export class Application implements IApplication {
 
@@ -47,34 +47,18 @@ export class Application implements IApplication {
     try {
       this._logger.info(`Start web server in port "${port}"`);
       const dispach = express();
-      this._logger.info(`Load routes`);
+
+      this._logger.info('Load routes');
       this.routes(dispach);
-      this._logger.info(`Listen port`);
+
+      this._logger.info(`Listen port ${port}`);
       dispach.listen(this.port(port), () => this._logger.info(`Application UP on port "${port}"`));
+
       return true;
     } catch (err) {
-
+      this._logger.fatal('A exception on listen Application', err);
     }
     return false;
-  }
-
-  /**
-   * Method to mount routes and call controllers
-   *
-   * @param dispach express.Router
-   * @return void
-   */
-  private routes = (dispach: express.Router): void => {
-    // mount home view without request execution
-    const home = this.view('home', {
-      cases: this.controller('cases').toJSON()
-    });
-
-    // show home cache on execute request
-    dispach.get('/', (request: express.Request, response: express.Response) => {
-      this._logger.debug(`Request to route ${request.path} by ${request.ip}`);
-      response.send(home);
-    });
   }
 
   /**
@@ -85,7 +69,7 @@ export class Application implements IApplication {
    * @param response express.Response
    * @return ICollection
    */
-  private controller = (name: string, request?: express.Request, response?: express.Response): ICollection => {
+  public controller = (name: string, request?: express.Request, response?: express.Response): ICollection => {
     return this._factory.getController(name, request, response).execute();
   }
 
@@ -96,7 +80,7 @@ export class Application implements IApplication {
    * @throws Error
    * @return string
    */
-  private view = (page: string, params?: object): string => {
+  public view = (page: string, params?: object): string => {
     const file = `${__dirname}/view/${page}.html`;
     this._logger.debug(`Load view file from "${file}"`);
     if (fs.existsSync(file)) {
@@ -106,6 +90,44 @@ export class Application implements IApplication {
     }
     this._logger.error(`File view not found "${file}"`);
     throw new Error(`View "${file}" not found`);
+  }
+
+  /**
+   * Method to mount routes and call controllers
+   *
+   * @param dispach express.Router
+   * @return void
+   */
+  private routes = (dispach: express.Router): void => {
+
+    const router: IRouter = this._factory.getRouter();
+    const routes: IRoute[] = router.mount(this);
+
+    routes.map(route => {
+      if (typeof route.beforeRequest === 'function') {
+        this._logger.info(`Execute beforeRequest to route "${route.method} ${route.path}"`);
+        route.beforeRequest(route);
+      }
+      dispach[route.method.toLowerCase()](route.path, (request: express.Request, response: express.Response) => {
+        if (typeof route.afterRequest === 'function') {
+          this._logger.info(`Execute afterRequest to route "${route.method} ${route.path}"`);
+          route.afterRequest(route);
+        }
+        this._logger.debug(`Request to route ${request.path} by ${request.ip}`);
+        response.send(route.cache);
+      });
+    });
+
+    // // mount home view without request execution
+    // const home = this.view('home', {
+    //   cases: this.controller('cases').toJSON()
+    // });
+
+    // // show home cache on execute request
+    // dispach.get('/', (request: express.Request, response: express.Response) => {
+    //   this._logger.debug(`Request to route ${request.path} by ${request.ip}`);
+    //   response.send(home);
+    // });
   }
 
   /**

@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { IController } from '.';
+import { IController, IRouter } from '.';
 
 export interface IFactory {
 
@@ -11,5 +11,7 @@ export interface IFactory {
    * @param response express.Response
    * @return IController
    */
-  getController(name: string, request?: express.Request, response?: express.Response): IController
+  getController(name: string, request?: express.Request, response?: express.Response): IController;
+
+  getRouter(): IRouter;
 }
