@@ -37,5 +37,17 @@ export class ModelData extends Model implements IModelData {
    * Name of country
    * @param string
    */
-  public name: string = '';
+  public countryName: string = '';
+
+  /**
+   * ID of country
+   * @param number
+   */
+  public countryId: number = 0;
+
+  /**
+   * Population of country
+   * @param number
+   */
+  public population: number = 0;
 }

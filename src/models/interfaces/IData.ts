@@ -36,5 +36,16 @@ export interface IModelData extends IModel {
    * Name of country
    * @param string
    */
-  name: string;
+  countryName: string;
+
+  /**
+   * ID of country
+   */
+  countryId: number;
+
+  /**
+   * Population of country
+   * @param number
+   */
+  population: number;
 }

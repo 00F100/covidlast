@@ -1,111 +1,156 @@
-<html>
-    <head>
-        <title>COVID-19 - chart</title>
-    </head>
-    <body>
-        <div id="application">
-            <countries :input="cases">
-                <div>
-                    aaaaaaaaaaaa
+
+        <html>
+            <head>
+                <title>COVID-19 - chart</title>
+            </head>
+            <body>
+                <div id="container"></div>
+                <div id="application">
+                    <countries :locales="locales">
+                        <ul>
+                            <li v-for="locale in locales">{{ locale }}</li>
+                        </ul>
+                    </countries>
+                    <chart-population :series="seriesByPopulation">
+                        <div id="chart-population"></div>
+                    </chart-population>
+                    <chart-percentual :series="seriesByPorcentage">
+                        <div id="chart-porcentage"></div>
+                    </chart-percentual>
                 </div>
-            </countries>
-            <chart-population></chart-population>
-            <chart-percentual></chart-percentual>
-        </div>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.2.7/highcharts.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-        <script type="text/javascript">
-        var _localdata = JSON.parse('$[cases]');
-        Vue.component('countries', {
-            template: '<slot></slot>',
-            props: {
-                input: Array
-            }
-        });
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.2.7/highcharts.js"></script>
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+                <script type="text/javascript">
+                var _localdata = JSON.parse('$[cases]');
         
-        // <slot>
-        //             <p v-for="country in cases">{{ contry.name }}</p>
-        //         </slot>
-        Vue.component('chart-population', {
-            template: '<h1>grafico de populacao</h1>'
-        });
-        Vue.component('chart-percentual', {
-            template: '<h1>grafico de percentual da populacao</h1>'
-        });
-        new Vue({
-            el: '#application',
-            // computed: {
-            //     listCountries: function() {
-            //         console.log(_localdata);
-            //         // return this.cases;
-            //         return 'okokok';
-            //     }
-            // },
-            data: function() {
-                return {
-                    cases: this.getCountries(_localdata)
-                }
-            },
-            methods: {
-                getCountries: function(data) {
-                    const list = [];
-                    for (const i in data) {
-                        list.push(data[i].name);
+                // Component Countries
+                Vue.component('countries', {
+                    template: '<slot></slot>',
+                    props: {
+                        locales: Array
                     }
-                    return list;
-                }
-            }
-        });
-        // vue.
-        // Highcharts.chart('container', {
-
-        //     title: {
-        //         text: 'COVID-19'
-        //     },
-
-        //     subtitle: {
-        //         text: 'Source: worldometers.info/coronavirus'
-        //     },
-
-        //     yAxis: {
-        //         title: {
-        //             text: 'Number of cases'
-        //         }
-        //     },
-
-        //     legend: {
-        //         layout: 'horizontal',
-        //         align: 'center',
-        //         verticalAlign: 'bottom'
-        //     },
-
-        //     plotOptions: {
-        //         series: {
-        //             label: {
-        //                 connectorAllowed: false
-        //             },
-        //             pointStart: 0
-        //         }
-        //     },
-
-        //     series: $[cases],
-
-        //     responsive: {
-        //         rules: [{
-        //             condition: {
-        //                 maxWidth: 500
-        //             },
-        //             chartOptions: {
-        //                 legend: {
-        //                     layout: 'horizontal',
-        //                     align: 'center',
-        //                     verticalAlign: 'bottom'
-        //                 }
-        //             }
-        //         }]
-        //     }
-
-        // });
-        </script>
-    </body>
-</html>
+                });
+                
+                // Component Chart by Population
+                Vue.component('chart-population', {
+                    template: '<slot></slot>',
+                    props: {
+                        series: Array
+                    },
+                    updated: function() {
+                        this.updateChart();
+                    },
+                    mounted: function() {
+                        this.updateChart();
+                    },
+                    methods: {
+                        updateChart: function() {
+                            Highcharts.chart('chart-population', {
+                                series: this.series
+                            });
+                        }
+                    }
+                });
+        
+                // Component Chart by Percentual
+                Vue.component('chart-percentual', {
+                    template: '<h1>grafico de percentual da populacao</h1>'
+                });
+        
+                // Application Vue Start
+                new Vue({
+                    el: '#application',
+                    data: function() {
+                        return {
+                            locales: this.getCountries(_localdata),
+                            seriesByPopulation: this.getSeriesByPopulation(_localdata),
+                            seriesByPorcentage: this.getSeriesByPorcentage(_localdata)
+                        }
+                    },
+                    methods: {
+                        getCountries: function(data) {
+                            const list = [];
+                            for (const i in data) {
+                                list.push(data[i].name);
+                            }
+                            return list;
+                        },
+                        getSeriesByPopulation: function(data) {
+                            const list = [];
+                            for (const i in data) {
+                                list.push({
+                                    name: data[i].name,
+                                    data: data[i].data
+                                });
+                            }
+                            return list;
+                        },
+                        getSeriesByPorcentage: function(data) {
+                            const list = [];
+                            for (const i in data) {
+                                const final = [];
+                                const values = data[i].data;
+                                for (const z in values) {
+                                    final.push(data[i].population / values[z]);
+                                }
+                                list.push({
+                                    name: data[i].name,
+                                    data: final
+                                });
+                            }
+                            return list;
+                        }
+                    }
+                });
+                // Highcharts.chart('container', {
+        
+                //     title: {
+                //         text: 'COVID-19'
+                //     },
+        
+                //     subtitle: {
+                //         text: 'Source: worldometers.info/coronavirus'
+                //     },
+        
+                //     yAxis: {
+                //         title: {
+                //             text: 'Number of cases'
+                //         }
+                //     },
+        
+                //     legend: {
+                //         layout: 'horizontal',
+                //         align: 'center',
+                //         verticalAlign: 'bottom'
+                //     },
+        
+                //     plotOptions: {
+                //         series: {
+                //             label: {
+                //                 connectorAllowed: false
+                //             },
+                //             pointStart: 0
+                //         }
+                //     },
+        
+                //     series: _localdata,
+        
+                //     responsive: {
+                //         rules: [{
+                //             condition: {
+                //                 maxWidth: 500
+                //             },
+                //             chartOptions: {
+                //                 legend: {
+                //                     layout: 'horizontal',
+                //                     align: 'center',
+                //                     verticalAlign: 'bottom'
+                //                 }
+                //             }
+                //         }]
+                //     }
+        
+                // });
+                </script>
+            </body>
+        </html>
