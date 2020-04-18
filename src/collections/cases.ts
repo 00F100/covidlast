@@ -33,15 +33,40 @@ export class CollectionCases extends Collection implements ICollectionsCases {
    */
   public getByCountry = (collectionDatas: ICollectionsDatas): ICollectionsCases => {
     const datas = collectionDatas.getData<IModelData>();
-    datas.map((data) => {
-      let model = this._data.find(x => x.countryId === data.countryId);
-      if (!model) {
-        model = this._factoryModelCase();
-        model.load({ ... data, name: data.countryName, countryPopulation: data.population });
-        this._data.push(model);
-      }
-      model.data.push([`day ${model.data.length} | ${data.date}`, data.cases]);
+    datas.map((data: IModelData) => {
+      const model = this.getModelByCountryId(data);
+      model.data.push([model.data.length, data.cases]);
     });
+    this.sortDataByCountry();
     return this;
+  }
+
+  /**
+   * Method to get model by country id
+   *
+   * @param data IModelData
+   * @return IModelCase
+   */
+  private getModelByCountryId = (data: IModelData): IModelCase => {
+    let model = this._data.find(x => x.countryId === data.countryId);
+    if (!model) {
+      model = this._factoryModelCase();
+      model.load({ ... data, name: data.countryName, countryPopulation: data.population });
+      this._data.push(model);
+    }
+    return model;
+  }
+
+  /**
+   * Method to sort data by country name
+   *
+   * @return void
+   */
+  private sortDataByCountry = (): void => {
+    this._data.sort((a: IModelCase, b: IModelCase): number => {
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
   }
 }

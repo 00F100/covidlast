@@ -7,9 +7,15 @@
             <body>
                 <div id="container"></div>
                 <div id="application">
-                    <countries :locales="locales">
+                    <countries>
                         <div>
-                            <multiselect :options="locales"></multiselect>
+                            <multiselect
+                                v-model="selectedLocales"
+                                :allow-empty="false"
+                                :options="locales"
+                                deselect-label="Can't remove this value"
+                                :multiple="true">
+                            </multiselect>
                         </div>
                     </countries>
                     <chart-population :series="seriesByPopulation">
@@ -26,13 +32,13 @@
                 var _localdata = JSON.parse('$[cases]');
         
                 // Component Countries
-                // Vue.component('multiselect', window.VueMultiselect.default)
+                Vue.component('multiselect', window.VueMultiselect.default)
                 // var Multiselect = window.VueMultiselect.default;
                 Vue.component('countries', {
                     template: '<slot></slot>',
-                    components: {
-                        multiselect: window.VueMultiselect.default
-                    },
+                    // components: {
+                    //     'multiselect': window.VueMultiselect.default
+                    // },
                     props: {
                         locales: Array
                     },
@@ -108,22 +114,32 @@
                         const copyData = { ... _localdata };
                         return {
                             locales: this.getCountries(copyData),
-                            seriesByPopulation: this.getSeriesByPopulation(copyData, 35, 65),
+                            selectedLocales: [],
+                            seriesByPopulation: this.getSeriesByPopulation(copyData),
                             seriesByPorcentage: this.getSeriesByPorcentage(copyData)
                         }
                     },
+                    watch: {
+                        selectedLocales: function(value) {
+                            const copyData = { ... _localdata };
+                            this.seriesByPopulation = this.getSeriesByPopulation(copyData, value);
+                            this.seriesByPorcentage = this.getSeriesByPorcentage(copyData, value);
+                        }
+                    },
                     methods: {
-                        getCountries: function(data) {
+                        getCountries: function(data, filter) {
                             const list = [];
                             for (const i in data) {
-                                list.push(data[i].name);
+                                if (!filter || (filter.countryName.indexOf(data[i].name) != -1)) {
+                                    list.push(data[i].name);
+                                }
                             }
                             return list;
                         },
-                        getSeriesByPopulation: function(data, dayInit, dayEnd) {
+                        getSeriesByPopulation: function(data, filter) {
                             const list = [];
                             for (const i in data) {
-                                if (!dayInit || dayInit > i) {
+                                if (!filter || filter.indexOf(data[i].countryName) !== -1) {
                                     list.push({
                                         name: data[i].countryName,
                                         data: data[i].data
@@ -133,7 +149,7 @@
                             }
                             return list;
                         },
-                        getSeriesByPorcentage: function(data) {
+                        getSeriesByPorcentage: function(data, filter) {
                             const list = [];
                             for (const i in data) {
                                 const final = [];
@@ -142,10 +158,12 @@
                                     const value = (values[z][1] * 100 ) / data[i].countryPopulation;
                                     final.push([values[z][0], value]);
                                 }
-                                list.push({
-                                    name: data[i].countryName,
-                                    data: final
-                                });
+                                if (!filter || filter.indexOf(data[i].countryName) !== -1) {
+                                    list.push({
+                                        name: data[i].countryName,
+                                        data: final
+                                    });
+                                }
                             }
                             return list;
                         }
