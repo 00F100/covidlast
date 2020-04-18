@@ -13,4 +13,14 @@ export interface ICollection {
    * @param T[]
    */
   getData<T>(): T[];
+
+  /**
+   * Method to populate model
+   *
+   * @param factory () => IModel
+   * @param row any
+   * @param data IModel[]
+   * @return void
+   */
+  populateModel(factory: () => IModel, row: any, data: IModel[]) :void;
 }

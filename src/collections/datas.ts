@@ -31,17 +31,20 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
    * @return ICollectionsDatas
    */
   public getOrderByDate = (): ICollectionsDatas => {
-    const rows = this._databaseSQLite3.prepare(`
-      SELECT
-        d.id, d.cases, d.deaths, d.timestamp, c.name AS countryName, c.id AS countryId, c.population,
+    const rows = this._databaseSQLite3.prepare(`SELECT
+        d.id,
+        d.cases,
+        d.deaths,
+        d.timestamp,
+        c.name AS countryName,
+        c.id AS countryId,
+        c.population,
         strftime('%m-%d-%Y', datetime(d.timestamp, 'unixepoch')) AS date
       FROM data AS d
       INNER JOIN countries AS c ON d.idCountry = c.id
       ORDER BY d.timestamp ASC, c.name ASC`).all();
     rows.map(row => {
-      const model = this._factoryModelData();
-      model.load(row);
-      this._data.push(row);
+      this.populateModel(this._factoryModelData, row, this._data);
     });
     return this;
   }

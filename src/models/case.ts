@@ -16,6 +16,12 @@ export class ModelCase extends Model implements IModelCase {
   public countryName: string = '';
 
   /**
+   * Number of population country
+   * @param number
+   */
+  public countryPopulation: number = 0;
+
+  /**
    * Name of chart label
    * @param string
    */

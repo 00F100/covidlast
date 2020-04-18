@@ -37,9 +37,7 @@ export class CollectionCases extends Collection implements ICollectionsCases {
       let model = this._data.find(x => x.countryId === data.countryId);
       if (!model) {
         model = this._factoryModelCase();
-        model.countryName = data.countryName;
-        model.name = data.countryName;
-        model.countryId = data.countryId;
+        model.load({ ... data, name: data.countryName, countryPopulation: data.population });
         this._data.push(model);
       }
       model.data.push([`day ${model.data.length} | ${data.date}`, data.cases]);

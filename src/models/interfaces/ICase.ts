@@ -15,6 +15,12 @@ export interface IModelCase extends IModel {
   countryName: string;
 
   /**
+   * Number of population country
+   * @param number
+   */
+  countryPopulation: number;
+
+  /**
    * Name of chart label
    * @param string
    */
