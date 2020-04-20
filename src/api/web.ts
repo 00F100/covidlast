@@ -8,14 +8,14 @@ dotenv({
 });
 
 const {
-  WEBSERVER_PORT
+  API_PORT
 } = process.env;
 
 // get application
 const app: IApplication = Application.get();
 
 // start and listen on port ...
-if (app.listen(WEBSERVER_PORT || '')) {
+if (app.listen(API_PORT || '')) {
   Logger.get().info('Web server success!');
 } else {
   Logger.get().fatal('Web server error!');
