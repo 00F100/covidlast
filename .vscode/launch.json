@@ -11,7 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\poc\\extractor.js",
+      "program": "${workspaceFolder}/api/poc/extractor.js",
       "args": [
         "brazil",
         "1"
@@ -24,19 +24,19 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\poc\\server.js"
+      "program": "${workspaceFolder}/api/poc/server.js"
     },
     {
       "name": "Web server (SRC)",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
+      "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
       "args": [
-        "${workspaceRoot}/src/api/web"
+        "${workspaceRoot}/api/src/api/web"
       ],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
-      "envFile": "${workspaceFolder}/.env"
+      "envFile": "${workspaceFolder}/api/.env"
     }
   ]
 }

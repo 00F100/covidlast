@@ -2,12 +2,12 @@
   "name": "covid-chart",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/api/web.js",
+  "main": "dist/web.js",
   "scripts": {
     "lint": "tslint --fix src/**/*.ts --project tsconfig.json --config tslint.json",
     "prebuild": "npm run lint && rm -rf dist",
     "build": "tsc --sourceMap false",
-    "api": "npm run build && env NODE_ENV=development node dist/api/web.js"
+    "api-develop": "npm run build && env NODE_ENV=development node dist/web.js"
   },
   "author": "",
   "license": "ISC",
