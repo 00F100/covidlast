@@ -1,10 +1,6 @@
 import log4js from 'log4js';
 import { ILogger } from './interfaces';
 
-const {
-  LOGGER_LEVEL
-} = process.env;
-
 export class Logger implements ILogger {
 
   /**
@@ -20,6 +16,11 @@ export class Logger implements ILogger {
    */
   public static get = (): log4js.Logger => {
     if (!Logger._log) {
+
+      const {
+        LOGGER_LEVEL
+      } = process.env;
+
       log4js.configure({
         appenders: { console: { type: 'console' } },
         categories: { default: { appenders: [ 'console' ], level: LOGGER_LEVEL } }

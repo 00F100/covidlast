@@ -3,7 +3,8 @@
     "tslint:latest"
   ],
   "rules": {
-    "no-empty-interface": false
+    "no-empty-interface": false,
+    "no-console": false
   },
   "linterOptions": {
     "exclude": [

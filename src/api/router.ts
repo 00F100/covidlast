@@ -10,18 +10,27 @@ export class Router implements IRouter {
    */
   public mount = (application: IApplication): IRoute[] => {
     return [
+      // {
+      //   method: IRouteMethods.GET,
+      //   path: '/',
+      //   beforeRequest: context => {
+      //     context.cache = application.view('home', {
+      //       cases: application.controller('cases').toJSON()
+      //     });
+      //   }
+      // },
       {
         method: IRouteMethods.GET,
-        path: '/',
+        path: '/status',
         beforeRequest: context => {
-          context.cache = application.view('home', {
-            cases: application.controller('cases').toJSON()
+          context.cache = application.view('status', {
+            status: 'Application running!'
           });
         }
       },
       {
         method: IRouteMethods.GET,
-        path: '/data',
+        path: '/cases',
         beforeRequest: context => {
           context.header = 'application/json';
           context.cache = application.view('json', {

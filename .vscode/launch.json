@@ -32,7 +32,7 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
       "args": [
-        "${workspaceRoot}/src/web"
+        "${workspaceRoot}/src/api/web"
       ],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",

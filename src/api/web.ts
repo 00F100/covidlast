@@ -3,7 +3,9 @@ import { Logger } from '.';
 import { Application } from './application';
 import { IApplication } from './interfaces';
 
-dotenv();
+dotenv({
+  debug: process.env.NODE_ENV === 'development' ? true : false
+});
 
 const {
   WEBSERVER_PORT

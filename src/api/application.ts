@@ -4,11 +4,6 @@ import Log4js from 'log4js';
 import { IApplication, IFactory, Logger } from '.';
 import { Factory } from './factory';
 import { ICollection, IRoute, IRouter } from './interfaces';
-import { Database } from 'sqlite3';
-
-const {
-  VIEW_INDEX
-} = process.env;
 
 export class Application implements IApplication {
 
@@ -49,6 +44,11 @@ export class Application implements IApplication {
    * @return boolean
    */
   public listen = (port?: string | number): boolean => {
+
+    const {
+      VIEW_INDEX
+    } = process.env;
+
     try {
       this._logger.info(`Start web server in port "${port}"`);
       const dispach = express();
@@ -90,6 +90,11 @@ export class Application implements IApplication {
     if (page === 'json') {
       return { ...params};
     }
+
+    const {
+      VIEW_INDEX
+    } = process.env;
+
     const file = `${VIEW_INDEX}/${page}.html`;
     this._logger.debug(`Load view file from "${file}"`);
     if (fs.existsSync(file)) {

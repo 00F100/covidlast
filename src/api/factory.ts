@@ -1,15 +1,10 @@
+import sqlite3 from 'better-sqlite3';
 import express from 'express';
 import { IFactory, ModelCase, Router } from '.';
 import { CollectionCases, CollectionDatas } from './collections';
 import { ControllerCases } from './controllers';
-import { ICollection, IController, IRouter } from './interfaces';
+import { IController, IRouter } from './interfaces';
 import { ModelData } from './models';
-import sqlite3 from 'better-sqlite3';
-import { ICollectionsDatas } from './collections/interfaces';
-
-const {
-  DATASOURCE_lOCATION
-} = process.env;
 
 export class Factory implements IFactory {
 
@@ -35,6 +30,11 @@ export class Factory implements IFactory {
    * @return any
    */
   public getCollection = (name: string): any => {
+
+    const {
+      DATASOURCE_lOCATION
+    } = process.env;
+
     if (name === 'datas') return new CollectionDatas(
       sqlite3(DATASOURCE_lOCATION || ':memory:'),
       () => { return new ModelData() }
