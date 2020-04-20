@@ -5,4 +5,5 @@ export * from './IFactory';
 export * from './ILogger';
 export * from './IModel';
 export * from './IRoute';
+export * from './IRouteMethods';
 export * from './IRouter';

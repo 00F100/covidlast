@@ -28,12 +28,6 @@ export class ModelCase extends Model implements IModelCase {
   public countryColor: string = '';
 
   /**
-   * Name of chart label
-   * @param string
-   */
-  public name: string = '';
-
-  /**
    * Data of cases by time
    * @param number[]
    */

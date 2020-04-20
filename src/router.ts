@@ -1,4 +1,4 @@
-import { IRouter, IRoute, IApplication } from './interfaces';
+import { IApplication, IRoute, IRouteMethods, IRouter } from './interfaces';
 
 export class Router implements IRouter {
 
@@ -11,11 +11,21 @@ export class Router implements IRouter {
   public mount = (application: IApplication): IRoute[] => {
     return [
       {
-        method: 'GET',
+        method: IRouteMethods.GET,
         path: '/',
         beforeRequest: context => {
           context.cache = application.view('home', {
             cases: application.controller('cases').toJSON()
+          });
+        }
+      },
+      {
+        method: IRouteMethods.GET,
+        path: '/data',
+        beforeRequest: context => {
+          context.header = 'application/json';
+          context.cache = application.view('json', {
+            cases: application.controller('cases').getData()
           });
         }
       }

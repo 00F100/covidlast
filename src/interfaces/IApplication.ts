@@ -28,5 +28,5 @@ export interface IApplication {
    * @throws Error
    * @return string
    */
-  view(page: string, params?: object): string;
+  view(page: string, params?: object): string | object;
 }

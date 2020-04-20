@@ -62,8 +62,8 @@ export class CollectionCases extends Collection implements ICollectionsCases {
    */
   private sortDataByCountry = (): void => {
     this._data.sort((a: IModelCase, b: IModelCase): number => {
-      if(a.name < b.name) { return -1; }
-      if(a.name > b.name) { return 1; }
+      if(a.countryName < b.countryName) { return -1; }
+      if(a.countryName > b.countryName) { return 1; }
       return 0;
     });
   }

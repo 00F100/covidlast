@@ -1,10 +1,12 @@
+import { IRouteMethods } from '.';
+
 export interface IRoute {
 
   /**
    * Method of request
-   * @param string
+   * @param IRouteMethods
    */
-  method: string;
+  method: IRouteMethods;
 
   /**
    * Path ot request
@@ -16,7 +18,13 @@ export interface IRoute {
    * Cache of response
    * @param string
    */
-  cache?: string;
+  cache?: string | object;
+
+  /**
+   * Header of response
+   * @param string
+   */
+  header?: string;
 
   /**
    * Execute before request

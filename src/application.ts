@@ -4,6 +4,7 @@ import Log4js from 'log4js';
 import { IApplication, IFactory, Logger } from '.';
 import { Factory } from './factory';
 import { ICollection, IRoute, IRouter } from './interfaces';
+import { Database } from 'sqlite3';
 
 const {
   VIEW_INDEX
@@ -85,7 +86,10 @@ export class Application implements IApplication {
    * @throws Error
    * @return string
    */
-  public view = (page: string, params?: object): string => {
+  public view = (page: string, params?: object): string | object => {
+    if (page === 'json') {
+      return { ... params};
+    }
     const file = `${VIEW_INDEX}/${page}.html`;
     this._logger.debug(`Load view file from "${file}"`);
     if (fs.existsSync(file)) {
@@ -117,6 +121,12 @@ export class Application implements IApplication {
           route.afterRequest(route);
         }
         this._logger.debug(`Request to route ${request.path} by ${request.ip}`);
+        if (!route.header) {
+          route.header = 'text/html';
+        }
+        response.setHeader('Content-Type', route.header);
+        // response.setHeader('Content-Type', 'application/json');
+        // response.setHeader('Content-Type', 'text/html');
         response.send(route.cache);
       });
     });

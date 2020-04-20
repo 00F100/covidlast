@@ -27,12 +27,6 @@ export interface IModelCase extends IModel {
   countryColor: string;
 
   /**
-   * Name of chart label
-   * @param string
-   */
-  name: string;
-
-  /**
    * Data of cases by time
    * @param number[]
    */

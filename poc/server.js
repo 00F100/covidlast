@@ -27,12 +27,6 @@ ORDER BY d.timestamp ASC, c.name ASC`, function(err, rows) {
             const serie = series.find(x => x.name == rows[i].name);
             const total = totals.find(x => x.name == rows[i].name);
             let _total = rows[i].cases;
-            // if (rows[i].name === 'United States') {
-            //     _total = (_total * 100) / 331002651;
-            // }
-            // if (rows[i].name === 'Brazil') {
-            //     _total = (_total * 100) / 212559417;
-            // }
             total.value = _total;
             serie.data.push(total.value);
         }
