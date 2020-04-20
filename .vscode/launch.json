@@ -49,17 +49,6 @@
       "cwd": "${workspaceRoot}/api/dist",
       "protocol": "inspector",
       "envFile": "${workspaceFolder}/api/.env"
-    },
-    {
-      "name": "vuejs: chrome",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:8080",
-      "webRoot": "${workspaceFolder}/frontend/src",
-      "breakOnLoad": true,
-      "sourceMapPathOverrides": {
-        "webpack:///src/*": "${webRoot}/*"
-      }
     }
   ]
 }
