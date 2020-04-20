@@ -3,18 +3,7 @@
     "tslint:latest"
   ],
   "rules": {
-    "trailing-comma": false,
-    "variable-name": false,
-    "ter-arrow-parens": false,
-    "no-boolean-literal-compare": false,
-    "no-console": false,
-    "curly": false,
-    "interface-name": false,
-    "no-restricted-globals": true,
-    "no-string-literal": false,
-    "object-literal-sort-keys": false,
-    "array-type": false,
-    "prefer-conditional-expression": false
+    "no-empty-interface": false
   },
   "linterOptions": {
     "exclude": [

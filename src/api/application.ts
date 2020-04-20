@@ -88,7 +88,7 @@ export class Application implements IApplication {
    */
   public view = (page: string, params?: object): string | object => {
     if (page === 'json') {
-      return { ... params};
+      return { ...params};
     }
     const file = `${VIEW_INDEX}/${page}.html`;
     this._logger.debug(`Load view file from "${file}"`);

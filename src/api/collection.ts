@@ -34,7 +34,7 @@ export class Collection implements ICollection {
    * @param data IModel[]
    * @return void
    */
-  public populateModel = (factory: () => IModel, row: any, data: IModel[]) :void => {
+  public populateModel = (factory: () => IModel, row: any, data: IModel[]) : void => {
     const model = factory();
     model.load(row);
     data.push(model);

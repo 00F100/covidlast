@@ -49,7 +49,7 @@ export class CollectionCases extends Collection implements ICollectionsCases {
     let model = this._data.find(x => x.countryId === data.countryId);
     if (!model) {
       model = this._factoryModelCase();
-      model.load({ ... data, name: data.countryName, countryPopulation: data.population, countryColor: data.color });
+      model.load({ ...data, name: data.countryName, countryPopulation: data.population, countryColor: data.color });
       this._data.push(model);
     }
     return model;
@@ -62,8 +62,8 @@ export class CollectionCases extends Collection implements ICollectionsCases {
    */
   private sortDataByCountry = (): void => {
     this._data.sort((a: IModelCase, b: IModelCase): number => {
-      if(a.countryName < b.countryName) { return -1; }
-      if(a.countryName > b.countryName) { return 1; }
+      if (a.countryName < b.countryName) { return -1; }
+      if (a.countryName > b.countryName) { return 1; }
       return 0;
     });
   }

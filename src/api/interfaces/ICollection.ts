@@ -22,5 +22,5 @@ export interface ICollection {
    * @param data IModel[]
    * @return void
    */
-  populateModel(factory: () => IModel, row: any, data: IModel[]) :void;
+  populateModel(factory: () => IModel, row: any, data: IModel[]) : void;
 }
