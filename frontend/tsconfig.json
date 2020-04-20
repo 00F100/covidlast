@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    // isto alinha com o suporte de navegadores do Vue
+    "target": "es5",
+    // habilita inferência estrita de propriedades de dados no `this`
+    "strict": true,
+    // se usando webpack 2+ ou rollup, para habilitar tree shaking
+    "module": "es2015",
+    "moduleResolution": "node"
+  }
+}

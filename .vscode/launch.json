@@ -27,16 +27,39 @@
       "program": "${workspaceFolder}/api/poc/server.js"
     },
     {
-      "name": "Web server (SRC)",
+      "name": "API Web server (TypeScript)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
       "args": [
-        "${workspaceRoot}/api/src/api/web"
+        "${workspaceRoot}/api/src/web"
       ],
-      "cwd": "${workspaceRoot}",
+      "cwd": "${workspaceRoot}/api",
       "protocol": "inspector",
       "envFile": "${workspaceFolder}/api/.env"
+    },
+    {
+      "name": "API Web server (NodeJS)",
+      "type": "node",
+      "request": "launch",
+      // "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
+      "args": [
+        "${workspaceRoot}/api/dist/web.js"
+      ],
+      "cwd": "${workspaceRoot}/api/dist",
+      "protocol": "inspector",
+      "envFile": "${workspaceFolder}/api/.env"
+    },
+    {
+      "name": "vuejs: chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "breakOnLoad": true,
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
     }
   ]
 }
