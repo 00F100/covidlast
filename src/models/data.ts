@@ -50,4 +50,10 @@ export class ModelData extends Model implements IModelData {
    * @param number
    */
   public population: number = 0;
+
+  /**
+   * Color of country in chart
+   * @param string
+   */
+  public color: string = '';
 }

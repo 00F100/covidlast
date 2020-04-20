@@ -6,7 +6,6 @@ import { Factory } from './factory';
 import { ICollection, IRoute, IRouter } from './interfaces';
 
 const {
-  DIR_NAME,
   VIEW_INDEX
 } = process.env;
 

@@ -13,5 +13,10 @@ export interface IFactory {
    */
   getController(name: string, request?: express.Request, response?: express.Response): IController;
 
+  /**
+   * Method to get Router instance
+   *
+   * @return IRouter
+   */
   getRouter(): IRouter;
 }

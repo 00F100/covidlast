@@ -48,4 +48,10 @@ export interface IModelData extends IModel {
    * @param number
    */
   population: number;
+
+  /**
+   * Color of country in chart
+   * @param string
+   */
+  color: string;
 }

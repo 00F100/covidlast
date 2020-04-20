@@ -33,19 +33,10 @@
         
                 // Component Countries
                 Vue.component('multiselect', window.VueMultiselect.default)
-                // var Multiselect = window.VueMultiselect.default;
                 Vue.component('countries', {
                     template: '<slot></slot>',
-                    // components: {
-                    //     'multiselect': window.VueMultiselect.default
-                    // },
                     props: {
                         locales: Array
-                    },
-                    data: function() {
-                        return {
-                            value: null
-                        }
                     }
                 });
                 
@@ -142,7 +133,8 @@
                                 if (!filter || filter.indexOf(data[i].countryName) !== -1) {
                                     list.push({
                                         name: data[i].countryName,
-                                        data: data[i].data
+                                        data: data[i].data,
+                                        color: data[i].countryColor
                                     });
                                 }
                                 
@@ -156,12 +148,17 @@
                                 const values = data[i].data;
                                 for (const z in values) {
                                     const value = (values[z][1] * 100 ) / data[i].countryPopulation;
-                                    final.push([values[z][0], value]);
+                                    // final.push([values[z][0], value]);
+                                    final.push({
+                                        y: value,
+                                        name: values[z][0]
+                                    });
                                 }
                                 if (!filter || filter.indexOf(data[i].countryName) !== -1) {
                                     list.push({
                                         name: data[i].countryName,
-                                        data: final
+                                        data: final,
+                                        color: data[i].countryColor
                                     });
                                 }
                             }
@@ -169,55 +166,6 @@
                         }
                     }
                 });
-                // Highcharts.chart('container', {
-        
-                //     title: {
-                //         text: 'COVID-19'
-                //     },
-        
-                //     subtitle: {
-                //         text: 'Source: worldometers.info/coronavirus'
-                //     },
-        
-                //     yAxis: {
-                //         title: {
-                //             text: 'Number of cases'
-                //         }
-                //     },
-        
-                //     legend: {
-                //         layout: 'horizontal',
-                //         align: 'center',
-                //         verticalAlign: 'bottom'
-                //     },
-        
-                //     plotOptions: {
-                //         series: {
-                //             label: {
-                //                 connectorAllowed: false
-                //             },
-                //             pointStart: 0
-                //         }
-                //     },
-        
-                //     series: _localdata,
-        
-                //     responsive: {
-                //         rules: [{
-                //             condition: {
-                //                 maxWidth: 500
-                //             },
-                //             chartOptions: {
-                //                 legend: {
-                //                     layout: 'horizontal',
-                //                     align: 'center',
-                //                     verticalAlign: 'bottom'
-                //                 }
-                //             }
-                //         }]
-                //     }
-        
-                // });
                 </script>
             </body>
         </html>

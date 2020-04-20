@@ -14,12 +14,10 @@ export class CollectionCases extends Collection implements ICollectionsCases {
   /**
    * Method to construct instance of Collection Cases
    *
-   * @param _databaseSQLite3 sqlite3.Database
    * @param _factoryModelCase () => IModelCase
    * @return void
    */
   public constructor(
-    private _databaseSQLite3: sqlite3.Database,
     private _factoryModelCase: () => IModelCase
   ) {
     super();
@@ -51,7 +49,7 @@ export class CollectionCases extends Collection implements ICollectionsCases {
     let model = this._data.find(x => x.countryId === data.countryId);
     if (!model) {
       model = this._factoryModelCase();
-      model.load({ ... data, name: data.countryName, countryPopulation: data.population });
+      model.load({ ... data, name: data.countryName, countryPopulation: data.population, countryColor: data.color });
       this._data.push(model);
     }
     return model;

@@ -39,6 +39,7 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
         c.name AS countryName,
         c.id AS countryId,
         c.population,
+        c.color,
         strftime('%m-%d-%Y', datetime(d.timestamp, 'unixepoch')) AS date
       FROM data AS d
       INNER JOIN countries AS c ON d.idCountry = c.id

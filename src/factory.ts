@@ -40,12 +40,16 @@ export class Factory implements IFactory {
       () => { return new ModelData() }
     );
     if (name === 'cases') return new CollectionCases(
-      sqlite3(DATASOURCE_lOCATION || ':memory:'),
       () => { return new ModelCase() }
     );
     throw new Error(`Collection "${name}" not found`);
   }
 
+  /**
+   * Method to get Router instance
+   *
+   * @return IRouter
+   */
   public getRouter = (): IRouter => {
     return new Router();
   }
