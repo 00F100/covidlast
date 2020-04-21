@@ -5,6 +5,7 @@ import { CollectionCases, CollectionDatas } from './collections';
 import { ControllerCases } from './controllers';
 import { ICommand, IController, IResponse, IRouter } from './interfaces';
 import { ModelData } from './models';
+import { CollectionWorldOMeters } from './collections/worldOMeters';
 
 export class Factory implements IFactory {
 
@@ -61,7 +62,16 @@ export class Factory implements IFactory {
    * @return ICommand
    */
   public getCommand = (command: string): ICommand => {
-    if (command === 'extract') return new ExtractCommand();
+
+    const {
+      DATASOURCE_lOCATION
+    } = process.env;
+
+    if (command === 'extract') return new ExtractCommand(
+      new CollectionWorldOMeters(
+        sqlite3(DATASOURCE_lOCATION || ':memory:')
+      )
+    );
     throw new Error(`Command "${command}" not found`);
   }
 

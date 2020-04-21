@@ -1,4 +1,3 @@
-import * as sqlite3 from 'better-sqlite3';
 import { Collection } from '../collection';
 import { IModelCase, IModelData } from '../models';
 import { ICollectionsCases, ICollectionsDatas } from './interfaces';

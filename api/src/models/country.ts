@@ -14,4 +14,10 @@ export class ModelCountry extends Model implements IModelCountry {
    * @param string
    */
   public name?: string = '';
+
+  public alias?: string = '';
+
+  public population?: number = 0;
+
+  public color?: string = '';
 }

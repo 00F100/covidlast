@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('infra/data/database.sqlite');
+const db = new sqlite3.Database(process.env.DATASOURCE_lOCATION);
 
 const totals = [];
 const series = [];

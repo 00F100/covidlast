@@ -10,15 +10,15 @@ export class Router implements IRouter {
    */
   public mount = (application: IApplication): IRoute[] => {
     return [
-      // {
-      //   method: IRouteMethods.GET,
-      //   path: '/',
-      //   beforeRequest: context => {
-      //     context.cache = application.view('home', {
-      //       cases: application.controller('cases').toJSON()
-      //     });
-      //   }
-      // },
+        // {
+        //   method: IRouteMethods.GET,
+        //   path: '/',
+        //   beforeRequest: context => {
+        //     context.cache = application.view('home', {
+        //       cases: application.controller('cases').toJSON()
+        //     });
+        //   }
+        // },
       {
         method: IRouteMethods.GET,
         path: '/status',
