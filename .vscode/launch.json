@@ -32,11 +32,12 @@
       "request": "launch",
       "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
       "args": [
-        "${workspaceRoot}/api/src/web"
+        "${workspaceRoot}/api/src/bootstrap/web"
       ],
-      "cwd": "${workspaceRoot}/api",
+      "cwd": "${workspaceRoot}/api/src",
       "protocol": "inspector",
-      "envFile": "${workspaceFolder}/api/.env"
+      "envFile": "${workspaceFolder}/api/.env", 
+      "outputCapture": "std"
     },
     {
       "name": "API Web server (NodeJS)",
@@ -44,11 +45,29 @@
       "request": "launch",
       // "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
       "args": [
-        "${workspaceRoot}/api/dist/web.js"
+        "${workspaceRoot}/api/dist/bootstrap/web.js"
       ],
       "cwd": "${workspaceRoot}/api/dist",
       "protocol": "inspector",
-      "envFile": "${workspaceFolder}/api/.env"
+      "envFile": "${workspaceFolder}/api/.env", 
+      "outputCapture": "std"
+    },
+    {
+      "name": "Handle (TypeScript)",
+      "type": "node",
+      "request": "launch",
+      "outputCapture": "std",
+      "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
+      "args": [
+        "${workspaceRoot}/api/src/bootstrap/handler",
+        "extract",
+        "1"
+      ],
+      "cwd": "${workspaceRoot}/api/src",
+      "protocol": "inspector",
+      "envFile": "${workspaceFolder}/api/.env",
+      "console": "internalConsole", 
+      "outputCapture": "std"
     }
   ]
 }

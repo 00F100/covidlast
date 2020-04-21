@@ -6,5 +6,5 @@ export interface IModel {
    * @param data any
    * @return void
    */
-  load(data: any): void;
+  load?(data: any): void;
 }

@@ -12,5 +12,5 @@ export interface IModelCountry extends IModel {
    * Name of country
    * @param string
    */
-  name: string;
+  name?: string;
 }

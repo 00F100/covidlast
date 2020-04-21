@@ -9,13 +9,7 @@ export interface IHandlerInput {
   command: string;
 
   /**
-   * Origin to scrap
-   * @param string
-   */
-  origin?: string;
-
-  /**
    * Arguments to apply in request
    */
-  country?: IModelCountry;
+  country: IModelCountry;
 }

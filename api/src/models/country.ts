@@ -8,10 +8,10 @@ export class ModelCountry extends Model implements IModelCountry {
    * @param number
    */
   public id: number = 0;
-  
+
   /**
    * Name of country
    * @param string
    */
-  public name: string = '';
+  public name?: string = '';
 }

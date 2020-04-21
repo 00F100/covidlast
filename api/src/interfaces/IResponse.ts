@@ -1,10 +1,10 @@
 export interface IResponse {
 
   /**
-   * Method to send message response
+   * Method to send response of execution
    *
    * @param message string
-   * @return void
+   * @return IResponse
    */
-  send(message: string): void;
+  send(message: string): IResponse;
 }

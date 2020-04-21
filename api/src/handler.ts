@@ -7,8 +7,8 @@ dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
 });
 
-exports.handler = (input: IHandlerInput, context: any, callback: any) => {
-  // get application
+export const handler = (input: IHandlerInput, context: any, callback: any) => {
+
   const app: IApplication = Application.get();
 
   if (app.handler(input)) {
