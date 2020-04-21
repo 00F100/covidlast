@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import Log4js from 'log4js';
 import { IApplication, IFactory, Logger } from '.';
 import { Factory } from './factory';
-import { ICollection, IRoute, IRouter } from './interfaces';
+import { ICollection, IRoute, IRouter, IHandlerInput, ICommand } from './interfaces';
 
 export class Application implements IApplication {
 
@@ -63,6 +63,25 @@ export class Application implements IApplication {
       return true;
     } catch (err) {
       this._logger.fatal('A exception on listen Application', err);
+    }
+    return false;
+  }
+
+  /**
+   * Method to execute handler action
+   *
+   * @param input IHandlerInput
+   * @return boolean
+   */
+  public handler = (input: IHandlerInput): boolean => {
+    try {
+      this._logger.info(`Start handler execution`);
+      this
+        .command(input.command)
+        .execute(input, this._factory.getResponse());
+      return true;
+    } catch (err) {
+      this._logger.fatal('A exception on execute handler in Application', err);
     }
     return false;
   }
@@ -135,6 +154,16 @@ export class Application implements IApplication {
         response.send(route.cache);
       });
     });
+  }
+
+  /**
+   * Method to call command
+   *
+   * @param command string
+   * @return void
+   */
+  private command = (command: string): ICommand => {
+    return this._factory.getCommand(command);
   }
 
   /**

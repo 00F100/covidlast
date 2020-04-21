@@ -1,5 +1,5 @@
 import express from 'express';
-import { ICollection } from '.';
+import { ICollection, IHandlerInput } from '.';
 
 export interface IApplication {
 
@@ -10,6 +10,14 @@ export interface IApplication {
    * @return boolean
    */
   listen(port?: string | number): boolean;
+
+  /**
+   * Method to execute handler action
+   *
+   * @param input IHandlerInput
+   * @return boolean
+   */
+  handler(input: IHandlerInput): boolean;
 
   /**
    * Method to get controller instance

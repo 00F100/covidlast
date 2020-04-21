@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { IController, IRouter } from '.';
+import { ICommand, IController, IResponse, IRouter } from '.';
 
 export interface IFactory {
 
@@ -19,4 +19,19 @@ export interface IFactory {
    * @return IRouter
    */
   getRouter(): IRouter;
+
+  /**
+   * Method to get Command instance
+   *
+   * @param command string
+   * @return ICommand
+   */
+  getCommand(command: string): ICommand;
+
+  /**
+   * Method to get response of request
+   *
+   * @return IResponse
+   */
+  getResponse(): IResponse;
 }

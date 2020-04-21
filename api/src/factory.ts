@@ -1,9 +1,9 @@
 import sqlite3 from 'better-sqlite3';
 import express from 'express';
-import { IFactory, ModelCase, Router } from '.';
+import { IFactory, ModelCase, Response, Router, ExtractCommand } from '.';
 import { CollectionCases, CollectionDatas } from './collections';
 import { ControllerCases } from './controllers';
-import { IController, IRouter } from './interfaces';
+import { ICommand, IController, IResponse, IRouter } from './interfaces';
 import { ModelData } from './models';
 
 export class Factory implements IFactory {
@@ -52,5 +52,25 @@ export class Factory implements IFactory {
    */
   public getRouter = (): IRouter => {
     return new Router();
+  }
+
+  /**
+   * Method to get command instance
+   *
+   * @param command string
+   * @return ICommand
+   */
+  public getCommand = (command: string): ICommand => {
+    if (command === 'extract') return new ExtractCommand();
+    throw new Error(`Command "${command}" not found`);
+  }
+
+  /**
+   * Method to get response of request
+   *
+   * @return IResponse
+   */
+  public getResponse = (): IResponse => {
+    return new Response();
   }
 }
