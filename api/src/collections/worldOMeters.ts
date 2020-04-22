@@ -1,12 +1,18 @@
 import * as sprintf from 'sprintf-js';
 import request from 'sync-request';
 import { Response } from 'then-request';
+import { IModelHtmlResponse } from '..';
 import { Collection } from '../collection';
 import { Logger } from '../logger';
 import { ICollectionWorldOMeters } from './interfaces';
 
-
 export class CollectionWorldOMeters extends Collection implements ICollectionWorldOMeters {
+
+  /**
+   * Data of colllection
+   * @param IModelHtmlResponse[]
+   */
+  protected _data: IModelHtmlResponse[] = [];
 
   /**
    * Method to construct instance of Collection World O Meters
@@ -19,7 +25,8 @@ export class CollectionWorldOMeters extends Collection implements ICollectionWor
   public constructor(
     private _host: string,
     private _method: string,
-    private _path: string
+    private _path: string,
+    private _factoryModelHtmlResponse: () => IModelHtmlResponse
   ) {
     super();
   }
@@ -31,33 +38,17 @@ export class CollectionWorldOMeters extends Collection implements ICollectionWor
    * @return ICollectionWorldOMeters
    */
   public getByCountryAlias = (alias: string): ICollectionWorldOMeters => {
-
-    const {
-      EXTRACT_TARGET_HOSTNAME,
-      EXTRACT_TARGET_METHOD,
-      EXTRACT_TARGET_PATH
-    } = process.env;
-
-    Logger.get().debug('Get data from World O Meters', {
-      hostname: EXTRACT_TARGET_HOSTNAME,
-      method: EXTRACT_TARGET_METHOD,
-      path: EXTRACT_TARGET_PATH
-    });
-
     const {
       body,
-      statusCode
+      statusCode,
+      headers
     } = this.request([ alias ]);
 
     Logger.get().debug(`Request to World O Meters status code "${statusCode}"`);
 
-    const bodyString = body.toString();
-    
-    // const content = bodyString.match(/coronavirus-cases-linear[\'\",\s{a-zA-Z0-9\(\)\[\]:#}]+;/g);
-    // let json = content[0].replace('coronavirus-cases-linear\', ', '').slice(0, -2);
-    // json = json.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
-    // json = json.replace(/'/g, '"');
-    // const obj = JSON.parse(json);
+    if (+statusCode >= 200 && +statusCode < 300) {
+      this.populateModel(this._factoryModelHtmlResponse, { headers, statusCode, html: body.toString() }, this._data);
+    }
 
     return this;
   }
@@ -69,6 +60,23 @@ export class CollectionWorldOMeters extends Collection implements ICollectionWor
    * @return Response
    */
   private request = (params: string[]): Response => {
-    if (this._method === 'GET') return request('GET', `${this._host}${sprintf.vsprintf(this._path, params)}`);
+    const url: string = `${this._host}${sprintf.vsprintf(this._path, params)}`;
+    const payload = {
+      url,
+      hostname: this._host,
+      method: this._method
+    };
+
+    Logger.get().debug('Get data from World O Meters', payload);
+    
+    try {
+      const response = request('GET', url);
+      Logger.get().debug('Success on request World O Meters', payload);
+      
+      return response;
+    } catch (err) {
+      Logger.get().fatal('Error on request World O Meters', payload);
+      throw err;
+    }
   }
 }

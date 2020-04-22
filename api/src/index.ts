@@ -5,6 +5,7 @@ export * from './command';
 export * from './commands';
 export * from './controller';
 export * from './factory';
+export * from './helpers';
 export * from './interfaces';
 export * from './logger';
 export * from './model';

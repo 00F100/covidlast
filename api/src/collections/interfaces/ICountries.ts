@@ -7,7 +7,7 @@ export interface ICollectionCountries extends ICollection {
    * Method to get country by id
    *
    * @param id number
-   * @return IModelCountry
+   * @return ICollectionCountries
    */
-  getById(id: number): IModelCountry;
+  getById(id: number): ICollectionCountries;
 }

@@ -4,6 +4,7 @@ export * from './ICommand';
 export * from './IController';
 export * from './IFactory';
 export * from './IHandlerInput';
+export * from './IHelper';
 export * from './ILogger';
 export * from './IModel';
 export * from './IResponse';

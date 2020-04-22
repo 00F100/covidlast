@@ -1,11 +1,23 @@
 import * as sqlite3 from 'better-sqlite3';
-import { Collection } from '../collection';
-import { ICollectionCountries } from './interfaces';
-import { IModelCountry } from '../models';
 import { Logger } from '..';
+import { Collection } from '../collection';
+import { IModelCountry } from '../models';
+import { ICollectionCountries } from './interfaces';
 
 export class CollectionCountries extends Collection implements ICollectionCountries {
 
+  /**
+   * Data of colllection
+   * @param IModelCountry[]
+   */
+  protected _data: IModelCountry[] = [];
+
+  /**
+   * Method to construct instance of Collection Countries
+   *
+   * @param _databaseSQLite3 sqlite3.Database
+   * @param _factoryModelCountry () => IModelCountry
+   */
   public constructor(
     private _databaseSQLite3: sqlite3.Database,
     private _factoryModelCountry: () => IModelCountry
@@ -17,9 +29,9 @@ export class CollectionCountries extends Collection implements ICollectionCountr
    * Method to get country by id
    *
    * @param id number
-   * @return IModelCountry
+   * @return ICollectionCountries
    */
-  public getById = (id: number): IModelCountry => {
+  public getById = (id: number): ICollectionCountries => {
     
     Logger.get().debug(`Find country "${id}" in datasource`);
 
@@ -38,9 +50,10 @@ export class CollectionCountries extends Collection implements ICollectionCountr
       throw new Error(`Country "${id}" not found!`);
     }
 
-    const model = this._factoryModelCountry();
-    model.load(country);
-    Logger.get().debug(`Country "${model.id}, ${model.name}" selected!`);
-    return model;
+    this.populateModel(this._factoryModelCountry, country, this._data);
+
+    Logger.get().debug(`Country "${country.id}, ${country.name}" selected!`);
+    
+    return this;
   }
 }

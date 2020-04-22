@@ -1,11 +1,12 @@
 import sqlite3 from 'better-sqlite3';
 import express from 'express';
-import { IFactory, ModelCase, Response, Router, ExtractCommand } from '.';
-import { CollectionCases, CollectionDatas, CollectionCountries } from './collections';
-import { ControllerCases } from './controllers';
-import { ICommand, IController, IResponse, IRouter } from './interfaces';
-import { ModelData, ModelCountry } from './models';
+import { ExtractCommand, IFactory, ModelCase, Response, Router } from '.';
+import { CollectionCases, CollectionCountries, CollectionDatas } from './collections';
 import { CollectionWorldOMeters } from './collections/worldOMeters';
+import { ControllerCases } from './controllers';
+import { HelperRegex } from './helpers';
+import { ICommand, IController, IResponse, IRouter } from './interfaces';
+import { ModelCountry, ModelData, ModelHtmlResponse, ModelRegexResponse } from './models';
 
 export class Factory implements IFactory {
 
@@ -79,8 +80,11 @@ export class Factory implements IFactory {
       new CollectionWorldOMeters(
         EXTRACT_TARGET_HOSTNAME,
         EXTRACT_TARGET_METHOD,
-        EXTRACT_TARGET_PATH
-      )
+        EXTRACT_TARGET_PATH,
+        () => { return new ModelHtmlResponse() }
+      ),
+      new HelperRegex(),
+      () => { return new ModelRegexResponse() }
     );
     throw new Error(`Command "${command}" not found`);
   }
