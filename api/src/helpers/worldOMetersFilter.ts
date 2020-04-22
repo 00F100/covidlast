@@ -1,5 +1,5 @@
 import { IHelperRegex } from '.';
-import { IModelRegexResponse } from '..';
+import { IModelRegexResponse, Logger } from '..';
 import { Helper } from '../helper';
 
 export class HelperWorldOMetersFilter extends Helper implements IHelperRegex {
@@ -13,17 +13,25 @@ export class HelperWorldOMetersFilter extends Helper implements IHelperRegex {
    */
   public apply = (input: string, output: () => IModelRegexResponse): IModelRegexResponse => {
 
+    Logger.get().debug('HTML input to filter', input);
     const match = this.matchBlockChart(input);
+    
+    Logger.get().debug('HTML input to clean', match);
     const clean = this.clean(match);
+    
+    Logger.get().debug('HTML input to fixJSON', clean);
     const json = this.fixJson(clean);
 
+    Logger.get().debug('HTML input before object', json);
     const obj = JSON.parse(json);
+    Logger.get().debug('HTML input after object', obj);
 
     const model = output();
-
     model.load({ days: obj.xAxis.categories, data: obj.series.find(Boolean).data});
 
+    Logger.get().debug('Model before fix date', model);
     this.fixDate(model);
+    Logger.get().debug('Model after fix date', model);
 
     return model;
   }
