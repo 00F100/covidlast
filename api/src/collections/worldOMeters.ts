@@ -1,19 +1,36 @@
-import * as sqlite3 from 'better-sqlite3';
 import * as sprintf from 'sprintf-js';
 import request from 'sync-request';
+import { Response } from 'then-request';
 import { Collection } from '../collection';
-import { ICollectionWorldOMeters } from './interfaces';
 import { Logger } from '../logger';
+import { ICollectionWorldOMeters } from './interfaces';
+
 
 export class CollectionWorldOMeters extends Collection implements ICollectionWorldOMeters {
 
+  /**
+   * Method to construct instance of Collection World O Meters
+   *
+   * @param _host string
+   * @param _method string
+   * @param _path string
+   * @return void
+   */
   public constructor(
-    private _databaseSQLite3: sqlite3.Database,
+    private _host: string,
+    private _method: string,
+    private _path: string
   ) {
     super();
   }
 
-  public getByCountryId = (id: number): ICollectionWorldOMeters => {
+  /**
+   * Method to get data from World O Meters by Country alias
+   *
+   * @param alias string
+   * @return ICollectionWorldOMeters
+   */
+  public getByCountryAlias = (alias: string): ICollectionWorldOMeters => {
 
     const {
       EXTRACT_TARGET_HOSTNAME,
@@ -21,25 +38,37 @@ export class CollectionWorldOMeters extends Collection implements ICollectionWor
       EXTRACT_TARGET_PATH
     } = process.env;
 
-    Logger.get().debug(`Try find country in datasource on id "${id}"`);
-
-    const rows = this._databaseSQLite3.prepare(`SELECT
-        c.alias
-      FROM countries AS c
-      WHERE c.id = ?
-      ORDER BY c.name ASC`).all(id);
-    rows.map(row => {
-      Logger.get().debug('Get country in datasource, get data from World O Meters', row);
-      const response = this.request(EXTRACT_TARGET_METHOD, `${EXTRACT_TARGET_HOSTNAME}${sprintf.vsprintf(EXTRACT_TARGET_PATH, [ id ])}`);
-      Logger.get().debug(`Request to World O Meters status code "${response.statusCode}"`);
-      const body = response.getBody().toString();
-      
+    Logger.get().debug('Get data from World O Meters', {
+      hostname: EXTRACT_TARGET_HOSTNAME,
+      method: EXTRACT_TARGET_METHOD,
+      path: EXTRACT_TARGET_PATH
     });
+
+    const {
+      body,
+      statusCode
+    } = this.request([ alias ]);
+
+    Logger.get().debug(`Request to World O Meters status code "${statusCode}"`);
+
+    const bodyString = body.toString();
+    
+    // const content = bodyString.match(/coronavirus-cases-linear[\'\",\s{a-zA-Z0-9\(\)\[\]:#}]+;/g);
+    // let json = content[0].replace('coronavirus-cases-linear\', ', '').slice(0, -2);
+    // json = json.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
+    // json = json.replace(/'/g, '"');
+    // const obj = JSON.parse(json);
 
     return this;
   }
 
-  private request = (method: string, url: string) => {
-    if (method === 'GET') return request('GET', url);
+  /**
+   * Method to get data from request to World O Meters
+   *
+   * @param params string[]
+   * @return Response
+   */
+  private request = (params: string[]): Response => {
+    if (this._method === 'GET') return request('GET', `${this._host}${sprintf.vsprintf(this._path, params)}`);
   }
 }

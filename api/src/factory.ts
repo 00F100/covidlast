@@ -1,13 +1,19 @@
 import sqlite3 from 'better-sqlite3';
 import express from 'express';
 import { IFactory, ModelCase, Response, Router, ExtractCommand } from '.';
-import { CollectionCases, CollectionDatas } from './collections';
+import { CollectionCases, CollectionDatas, CollectionCountries } from './collections';
 import { ControllerCases } from './controllers';
 import { ICommand, IController, IResponse, IRouter } from './interfaces';
-import { ModelData } from './models';
+import { ModelData, ModelCountry } from './models';
 import { CollectionWorldOMeters } from './collections/worldOMeters';
 
 export class Factory implements IFactory {
+
+  /**
+   * SQLite connection
+   * @param sqlite3.Database
+   */
+  private _sqliteConnection: sqlite3.Database = null;
 
   /**
    * Method to create instance of controller
@@ -32,12 +38,8 @@ export class Factory implements IFactory {
    */
   public getCollection = (name: string): any => {
 
-    const {
-      DATASOURCE_lOCATION
-    } = process.env;
-
     if (name === 'datas') return new CollectionDatas(
-      sqlite3(DATASOURCE_lOCATION || ':memory:'),
+      this.getSQLiteConnection(),
       () => { return new ModelData() }
     );
     if (name === 'cases') return new CollectionCases(
@@ -64,12 +66,20 @@ export class Factory implements IFactory {
   public getCommand = (command: string): ICommand => {
 
     const {
-      DATASOURCE_lOCATION
+      EXTRACT_TARGET_HOSTNAME,
+      EXTRACT_TARGET_METHOD,
+      EXTRACT_TARGET_PATH
     } = process.env;
 
     if (command === 'extract') return new ExtractCommand(
+      new CollectionCountries(
+        this.getSQLiteConnection(),
+        () => { return new ModelCountry() }
+      ),
       new CollectionWorldOMeters(
-        sqlite3(DATASOURCE_lOCATION || ':memory:')
+        EXTRACT_TARGET_HOSTNAME,
+        EXTRACT_TARGET_METHOD,
+        EXTRACT_TARGET_PATH
       )
     );
     throw new Error(`Command "${command}" not found`);
@@ -82,5 +92,23 @@ export class Factory implements IFactory {
    */
   public getResponse = (): IResponse => {
     return new Response();
+  }
+
+  /**
+   * Method to get SQLite connection
+   *
+   * @return sqlite3.Database
+   */
+  private getSQLiteConnection = (): sqlite3.Database => {
+
+    const {
+      DATASOURCE_lOCATION
+    } = process.env;
+
+    if (!this._sqliteConnection) {
+      this._sqliteConnection = sqlite3(DATASOURCE_lOCATION || ':memory:');
+    }
+
+    return this._sqliteConnection;
   }
 }

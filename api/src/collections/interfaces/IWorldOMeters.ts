@@ -3,10 +3,10 @@ import { ICollection } from '../../interfaces';
 export interface ICollectionWorldOMeters extends ICollection {
 
   /**
-   * Method to get data from World O Meters by Country
+   * Method to get data from World O Meters by Country alias
    *
-   * @param id number
+   * @param alias string
    * @return ICollectionWorldOMeters
    */
-  getByCountryId(id: number): ICollectionWorldOMeters;
+  getByCountryAlias(alias: string): ICollectionWorldOMeters;
 }

@@ -13,4 +13,22 @@ export interface IModelCountry extends IModel {
    * @param string
    */
   name?: string;
+
+  /**
+   * Alias of country
+   * @param string
+   */
+  alias?: string;
+
+  /**
+   * Population of country
+   * @param number
+   */
+  population?: number;
+
+  /**
+   * Color of country in chart
+   * @param string
+   */
+  color?: string;
 }

@@ -1,9 +1,10 @@
 import { Command, IExtractCommand, IHandlerInput, IResponse } from '..';
-import { ICollectionWorldOMeters } from '../collections/interfaces';
+import { ICollectionWorldOMeters, ICollectionCountries } from '../collections/interfaces';
 
 export class ExtractCommand extends Command implements IExtractCommand {
 
   public constructor(
+    private _collectionCountries: ICollectionCountries,
     private _collectionWorldoMeters: ICollectionWorldOMeters
   ) {
     super();
@@ -17,7 +18,8 @@ export class ExtractCommand extends Command implements IExtractCommand {
    * @return void
    */
   public execute = (input: IHandlerInput, response: IResponse): void => {
-    const data = this._collectionWorldoMeters.getByCountryId(input.country.id).getData();
+    const country = this._collectionCountries.getById(input.country.id);
+    const casesObject = this._collectionWorldoMeters.getByCountryAlias(country.alias).getData();
     response.send('extraction finish!');
   }
 }
