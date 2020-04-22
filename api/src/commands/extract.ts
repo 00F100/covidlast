@@ -32,7 +32,7 @@ export class ExtractCommand extends Command implements IExtractCommand {
       .getData<IModelHtmlResponse>()
       .find(Boolean);
 
-    const model = this._helperRegex.process<IModelRegexResponse>(worldOMeters.html, this._factoryModelRegexResponse);
+    const model = this._helperRegex.apply(worldOMeters.html, this._factoryModelRegexResponse);
 
     response.send('extraction finish!');
   }

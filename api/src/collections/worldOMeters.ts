@@ -68,11 +68,11 @@ export class CollectionWorldOMeters extends Collection implements ICollectionWor
     };
 
     Logger.get().debug('Get data from World O Meters', payload);
-    
+
     try {
       const response = request('GET', url);
       Logger.get().debug('Success on request World O Meters', payload);
-      
+
       return response;
     } catch (err) {
       Logger.get().fatal('Error on request World O Meters', payload);

@@ -32,7 +32,7 @@ export class CollectionCountries extends Collection implements ICollectionCountr
    * @return ICollectionCountries
    */
   public getById = (id: number): ICollectionCountries => {
-    
+
     Logger.get().debug(`Find country "${id}" in datasource`);
 
     const country = this._databaseSQLite3.prepare(`SELECT
@@ -53,7 +53,7 @@ export class CollectionCountries extends Collection implements ICollectionCountr
     this.populateModel(this._factoryModelCountry, country, this._data);
 
     Logger.get().debug(`Country "${country.id}, ${country.name}" selected!`);
-    
+
     return this;
   }
 }

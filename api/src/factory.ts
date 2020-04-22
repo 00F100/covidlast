@@ -4,7 +4,7 @@ import { ExtractCommand, IFactory, ModelCase, Response, Router } from '.';
 import { CollectionCases, CollectionCountries, CollectionDatas } from './collections';
 import { CollectionWorldOMeters } from './collections/worldOMeters';
 import { ControllerCases } from './controllers';
-import { HelperRegex } from './helpers';
+import { HelperWorldOMetersFilter } from './helpers';
 import { ICommand, IController, IResponse, IRouter } from './interfaces';
 import { ModelCountry, ModelData, ModelHtmlResponse, ModelRegexResponse } from './models';
 
@@ -83,7 +83,7 @@ export class Factory implements IFactory {
         EXTRACT_TARGET_PATH,
         () => { return new ModelHtmlResponse() }
       ),
-      new HelperRegex(),
+      new HelperWorldOMetersFilter(),
       () => { return new ModelRegexResponse() }
     );
     throw new Error(`Command "${command}" not found`);
