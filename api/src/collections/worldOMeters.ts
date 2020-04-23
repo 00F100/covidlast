@@ -71,6 +71,7 @@ export class CollectionWorldOMeters extends Collection implements ICollectionWor
 
     try {
       const response = request('GET', url);
+      Logger.get().info(`Statuscode response of request is "${response.statusCode}"`);
       Logger.get().debug('Success on request World O Meters', payload);
 
       return response;

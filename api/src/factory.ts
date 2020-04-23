@@ -4,8 +4,8 @@ import { ExtractCommand, IFactory, ModelCase, Response, Router } from '.';
 import { CollectionCases, CollectionCountries, CollectionDatas } from './collections';
 import { CollectionWorldOMeters } from './collections/worldOMeters';
 import { ControllerCases } from './controllers';
-import { HelperWorldOMetersFilter } from './helpers';
-import { ICommand, IController, IResponse, IRouter } from './interfaces';
+import { HelperWorldOMetersFilter, IHelperWorldOMetersFilter } from './helpers';
+import { ICommand, IController, IResponse, IRouter, IHelper } from './interfaces';
 import { ModelCountry, ModelData, ModelHtmlResponse, ModelRegexResponse } from './models';
 
 export class Factory implements IFactory {
@@ -15,6 +15,12 @@ export class Factory implements IFactory {
    * @param sqlite3.Database
    */
   private _sqliteConnection: sqlite3.Database = null;
+
+  /**
+   * List of instances singleton
+   * @param any[]
+   */
+  private _singleton: any[] = [];
 
   /**
    * Method to create instance of controller
@@ -39,12 +45,28 @@ export class Factory implements IFactory {
    */
   public getCollection = (name: string): any => {
 
+    const {
+      EXTRACT_TARGET_HOSTNAME,
+      EXTRACT_TARGET_METHOD,
+      EXTRACT_TARGET_PATH
+    } = process.env;
+
     if (name === 'datas') return new CollectionDatas(
       this.getSQLiteConnection(),
       () => { return new ModelData() }
     );
     if (name === 'cases') return new CollectionCases(
       () => { return new ModelCase() }
+    );
+    if (name === 'countries') return new CollectionCountries(
+      this.getSQLiteConnection(),
+      () => { return new ModelCountry() }
+    );
+    if (name === 'worldometers') return new CollectionWorldOMeters(
+      EXTRACT_TARGET_HOSTNAME,
+      EXTRACT_TARGET_METHOD,
+      EXTRACT_TARGET_PATH,
+      () => { return new ModelHtmlResponse() }
     );
     throw new Error(`Collection "${name}" not found`);
   }
@@ -66,24 +88,11 @@ export class Factory implements IFactory {
    */
   public getCommand = (command: string): ICommand => {
 
-    const {
-      EXTRACT_TARGET_HOSTNAME,
-      EXTRACT_TARGET_METHOD,
-      EXTRACT_TARGET_PATH
-    } = process.env;
-
     if (command === 'extract') return new ExtractCommand(
-      new CollectionCountries(
-        this.getSQLiteConnection(),
-        () => { return new ModelCountry() }
-      ),
-      new CollectionWorldOMeters(
-        EXTRACT_TARGET_HOSTNAME,
-        EXTRACT_TARGET_METHOD,
-        EXTRACT_TARGET_PATH,
-        () => { return new ModelHtmlResponse() }
-      ),
-      new HelperWorldOMetersFilter(),
+      this.getCollection('countries'),
+      this.getCollection('worldometers'),
+      this.getCollection('datas'),
+      this.getHelper<IHelperWorldOMetersFilter>('worldometersfilter'),
       () => { return new ModelRegexResponse() }
     );
     throw new Error(`Command "${command}" not found`);
@@ -96,6 +105,19 @@ export class Factory implements IFactory {
    */
   public getResponse = (): IResponse => {
     return new Response();
+  }
+
+  /**
+   * Method to get helper
+   *
+   * @param name string
+   * @return T
+   */
+  private getHelper = <T> (name: string): T => {
+    if (!this._singleton[name]) {
+      if (name === 'worldometersfilter') this._singleton[name] = new HelperWorldOMetersFilter();
+    }
+    return this._singleton[name];
   }
 
   /**

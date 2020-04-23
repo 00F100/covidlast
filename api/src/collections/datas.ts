@@ -1,7 +1,8 @@
 import * as sqlite3 from 'better-sqlite3';
 import { Collection } from '../collection';
-import { IModelData } from '../models';
-import { ICollectionsDatas } from './interfaces';
+import { IModelCountry, IModelData, IModelRegexResponse } from '../models';
+import { ICollectionsDatas, ICollectionIntegrationResult } from './interfaces';
+import { Logger } from '../logger';
 
 export class CollectionDatas extends Collection implements ICollectionsDatas {
 
@@ -10,6 +11,13 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
    * @param IModelData[]
    */
   protected _data: IModelData[] = [];
+
+  protected _integrationResult: ICollectionIntegrationResult = {
+    total: 0,
+    success: 0,
+    error: 0,
+    duplicate: 0
+  };
 
   /**
    * Method to construct instance of CollectionDatas
@@ -47,6 +55,55 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
     rows.map(row => {
       this.populateModel(this._factoryModelData, row, this._data);
     });
+    return this;
+  }
+
+  /**
+   * Method to create datas by regex response
+   *
+   * @param modelCountry IModelCountry
+   * @param modelWorldOMeters IModelRegexResponse
+   * @return ICollectionsDatas
+   */
+  public createFromIntegration = (modelCountry: IModelCountry, modelWorldOMeters: IModelRegexResponse): ICollectionsDatas => {
+    if (modelWorldOMeters.days.length > 0) {
+
+      const total = () => this._integrationResult.total++;
+      const success = () => this._integrationResult.success++;
+      const error = () => this._integrationResult.error++;
+      const duplicate = () => this._integrationResult.duplicate++;
+      
+      modelWorldOMeters.days.map((day, index) => {
+        total();
+        
+        const isUnique = this._databaseSQLite3
+          .prepare(`SELECT
+              COUNT(d.id) AS total
+            FROM data AS d
+            WHERE idCountry = ? AND timestamp = ?`)
+          .get(modelCountry.id, +day);
+
+        if (isUnique.total === 0) {
+
+          const cases = modelWorldOMeters.data[index];
+
+          try {
+            this._databaseSQLite3
+              .prepare(`INSERT INTO data (idCountry, cases, deaths, timestamp) VALUES (?, ?, ?, ?)`)
+              .run(modelCountry.id, cases, 0, day);
+
+            success();
+          } catch (err) {
+            error();
+          }
+        } else {
+          duplicate();
+        }
+      });
+
+      Logger.get().info('Integration datasource result', this._integrationResult);
+    }
+    
     return this;
   }
 }

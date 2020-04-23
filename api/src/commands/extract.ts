@@ -1,14 +1,24 @@
 import { Command, IExtractCommand, IHandlerInput, IResponse } from '..';
-import { ICollectionCountries, ICollectionWorldOMeters } from '../collections/interfaces';
-import { IHelperRegex } from '../helpers';
+import { ICollectionCountries, ICollectionWorldOMeters, ICollectionsDatas } from '../collections/interfaces';
+import { IHelperWorldOMetersFilter } from '../helpers';
 import { IModelCountry, IModelHtmlResponse, IModelRegexResponse } from '../models';
 
 export class ExtractCommand extends Command implements IExtractCommand {
 
+  /**
+   * Method to create instance of Extract command
+   *
+   * @param _collectionCountries ICollectionCountries
+   * @param _collectionWorldoMeters ICollectionWorldOMeters
+   * @param _collectionDatas ICollectionsDatas
+   * @param _helperWorldOMetersFilter IHelperWorldOMetersFilter
+   * @param _factoryModelRegexResponse () => IModelRegexResponse
+   */
   public constructor(
     private _collectionCountries: ICollectionCountries,
     private _collectionWorldoMeters: ICollectionWorldOMeters,
-    private _helperRegex: IHelperRegex,
+    private _collectionDatas: ICollectionsDatas,
+    private _helperWorldOMetersFilter: IHelperWorldOMetersFilter,
     private _factoryModelRegexResponse: () => IModelRegexResponse
   ) {
     super();
@@ -22,18 +32,19 @@ export class ExtractCommand extends Command implements IExtractCommand {
    * @return void
    */
   public execute = (input: IHandlerInput, response: IResponse): void => {
-    const country = this._collectionCountries
+    const modelCountry = this._collectionCountries
       .getById(input.country.id)
       .getData<IModelCountry>()
       .find(Boolean);
 
-    const worldOMeters = this._collectionWorldoMeters
-      .getByCountryAlias(country.alias)
+    const collectionWorldOMeters = this._collectionWorldoMeters
+      .getByCountryAlias(modelCountry.alias)
       .getData<IModelHtmlResponse>()
       .find(Boolean);
-
-    const model = this._helperRegex.apply(worldOMeters.html, this._factoryModelRegexResponse);
-
+    
+    const modelWorldOMeters = this._factoryModelRegexResponse();
+    this._helperWorldOMetersFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    this._collectionDatas.createFromIntegration(modelCountry, modelWorldOMeters);
     response.send('extraction finish!');
   }
 }

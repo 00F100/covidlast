@@ -15,7 +15,10 @@
       "args": [
         "brazil",
         "1"
-      ]
+      ],
+      "envFile": "${workspaceFolder}/api/.env",
+      "console": "internalConsole", 
+      "outputCapture": "std"
     },
     {
       "type": "node",
@@ -25,7 +28,9 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}/api/poc/server.js",
-      "envFile": "${workspaceFolder}/api/.env"
+      "envFile": "${workspaceFolder}/api/.env",
+      "console": "internalConsole", 
+      "outputCapture": "std"
     },
     {
       "name": "API Web server (TypeScript)",
@@ -38,26 +43,13 @@
       "cwd": "${workspaceRoot}/api/src",
       "protocol": "inspector",
       "envFile": "${workspaceFolder}/api/.env", 
-      "outputCapture": "std"
-    },
-    {
-      "name": "API Web server (NodeJS)",
-      "type": "node",
-      "request": "launch",
-      // "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
-      "args": [
-        "${workspaceRoot}/api/dist/bootstrap/web.js"
-      ],
-      "cwd": "${workspaceRoot}/api/dist",
-      "protocol": "inspector",
-      "envFile": "${workspaceFolder}/api/.env", 
+      "console": "internalConsole", 
       "outputCapture": "std"
     },
     {
       "name": "Handle (TypeScript)",
       "type": "node",
       "request": "launch",
-      "outputCapture": "std",
       "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
       "args": [
         "${workspaceRoot}/api/src/bootstrap/handler",
