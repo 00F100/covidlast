@@ -1,9 +1,7 @@
 import express from 'express';
 import * as fs from 'fs';
 import Log4js from 'log4js';
-import { IApplication, IFactory, Logger } from '.';
-import { Factory } from './factory';
-import { ICollection, IRoute, IRouter, IHandlerInput, ICommand } from './interfaces';
+import { Factory, IApplication, ICollection, ICommand, IFactory, IHandlerInput, IRoute, IRouter, Logger } from '.';
 
 export class Application implements IApplication {
 

@@ -1,4 +1,4 @@
-import { IModel } from '../../interfaces';
+import { IModel } from '../..';
 
 export interface IModelCase extends IModel {
 

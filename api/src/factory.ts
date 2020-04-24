@@ -1,12 +1,12 @@
 import sqlite3 from 'better-sqlite3';
 import express from 'express';
-import { ExtractCommand, IFactory, ModelCase, Response, Router } from '.';
-import { CollectionCases, CollectionCountries, CollectionDatas } from './collections';
-import { CollectionWorldOMeters } from './collections/worldOMeters';
+import { IFactory, Response, Router } from '.';
+import { CollectionCases, CollectionCountries, CollectionDatas, CollectionWorldOMeters } from './collections';
+import { ExtractCommand } from './commands';
 import { ControllerCases } from './controllers';
 import { HelperWorldOMetersFilter, IHelperWorldOMetersFilter } from './helpers';
-import { ICommand, IController, IResponse, IRouter, IHelper } from './interfaces';
-import { ModelCountry, ModelData, ModelHtmlResponse, ModelRegexResponse } from './models';
+import { ICommand, IController, IResponse, IRouter } from './interfaces';
+import { ModelCase, ModelCountry, ModelData, ModelHtmlResponse, ModelRegexResponse } from './models';
 
 export class Factory implements IFactory {
 

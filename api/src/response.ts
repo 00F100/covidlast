@@ -1,4 +1,4 @@
-import { IResponse } from './interfaces';
+import { IResponse } from '.';
 
 export class Response implements IResponse {
 

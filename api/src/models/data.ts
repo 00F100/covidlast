@@ -1,5 +1,5 @@
+import { IModelData } from '..';
 import { Model } from '../model';
-import { IModelData } from './interfaces';
 
 export class ModelData extends Model implements IModelData {
 

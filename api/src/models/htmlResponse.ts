@@ -1,6 +1,6 @@
-import { Model } from '../model';
-import { IModelHtmlResponse } from './interfaces';
 import { IncomingHttpHeaders } from 'http';
+import { IModelHtmlResponse } from '..';
+import { Model } from '../model';
 
 export class ModelHtmlResponse extends Model implements IModelHtmlResponse {
 

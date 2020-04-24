@@ -1,8 +1,6 @@
 import * as sqlite3 from 'better-sqlite3';
+import { ICollectionIntegrationResult, ICollectionsDatas, IModelCountry, IModelData, IModelRegexResponse, Logger } from '..';
 import { Collection } from '../collection';
-import { IModelCountry, IModelData, IModelRegexResponse } from '../models';
-import { ICollectionsDatas, ICollectionIntegrationResult } from './interfaces';
-import { Logger } from '../logger';
 
 export class CollectionDatas extends Collection implements ICollectionsDatas {
 
@@ -12,6 +10,10 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
    */
   protected _data: IModelData[] = [];
 
+  /**
+   * Integration result data
+   * @param ICollectionIntegrationResult
+   */
   protected _integrationResult: ICollectionIntegrationResult = {
     total: 0,
     success: 0,
@@ -59,51 +61,87 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
   }
 
   /**
-   * Method to create datas by regex response
+   * Method to create datas after regex process HTML
    *
    * @param modelCountry IModelCountry
    * @param modelWorldOMeters IModelRegexResponse
    * @return ICollectionsDatas
    */
-  public createFromIntegration = (modelCountry: IModelCountry, modelWorldOMeters: IModelRegexResponse): ICollectionsDatas => {
+  public createCaseFromIntegration = (modelCountry: IModelCountry, modelWorldOMeters: IModelRegexResponse): ICollectionsDatas => {
     if (modelWorldOMeters.days.length > 0) {
 
-      const total = () => this._integrationResult.total++;
-      const success = () => this._integrationResult.success++;
-      const error = () => this._integrationResult.error++;
-      const duplicate = () => this._integrationResult.duplicate++;
-      
+      const {
+        total,
+        success,
+        error,
+        duplicate
+      } = this.getIntegrationAccounting();
+
       modelWorldOMeters.days.map((day, index) => {
         total();
-        
-        const isUnique = this._databaseSQLite3
-          .prepare(`SELECT
-              COUNT(d.id) AS total
-            FROM data AS d
-            WHERE idCountry = ? AND timestamp = ?`)
-          .get(modelCountry.id, +day);
-
-        if (isUnique.total === 0) {
-
+        if (this.isUniqueDataByCountryAndTimestamp(modelCountry.id, +day)) {
           const cases = modelWorldOMeters.data[index];
-
           try {
-            this._databaseSQLite3
-              .prepare(`INSERT INTO data (idCountry, cases, deaths, timestamp) VALUES (?, ?, ?, ?)`)
-              .run(modelCountry.id, cases, 0, day);
-
+            this.insert(modelCountry.id, cases, 0, +day);
+            Logger.get().debug('Success try INSERT', {cases, day, country: modelCountry, deaths: 0});
             success();
           } catch (err) {
+            Logger.get().error('Error on try INSERT', {err, cases, day, country: modelCountry, deaths: 0});
             error();
           }
         } else {
+          Logger.get().debug('Duplicate on try INSERT', {day, country: modelCountry});
           duplicate();
         }
       });
-
       Logger.get().info('Integration datasource result', this._integrationResult);
     }
-    
+
     return this;
+  }
+
+  /**
+   * Method to check if data is unique
+   *
+   * @param idCountry number
+   * @param timestamp number
+   * @return boolean
+   */
+  private isUniqueDataByCountryAndTimestamp = (idCountry: number, timestamp: number): boolean => {
+    return this._databaseSQLite3
+      .prepare(`SELECT
+          COUNT(d.id) AS total
+        FROM data AS d
+        WHERE idCountry = ? AND timestamp = ?`)
+      .get(idCountry, timestamp).total === 0;
+  }
+
+  /**
+   * Method to insert data
+   *
+   * @param idCountry number
+   * @param cases number
+   * @param deaths number
+   * @param timestamp number
+   * @return sqlite3.RunResult
+   */
+  private insert = (idCountry: number, cases: number, deaths: number, timestamp: number): sqlite3.RunResult => {
+    return this._databaseSQLite3
+      .prepare(`INSERT INTO data (idCountry, cases, deaths, timestamp) VALUES (?, ?, ?, ?)`)
+      .run(idCountry, cases, deaths, timestamp);
+  }
+
+  /**
+   * Method to accounting integration result
+   *
+   * @return [index: string] : () => number
+   */
+  private getIntegrationAccounting = (): { [index: string] : () => number } => {
+    return {
+      total: () => this._integrationResult.total++,
+      success: () => this._integrationResult.success++,
+      error: () => this._integrationResult.error++,
+      duplicate: () => this._integrationResult.duplicate++,
+    };
   }
 }

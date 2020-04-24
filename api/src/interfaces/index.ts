@@ -2,6 +2,7 @@ export * from './IApplication';
 export * from './ICollection';
 export * from './ICommand';
 export * from './IController';
+export * from './IDatasource';
 export * from './IFactory';
 export * from './IHandlerInput';
 export * from './IHelper';

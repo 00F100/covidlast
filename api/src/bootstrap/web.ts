@@ -1,7 +1,5 @@
 import { config as dotenv } from 'dotenv';
-import { Logger } from '..';
-import { Application } from '../application';
-import { IApplication } from '../interfaces';
+import { Application, IApplication, Logger } from '..';
 
 dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false

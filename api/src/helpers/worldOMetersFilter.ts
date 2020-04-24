@@ -1,6 +1,6 @@
+import moment from 'moment';
 import { IHelperWorldOMetersFilter, IModelRegexResponse, Logger } from '..';
 import { Helper } from '../helper';
-import moment from 'moment';
 
 export class HelperWorldOMetersFilter extends Helper implements IHelperWorldOMetersFilter {
 

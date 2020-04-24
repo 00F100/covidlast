@@ -1,5 +1,5 @@
+import { IModelCase } from '..';
 import { Model } from '../model';
-import { IModelCase } from './interfaces';
 
 export class ModelCase extends Model implements IModelCase {
 

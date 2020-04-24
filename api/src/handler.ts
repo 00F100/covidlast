@@ -1,16 +1,24 @@
 import { config as dotenv } from 'dotenv';
-import { Logger } from '.';
-import { Application } from './application';
-import { IApplication, IHandlerInput } from './interfaces';
+import { Application, IApplication, IHandlerInput, Logger } from '.';
 
 dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
 });
 
-export const handler = (input: IHandlerInput, context: any, callback: any) => {
+/**
+ * Function to execute handler from lambda execution
+ *
+ * @param input IHandlerInput
+ * @param context any
+ * @param callback any
+ * @return void
+ */
+export const handler = (input: IHandlerInput, context: any, callback: any): void => {
 
+  // get application
   const app: IApplication = Application.get();
 
+  // execute handler
   if (app.handler(input)) {
     Logger.get().info('Handler has success!');
   } else {

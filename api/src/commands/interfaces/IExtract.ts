@@ -1,4 +1,4 @@
-import { ICommand, IHandlerInput, IResponse } from '../../interfaces';
+import { ICommand, IHandlerInput, IResponse } from '../..';
 
 export interface IExtractCommand extends ICommand {
 

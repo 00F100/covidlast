@@ -1,4 +1,4 @@
-import { ICollection, IModel } from './interfaces';
+import { ICollection, IModel } from '.';
 
 export class Collection implements ICollection {
 

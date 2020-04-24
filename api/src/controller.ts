@@ -1,4 +1,4 @@
-import { IController, ICollection } from './interfaces';
+import { IController, ICollection } from '.';
 
 export class Controller implements IController {
 

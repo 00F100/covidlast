@@ -1,4 +1,4 @@
-import { IModelCountry } from '../models';
+import { IModelCountry } from '..';
 
 export interface IHandlerInput {
 

@@ -1,5 +1,4 @@
-import { ICollection } from '../../interfaces';
-import { IModelCountry } from '../../models';
+import { ICollection } from '../..';
 
 export interface ICollectionCountries extends ICollection {
 

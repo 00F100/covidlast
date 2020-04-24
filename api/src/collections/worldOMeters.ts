@@ -76,7 +76,10 @@ export class CollectionWorldOMeters extends Collection implements ICollectionWor
 
       return response;
     } catch (err) {
-      Logger.get().fatal('Error on request World O Meters', payload);
+      Logger.get().fatal('Error on request World O Meters', {
+        err,
+        payload
+      });
       throw err;
     }
   }

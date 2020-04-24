@@ -1,7 +1,6 @@
 import * as express from 'express';
-import { ICollectionsCases, ICollectionsDatas } from '../collections/interfaces';
+import { ICollectionsCases, ICollectionsDatas, IControllerCases } from '..';
 import { Controller } from '../controller';
-import { IControllerCases } from './interfaces';
 
 export class ControllerCases extends Controller implements IControllerCases {
 

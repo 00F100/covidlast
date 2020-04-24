@@ -1,4 +1,4 @@
-import { ICollection } from '../../interfaces';
+import { ICollection } from '../..';
 
 export interface ICollectionWorldOMeters extends ICollection {
 

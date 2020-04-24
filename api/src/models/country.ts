@@ -1,5 +1,5 @@
-import { Model } from "../model";
-import { IModelCountry } from "./interfaces";
+import { IModelCountry } from '..';
+import { Model } from '../model';
 
 export class ModelCountry extends Model implements IModelCountry {
 

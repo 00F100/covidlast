@@ -1,6 +1,5 @@
+import { ICollectionsCases, ICollectionsDatas, IModelCase, IModelData } from '..';
 import { Collection } from '../collection';
-import { IModelCase, IModelData } from '../models';
-import { ICollectionsCases, ICollectionsDatas } from './interfaces';
 
 export class CollectionCases extends Collection implements ICollectionsCases {
 
@@ -30,7 +29,7 @@ export class CollectionCases extends Collection implements ICollectionsCases {
    */
   public getByCountry = (collectionDatas: ICollectionsDatas): ICollectionsCases => {
     const datas = collectionDatas.getData<IModelData>();
-    datas.map((data: IModelData) => {
+    datas.map((data: IModelData, index: number) => {
       const model = this.getModelByCountryId(data);
       model.data.push([data.timestamp, data.cases]);
     });

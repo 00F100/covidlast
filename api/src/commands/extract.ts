@@ -1,7 +1,17 @@
-import { Command, IExtractCommand, IHandlerInput, IResponse } from '..';
-import { ICollectionCountries, ICollectionWorldOMeters, ICollectionsDatas } from '../collections/interfaces';
-import { IHelperWorldOMetersFilter } from '../helpers';
-import { IModelCountry, IModelHtmlResponse, IModelRegexResponse } from '../models';
+import {
+  Command,
+  ICollectionCountries,
+  ICollectionsDatas,
+  ICollectionWorldOMeters,
+  IExtractCommand,
+  IHandlerInput,
+  IHelperWorldOMetersFilter,
+  IModelCountry,
+  IModelHtmlResponse,
+  IModelRegexResponse,
+  IResponse,
+  Logger
+} from '..';
 
 export class ExtractCommand extends Command implements IExtractCommand {
 
@@ -44,7 +54,8 @@ export class ExtractCommand extends Command implements IExtractCommand {
     
     const modelWorldOMeters = this._factoryModelRegexResponse();
     this._helperWorldOMetersFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
-    this._collectionDatas.createFromIntegration(modelCountry, modelWorldOMeters);
-    response.send('extraction finish!');
+    this._collectionDatas.createCaseFromIntegration(modelCountry, modelWorldOMeters);
+    
+    Logger.get().info('Handler extract finish!');
   }
 }

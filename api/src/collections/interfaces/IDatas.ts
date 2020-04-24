@@ -1,5 +1,4 @@
-import { ICollection } from '../../interfaces';
-import { IModelRegexResponse, IModelCountry } from '../..';
+import { ICollection, IModelCountry, IModelRegexResponse } from '../..';
 
 export interface ICollectionsDatas extends ICollection {
 
@@ -17,9 +16,12 @@ export interface ICollectionsDatas extends ICollection {
    * @param modelWorldOMeters IModelRegexResponse
    * @return ICollectionsDatas
    */
-  createFromIntegration(modelCountry: IModelCountry, modelWorldOMeters: IModelRegexResponse): ICollectionsDatas;
+  createCaseFromIntegration(modelCountry: IModelCountry, modelWorldOMeters: IModelRegexResponse): ICollectionsDatas;
 }
 
+/**
+ * Interface of integration response
+ */
 export interface ICollectionIntegrationResult {
   total: number;
   success: number;

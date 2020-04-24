@@ -1,5 +1,4 @@
-import { ICollectionsCases } from '../../collections/interfaces';
-import { IController } from '../../interfaces';
+import { ICollectionsCases, IController } from '../..';
 
 export interface IControllerCases extends IController {
 

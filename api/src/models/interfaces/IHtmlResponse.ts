@@ -1,5 +1,5 @@
-import { IModel } from '../../interfaces';
 import { IncomingHttpHeaders } from 'http';
+import { IModel } from '../..';
 
 export interface IModelHtmlResponse extends IModel {
 

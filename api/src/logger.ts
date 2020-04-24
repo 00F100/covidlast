@@ -1,5 +1,5 @@
 import log4js from 'log4js';
-import { ILogger } from './interfaces';
+import { ILogger } from '.';
 
 export class Logger implements ILogger {
 
