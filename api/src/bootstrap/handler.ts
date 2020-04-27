@@ -5,7 +5,7 @@ dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
 });
 
-Logger.get().debug('Execute handler from console or visual studio code', process.argv);
+Logger.get().debug('Execute handler from console or visual studio code (bootstrap)', process.argv);
 
 // if not have command, exception...
 if (!process.argv[2]) {

@@ -1,5 +1,5 @@
 import * as sqlite3 from 'better-sqlite3';
-import { ICollectionIntegrationResult, ICollectionsDatas, IModelCountry, IModelData, IModelRegexResponse, Logger } from '..';
+import { ICollectionIntegrationResult, ICollectionsDatas, IModelCountry, IModelData, IModelParseResultIntegration, Logger } from '..';
 import { Collection } from '../collection';
 
 export class CollectionDatas extends Collection implements ICollectionsDatas {
@@ -64,10 +64,10 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
    * Method to create datas after regex process HTML
    *
    * @param modelCountry IModelCountry
-   * @param modelWorldOMeters IModelRegexResponse
+   * @param modelWorldOMeters IModelParseResultIntegration
    * @return ICollectionsDatas
    */
-  public createCaseFromIntegration = (modelCountry: IModelCountry, modelWorldOMeters: IModelRegexResponse): ICollectionsDatas => {
+  public createCaseFromIntegration = (modelCountry: IModelCountry, modelWorldOMeters: IModelParseResultIntegration): ICollectionsDatas => {
     if (modelWorldOMeters.days.length > 0) {
 
       const {
@@ -80,7 +80,7 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
       modelWorldOMeters.days.map((day, index) => {
         total();
         if (this.isUniqueDataByCountryAndTimestamp(modelCountry.id, +day)) {
-          const cases = modelWorldOMeters.data[index];
+          const cases = modelWorldOMeters.cases[index];
           try {
             this.insert(modelCountry.id, cases, 0, +day);
             Logger.get().debug('Success try INSERT', {cases, day, country: modelCountry, deaths: 0});

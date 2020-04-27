@@ -15,6 +15,8 @@ dotenv({
  */
 export const handler = (input: IHandlerInput, context: any, callback: any): void => {
 
+  Logger.get().debug('Execute handler', process.argv);
+
   // get application
   const app: IApplication = Application.get();
 

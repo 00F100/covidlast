@@ -7,7 +7,8 @@
     "lint": "tslint --fix src/**/*.ts --project tsconfig.json --config tslint.json",
     "prebuild": "npm run lint && rm -rf dist",
     "build": "tsc --sourceMap false",
-    "api-develop": "npm run build && env NODE_ENV=development node dist/bootstrap/web.js"
+    "api-develop": "npm run build && env NODE_ENV=development node dist/bootstrap/web.js",
+    "handler-develop": "npm run build && env NODE_ENV=development node dist/bootstrap/handler.js"
   },
   "author": "",
   "license": "ISC",

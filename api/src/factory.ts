@@ -4,9 +4,9 @@ import { IFactory, Response, Router } from '.';
 import { CollectionCases, CollectionCountries, CollectionDatas, CollectionWorldOMeters } from './collections';
 import { ExtractCommand } from './commands';
 import { ControllerCases } from './controllers';
-import { HelperWorldOMetersFilter, IHelperWorldOMetersFilter } from './helpers';
+import { IHelperWorldOMetersCasesFilter, HelperWorldOMetersCasesFilter, HelperWorldOMetersDateFixFilter, IHelperWorldOMetersDateFixFilter, HelperWorldOMetersDeathsFilter, IHelperWorldOMetersDeathsFilter, IHelperWorldOMetersActiveFilter, HelperWorldOMetersActiveFilter } from './helpers';
 import { ICommand, IController, IResponse, IRouter } from './interfaces';
-import { ModelCase, ModelCountry, ModelData, ModelHtmlResponse, ModelRegexResponse } from './models';
+import { ModelCase, ModelCountry, ModelData, ModelHtmlResponse, ModelParseResultIntegration } from './models';
 
 export class Factory implements IFactory {
 
@@ -92,8 +92,11 @@ export class Factory implements IFactory {
       this.getCollection('countries'),
       this.getCollection('worldometers'),
       this.getCollection('datas'),
-      this.getHelper<IHelperWorldOMetersFilter>('worldometersfilter'),
-      () => { return new ModelRegexResponse() }
+      this.getHelper<IHelperWorldOMetersCasesFilter>('worldometerscasesfilter'),
+      this.getHelper<IHelperWorldOMetersDeathsFilter>('worldometersdeathsfilter'),
+      this.getHelper<IHelperWorldOMetersActiveFilter>('worldometersactivefilter'),
+      this.getHelper<IHelperWorldOMetersDateFixFilter>('worldometersdatefixfilter'),
+      () => { return new ModelParseResultIntegration() }
     );
     throw new Error(`Command "${command}" not found`);
   }
@@ -115,7 +118,10 @@ export class Factory implements IFactory {
    */
   private getHelper = <T> (name: string): T => {
     if (!this._singleton[name]) {
-      if (name === 'worldometersfilter') this._singleton[name] = new HelperWorldOMetersFilter();
+      if (name === 'worldometerscasesfilter') this._singleton[name] = new HelperWorldOMetersCasesFilter();
+      if (name === 'worldometersdeathsfilter') this._singleton[name] = new HelperWorldOMetersDeathsFilter();
+      if (name === 'worldometersactivefilter') this._singleton[name] = new HelperWorldOMetersActiveFilter();
+      if (name === 'worldometersdatefixfilter') this._singleton[name] = new HelperWorldOMetersDateFixFilter();
     }
     return this._singleton[name];
   }

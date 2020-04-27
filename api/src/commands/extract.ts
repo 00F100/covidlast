@@ -1,17 +1,5 @@
-import {
-  Command,
-  ICollectionCountries,
-  ICollectionsDatas,
-  ICollectionWorldOMeters,
-  IExtractCommand,
-  IHandlerInput,
-  IHelperWorldOMetersFilter,
-  IModelCountry,
-  IModelHtmlResponse,
-  IModelRegexResponse,
-  IResponse,
-  Logger
-} from '..';
+import { Command, ICollectionCountries, ICollectionsDatas, ICollectionWorldOMeters, IExtractCommand, IHandlerInput, IHelperWorldOMetersCasesFilter, IHelperWorldOMetersDateFixFilter, IHelperWorldOMetersDeathsFilter, IModelCountry, IModelHtmlResponse, IModelParseResultIntegration, IResponse, Logger } from '..';
+import { IHelperWorldOMetersActiveFilter } from '../helpers';
 
 export class ExtractCommand extends Command implements IExtractCommand {
 
@@ -21,15 +9,18 @@ export class ExtractCommand extends Command implements IExtractCommand {
    * @param _collectionCountries ICollectionCountries
    * @param _collectionWorldoMeters ICollectionWorldOMeters
    * @param _collectionDatas ICollectionsDatas
-   * @param _helperWorldOMetersFilter IHelperWorldOMetersFilter
-   * @param _factoryModelRegexResponse () => IModelRegexResponse
+   * @param _helperWorldOMetersCasesFilter IHelperWorldOMetersCasesFilter
+   * @param _factoryModelRegexResponse () => IModelParseResultIntegration
    */
   public constructor(
     private _collectionCountries: ICollectionCountries,
     private _collectionWorldoMeters: ICollectionWorldOMeters,
     private _collectionDatas: ICollectionsDatas,
-    private _helperWorldOMetersFilter: IHelperWorldOMetersFilter,
-    private _factoryModelRegexResponse: () => IModelRegexResponse
+    private _helperWorldOMetersCasesFilter: IHelperWorldOMetersCasesFilter,
+    private _helperWorldOMetersDeathsFilter: IHelperWorldOMetersDeathsFilter,
+    private _helperWorldOMetersActiveFilter: IHelperWorldOMetersActiveFilter,
+    private _helperWorldOMetersDateFixFilter: IHelperWorldOMetersDateFixFilter,
+    private _factoryModelRegexResponse: () => IModelParseResultIntegration
   ) {
     super();
   }
@@ -47,15 +38,24 @@ export class ExtractCommand extends Command implements IExtractCommand {
       .getData<IModelCountry>()
       .find(Boolean);
 
+    Logger.get().info(`Country "${modelCountry.name}" selected to use in handler extract`);
+
     const collectionWorldOMeters = this._collectionWorldoMeters
       .getByCountryAlias(modelCountry.alias)
       .getData<IModelHtmlResponse>()
       .find(Boolean);
-    
+
     const modelWorldOMeters = this._factoryModelRegexResponse();
-    this._helperWorldOMetersFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
-    this._collectionDatas.createCaseFromIntegration(modelCountry, modelWorldOMeters);
     
+    // apply filters/parsers
+    this._helperWorldOMetersCasesFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    this._helperWorldOMetersDeathsFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    this._helperWorldOMetersActiveFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    this._helperWorldOMetersDateFixFilter.apply(modelWorldOMeters);
+
+    this._collectionDatas.createCaseFromIntegration(modelCountry, modelWorldOMeters);
+
     Logger.get().info('Handler extract finish!');
+    response.send('Handler Extract Finish');
   }
 }
