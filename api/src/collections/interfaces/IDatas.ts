@@ -1,4 +1,4 @@
-import { ICollection, IModelCountry, IModelRegexResponse } from '../..';
+import { ICollection, IModelCountry, IModelParseResultIntegration } from '../..';
 
 export interface ICollectionsDatas extends ICollection {
 
@@ -16,7 +16,7 @@ export interface ICollectionsDatas extends ICollection {
    * @param modelWorldOMeters IModelRegexResponse
    * @return ICollectionsDatas
    */
-  createCaseFromIntegration(modelCountry: IModelCountry, modelWorldOMeters: IModelRegexResponse): ICollectionsDatas;
+  createCaseFromIntegration(modelCountry: IModelCountry, modelWorldOMeters: IModelParseResultIntegration): ICollectionsDatas;
 }
 
 /**
