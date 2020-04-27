@@ -1,6 +1,6 @@
 #!/bin/sh
-
-for i in {1..$1}
+npm run build;
+for (( i=1; i<=$1; i++ ))
 do
   node dist/bootstrap/handler.js extract $i;
 done

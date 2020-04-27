@@ -31,7 +31,7 @@ export class CollectionCases extends Collection implements ICollectionsCases {
     const datas = collectionDatas.getData<IModelData>();
     datas.map((data: IModelData, index: number) => {
       const model = this.getModelByCountryId(data);
-      model.data.push([data.timestamp, data.cases]);
+      model.data.push([data.timestamp, data.cases, data.deaths, data.active]);
     });
     this.sortDataByCountry();
     return this;

@@ -46,7 +46,7 @@ export class ExtractCommand extends Command implements IExtractCommand {
       .find(Boolean);
 
     const modelWorldOMeters = this._factoryModelRegexResponse();
-    
+
     // apply filters/parsers
     this._helperWorldOMetersCasesFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
     this._helperWorldOMetersDeathsFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);

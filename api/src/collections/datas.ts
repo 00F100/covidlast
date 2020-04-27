@@ -45,6 +45,7 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
         d.id,
         d.cases,
         d.deaths,
+        d.active,
         d.timestamp,
         c.name AS countryName,
         c.id AS countryId,
@@ -53,7 +54,7 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
         strftime('%m-%d-%Y', datetime(d.timestamp, 'unixepoch')) AS date
       FROM data AS d
       INNER JOIN countries AS c ON d.idCountry = c.id
-      ORDER BY d.timestamp ASC, c.name ASC`).all();
+      ORDER BY c.name ASC, d.timestamp ASC`).all();
     rows.map(row => {
       this.populateModel(this._factoryModelData, row, this._data);
     });
@@ -81,8 +82,10 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
         total();
         if (this.isUniqueDataByCountryAndTimestamp(modelCountry.id, +day)) {
           const cases = modelWorldOMeters.cases[index];
+          const active = modelWorldOMeters.active[index];
+          const deaths = modelWorldOMeters.deaths[index];
           try {
-            this.insert(modelCountry.id, cases, 0, +day);
+            this.insert(modelCountry.id, cases, deaths, active, +day);
             Logger.get().debug('Success try INSERT', {cases, day, country: modelCountry, deaths: 0});
             success();
           } catch (err) {
@@ -122,13 +125,14 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
    * @param idCountry number
    * @param cases number
    * @param deaths number
+   * @param active number
    * @param timestamp number
    * @return sqlite3.RunResult
    */
-  private insert = (idCountry: number, cases: number, deaths: number, timestamp: number): sqlite3.RunResult => {
+  private insert = (idCountry: number, cases: number, deaths: number, active: number, timestamp: number): sqlite3.RunResult => {
     return this._databaseSQLite3
-      .prepare(`INSERT INTO data (idCountry, cases, deaths, timestamp) VALUES (?, ?, ?, ?)`)
-      .run(idCountry, cases, deaths, timestamp);
+      .prepare(`INSERT INTO data (idCountry, cases, deaths, active, timestamp) VALUES (?, ?, ?, ?, ?)`)
+      .run(idCountry, cases, deaths, active, timestamp);
   }
 
   /**

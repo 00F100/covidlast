@@ -22,6 +22,12 @@ export class ModelData extends Model implements IModelData {
   public deaths: number = 0;
 
   /**
+   * Number of active cases
+   * @param number
+   */
+  public active: number = 0;
+
+  /**
    * Timestamp captured data
    * @param number
    */

@@ -21,6 +21,12 @@ export interface IModelData extends IModel {
   deaths: number;
 
   /**
+   * Number of active cases
+   * @param number
+   */
+  active: number;
+
+  /**
    * Timestamp captured data
    * @param number
    */

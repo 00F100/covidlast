@@ -12,6 +12,6 @@ export class HelperWorldOMetersActiveFilter extends HelperWorldOMeters implement
    */
   public apply = (model: IModelParseResultIntegration, input: string): void => {
     const obj = this.getObject(input, 'graph-active-cases-total');
-    model.load({ deaths: obj.series.find(Boolean).data});
+    model.load({ active: obj.series.find(Boolean).data});
   }
 }

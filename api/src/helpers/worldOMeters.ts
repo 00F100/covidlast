@@ -2,7 +2,7 @@ import { IHelperWorldOMeters, Logger } from '..';
 import { Helper } from '../helper';
 
 export class HelperWorldOMeters extends Helper implements IHelperWorldOMeters {
-  
+
 
   /**
    * Method to match data on HTML result
@@ -17,7 +17,7 @@ export class HelperWorldOMeters extends Helper implements IHelperWorldOMeters {
     Logger.get().debug('HTML input to filter', { filter, input, regex });
     try {
       return input.match(regex).find(Boolean);
-    } catch(err) {
+    } catch (err) {
       Logger.get().error('Error on try match regex HTML', { filter, input, regex, err });
       throw err;
     }
