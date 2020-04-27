@@ -1,0 +1,8 @@
+language: node
+
+before_script:
+  - travis_retry npm install
+  - travis_retry npm run build
+
+script:
+  - node dist/bootstrap/handler.js
