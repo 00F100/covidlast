@@ -61,6 +61,20 @@
       "envFile": "${workspaceFolder}/api/.env",
       "console": "internalConsole", 
       "outputCapture": "std"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Frontend (TypeScript)",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "breakOnLoad": true,
+      "sourceMapPathOverrides": {
+        "webpack:///./src/*": "${webRoot}/frontend/*",
+        "webpack:///src/*": "${webRoot}/frontend/*",
+        "webpack:///*": "*",
+        "webpack:///./~/*": "${webRoot}/frontend/node_modules/*"
+      }
     }
   ]
 }

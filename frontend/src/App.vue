@@ -1,17 +1,22 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ChartsFilter></ChartsFilter>
+    <ChartCasesPopulation></ChartCasesPopulation>
+    <ChartCasesPopulationPorcentage></ChartCasesPopulationPorcentage>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ChartsFilter from './components/ChartsFilter.vue'
+import ChartCasesPopulation from './components/ChartCasesPopulation.vue'
+import ChartCasesPopulationPorcentage from './components/ChartCasesPopulationPorcentage.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ChartsFilter,
+    ChartCasesPopulation,
+    ChartCasesPopulationPorcentage
   }
 }
 </script>

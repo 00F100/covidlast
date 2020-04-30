@@ -31,10 +31,18 @@
 </template>
 
 <script>
+import Logger from '../helpers/Logger.vue';
+
 export default {
   name: 'HelloWorld',
+  mixins: [
+    Logger
+  ],
   props: {
     msg: String
+  },
+  beforeMount() {
+    this.getLogger();
   }
 }
 </script>
