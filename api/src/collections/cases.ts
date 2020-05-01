@@ -10,6 +10,18 @@ export class CollectionCases extends Collection implements ICollectionsCases {
   protected _data: IModelCase[] = [];
 
   /**
+   * Number of pages
+   * @param number
+   */
+  protected _pages: number = 1;
+
+  /**
+   * Total of records
+   * @param number
+   */
+  protected _total: number = 0;
+
+  /**
    * Method to construct instance of Collection Cases
    *
    * @param _factoryModelCase () => IModelCase
@@ -55,6 +67,7 @@ export class CollectionCases extends Collection implements ICollectionsCases {
       model.load({ ...data, name: data.countryName, countryPopulation: data.population, countryColor: data.color });
       this._data.push(model);
     }
+    this._total = this._data.length;
     return model;
   }
 

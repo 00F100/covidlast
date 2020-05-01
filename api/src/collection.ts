@@ -9,6 +9,24 @@ export class Collection implements ICollection {
   protected _data: any[];
 
   /**
+   * Current page
+   * @param number
+   */
+  protected _page: number;
+
+  /**
+   * Number of pages
+   * @param number
+   */
+  protected _pages: number;
+
+  /**
+   * Total of records
+   * @param number
+   */
+  protected _total: number;
+
+  /**
    * Method to get data of collection
    *
    * @return T[] | any[]
@@ -38,5 +56,32 @@ export class Collection implements ICollection {
     const model = factory();
     model.load(row);
     data.push(model);
+  }
+
+  /**
+   * Method to get current page
+   *
+   * @return number
+   */
+  public currentPage = (): number => {
+    return this._page || 1;
+  }
+
+  /**
+   * Method to get pages
+   *
+   * @return number
+   */
+  public getPages = (): number => {
+    return this._pages;
+  }
+
+  /**
+   * Method to get total of records
+   *
+   * @return number
+   */
+  public getTotal = (): number => {
+    return this._total;
   }
 }

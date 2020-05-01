@@ -1,7 +1,7 @@
 import express from 'express';
 import * as fs from 'fs';
 import Log4js from 'log4js';
-import { Factory, IApplication, ICollection, ICommand, IFactory, IHandlerInput, IRoute, IRouter, Logger } from '.';
+import { Factory, IApplication, ICollection, ICommand, IFactory, IHandlerInput, IRoute, IRouter, Logger, IView } from '.';
 
 export class Application implements IApplication {
 
@@ -97,30 +97,13 @@ export class Application implements IApplication {
   }
 
   /**
-   * Method to get view page
+   * Method to get view
    *
-   * @param page string
-   * @throws Error
-   * @return string
+   * @return IView
    */
-  public view = (page: string, params?: object): string | object => {
-    if (page === 'json') {
-      return { ...params};
-    }
-
-    const {
-      VIEW_INDEX
-    } = process.env;
-
-    const file = `${VIEW_INDEX}/${page}.html`;
-    this._logger.debug(`Load view file from "${file}"`);
-    if (fs.existsSync(file)) {
-      let data = fs.readFileSync(file).toString();
-      data = this.applyParams(data, params || []);
-      return data;
-    }
-    this._logger.error(`File view not found "${file}"`);
-    throw new Error(`View "${file}" not found`);
+  public view = (): IView => {
+    // public view = (page: string, params?: object): string | object => {
+    return this._factory.getView();
   }
 
   /**
@@ -133,22 +116,16 @@ export class Application implements IApplication {
     const router: IRouter = this._factory.getRouter();
     const routes: IRoute[] = router.mount(this);
     routes.map(route => {
-      if (typeof route.beforeRequest === 'function') {
-        this._logger.info(`Execute beforeRequest to route "${route.method} ${route.path}"`);
-        route.beforeRequest(route);
+      if (typeof route.onCreate === 'function') {
+        this._logger.info(`Execute onCreate to route "${route.method} ${route.path}"`);
+        route.onCreate(route);
       }
       dispach[route.method.toLowerCase()](route.path, (request: express.Request, response: express.Response) => {
-        if (typeof route.afterRequest === 'function') {
-          this._logger.info(`Execute afterRequest to route "${route.method} ${route.path}"`);
-          route.afterRequest(route);
+        if (typeof route.onExecute === 'function') {
+          this._logger.info(`Execute onExecute to route "${route.method} ${route.path}"`);
+          route.onExecute(route);
         }
-        this._logger.debug(`Request to route ${request.path} by ${request.ip}`);
-        if (!route.header) {
-          route.header = 'text/html';
-        }
-        response.setHeader('Content-Type', route.header);
-        // response.setHeader('Content-Type', 'application/json');
-        // response.setHeader('Content-Type', 'text/html');
+        this._logger.info(`Request to route ${request.path} by ${request.ip}`);
         response.send(route.cache);
       });
     });
@@ -162,22 +139,6 @@ export class Application implements IApplication {
    */
   private command = (command: string): ICommand => {
     return this._factory.getCommand(command);
-  }
-
-  /**
-   * Method to apply parameters into view
-   *
-   * @param data string
-   * @param params any
-   * @return string
-   */
-  private applyParams = (data: string, params?: object): string => {
-    for (const i in params) {
-      if (typeof params[i] === 'string') {
-        data = data.replace(`\$\[${i}\]`, params[i]);
-      }
-    }
-    return data;
   }
 
   /**

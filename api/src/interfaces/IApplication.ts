@@ -1,5 +1,6 @@
 import express from 'express';
 import { ICollection, IHandlerInput } from '.';
+import { IView } from './IView';
 
 export interface IApplication {
 
@@ -30,11 +31,9 @@ export interface IApplication {
   controller(name: string, request?: express.Request, response?: express.Response): ICollection;
 
   /**
-   * Method to get view page
+   * Method to get view
    *
-   * @param page string
-   * @throws Error
-   * @return string
+   * @return IView
    */
-  view(page: string, params?: object): string | object;
+  view(): IView;
 }

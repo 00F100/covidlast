@@ -18,3 +18,4 @@ export * from './model';
 export * from './models';
 export * from './response';
 export * from './router';
+export * from './view';

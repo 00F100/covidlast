@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { ICommand, IController, IResponse, IRouter } from '.';
+import { ICommand, IController, IResponse, IRouter, IView } from '.';
 
 export interface IFactory {
 
@@ -34,4 +34,11 @@ export interface IFactory {
    * @return IResponse
    */
   getResponse(): IResponse;
+
+  /**
+   * Method to get view response
+   *
+   * @return IView
+   */
+  getView(): IView;
 }

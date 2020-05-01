@@ -12,3 +12,6 @@ export * from './IResponse';
 export * from './IRoute';
 export * from './IRouteMethods';
 export * from './IRouter';
+export * from './IView';
+export * from './IViewResponse';
+export * from './IViewResponseMeta';

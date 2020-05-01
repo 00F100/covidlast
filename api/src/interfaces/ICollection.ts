@@ -23,4 +23,25 @@ export interface ICollection {
    * @return void
    */
   populateModel(factory: () => IModel, row: any, data: IModel[]) : void;
+
+  /**
+   * Method to get current page
+   *
+   * @return number
+   */
+  currentPage(): number;
+
+  /**
+   * Method to get pages
+   *
+   * @return number
+   */
+  getPages(): number;
+
+  /**
+   * Method to get total of records
+   *
+   * @return number
+   */
+  getTotal(): number;
 }

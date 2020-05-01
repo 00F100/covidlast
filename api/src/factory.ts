@@ -1,11 +1,11 @@
 import sqlite3 from 'better-sqlite3';
 import express from 'express';
-import { IFactory, Response, Router } from '.';
+import { IFactory, Response, Router, View } from '.';
 import { CollectionCases, CollectionCountries, CollectionDatas, CollectionWorldOMeters } from './collections';
 import { ExtractCommand } from './commands';
 import { ControllerCases } from './controllers';
-import { IHelperWorldOMetersCasesFilter, HelperWorldOMetersCasesFilter, HelperWorldOMetersDateFixFilter, IHelperWorldOMetersDateFixFilter, HelperWorldOMetersDeathsFilter, IHelperWorldOMetersDeathsFilter, IHelperWorldOMetersActiveFilter, HelperWorldOMetersActiveFilter } from './helpers';
-import { ICommand, IController, IResponse, IRouter } from './interfaces';
+import { HelperWorldOMetersActiveFilter, HelperWorldOMetersCasesFilter, HelperWorldOMetersDateFixFilter, HelperWorldOMetersDeathsFilter, IHelperWorldOMetersActiveFilter, IHelperWorldOMetersCasesFilter, IHelperWorldOMetersDateFixFilter, IHelperWorldOMetersDeathsFilter } from './helpers';
+import { ICommand, IController, IResponse, IRouter, IView } from './interfaces';
 import { ModelCase, ModelCountry, ModelData, ModelHtmlResponse, ModelParseResultIntegration } from './models';
 
 export class Factory implements IFactory {
@@ -108,6 +108,15 @@ export class Factory implements IFactory {
    */
   public getResponse = (): IResponse => {
     return new Response();
+  }
+
+  /**
+   * Method to get view response
+   *
+   * @return IView
+   */
+  public getView = (): IView => {
+    return new View();
   }
 
   /**

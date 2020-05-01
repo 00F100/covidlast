@@ -27,18 +27,14 @@ export interface IRoute {
   header?: string;
 
   /**
-   * Execute before request
-   *
-   * @param context IRoute
-   * @return (context: IRoute) => void
+   * Behavior on create route
+   * @param (context: IRoute) => void
    */
-  beforeRequest?: (context: IRoute) => void;
+  onCreate?: (context: IRoute) => void;
 
   /**
-   * Execute after request
-   *
-   * @param context IRoute
-   * @return (context: IRoute) => void
+   * Behavior on execute route
+   * @param (context: IRoute) => void
    */
-  afterRequest?: (context: IRoute) => void;
+  onExecute?: (context: IRoute) => void;
 }
