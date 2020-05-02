@@ -102,7 +102,6 @@ export class Application implements IApplication {
    * @return IView
    */
   public view = (): IView => {
-    // public view = (page: string, params?: object): string | object => {
     return this._factory.getView();
   }
 

@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <h1>
-      grafico populacao
-    </h1>
+  <div class="row">
+    <div class="col">
+      <h5>Chart cases - cases</h5>
+    </div>
   </div>
 </template>
 
