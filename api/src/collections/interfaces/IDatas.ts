@@ -26,5 +26,6 @@ export interface ICollectionIntegrationResult {
   total: number;
   success: number;
   error: number;
+  ignore: number;
   duplicate: number;
 }

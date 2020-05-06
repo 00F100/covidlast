@@ -10,7 +10,7 @@ export class ExtractCommand extends Command implements IExtractCommand {
    * @param _collectionWorldoMeters ICollectionWorldOMeters
    * @param _collectionDatas ICollectionsDatas
    * @param _helperWorldOMetersCasesFilter IHelperWorldOMetersCasesFilter
-   * @param _factoryModelRegexResponse () => IModelParseResultIntegration
+   * @param _factoryModelParseResultIntegration () => IModelParseResultIntegration
    */
   public constructor(
     private _collectionCountries: ICollectionCountries,
@@ -20,7 +20,7 @@ export class ExtractCommand extends Command implements IExtractCommand {
     private _helperWorldOMetersDeathsFilter: IHelperWorldOMetersDeathsFilter,
     private _helperWorldOMetersActiveFilter: IHelperWorldOMetersActiveFilter,
     private _helperWorldOMetersDateFixFilter: IHelperWorldOMetersDateFixFilter,
-    private _factoryModelRegexResponse: () => IModelParseResultIntegration
+    private _factoryModelParseResultIntegration: () => IModelParseResultIntegration
   ) {
     super();
   }
@@ -45,9 +45,8 @@ export class ExtractCommand extends Command implements IExtractCommand {
       .getData<IModelHtmlResponse>()
       .find(Boolean);
 
-    const modelWorldOMeters = this._factoryModelRegexResponse();
+    const modelWorldOMeters = this._factoryModelParseResultIntegration();
 
-    // apply filters/parsers
     this._helperWorldOMetersCasesFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
     this._helperWorldOMetersDeathsFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
     this._helperWorldOMetersActiveFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);

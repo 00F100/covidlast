@@ -7,7 +7,7 @@ export class ModelData extends Model implements IModelData {
    * ID of data
    * @param number
    */
-  public id: number = 0;
+  public id?: number = 0;
 
   /**
    * Number of cases
@@ -37,13 +37,13 @@ export class ModelData extends Model implements IModelData {
    * Date captured data
    * @param string
    */
-  public date: string = '';
+  public date?: string = '';
 
   /**
    * Name of country
    * @param string
    */
-  public countryName: string = '';
+  public countryName?: string = '';
 
   /**
    * ID of country
@@ -55,11 +55,15 @@ export class ModelData extends Model implements IModelData {
    * Population of country
    * @param number
    */
-  public population: number = 0;
+  public population?: number = 0;
 
   /**
    * Color of country in chart
    * @param string
    */
-  public color: string = '';
+  public color?: string = '';
+
+  public required<IModelData> = {
+
+  }
 }

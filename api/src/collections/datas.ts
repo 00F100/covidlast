@@ -18,6 +18,7 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
     total: 0,
     success: 0,
     error: 0,
+    ignore: 0,
     duplicate: 0
   };
 
@@ -75,21 +76,35 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
         total,
         success,
         error,
-        duplicate
+        duplicate,
+        ignore
       } = this.getIntegrationAccounting();
 
       modelWorldOMeters.days.map((day, index) => {
         total();
         if (this.isUniqueDataByCountryAndTimestamp(modelCountry.id, +day)) {
-          const cases = modelWorldOMeters.cases[index];
-          const active = modelWorldOMeters.active[index];
-          const deaths = modelWorldOMeters.deaths[index];
+
+          const model = this._factoryModelData();
+
+          model.load<IModelData>({
+            countryId: modelCountry.id,
+            active: +modelWorldOMeters.active[index],
+            cases: +modelWorldOMeters.cases[index],
+            deaths: +modelWorldOMeters.deaths[index],
+            timestamp: +day
+          });
+
           try {
-            this.insert(modelCountry.id, cases, deaths, active, +day);
-            Logger.get().debug('Success try INSERT', {cases, day, country: modelCountry, deaths: 0});
-            success();
+            if (model.validate()) {
+              this.insert(model);
+              Logger.get().debug('Success try INSERT', model);
+              success();
+            } else {
+              Logger.get().error('Ignore on try INSERT', model);
+              ignore();
+            }
           } catch (err) {
-            Logger.get().error('Error on try INSERT', {err, cases, day, country: modelCountry, deaths: 0});
+            Logger.get().error('Error on try INSERT', {err, model});
             error();
           }
         } else {
@@ -122,17 +137,13 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
   /**
    * Method to insert data
    *
-   * @param idCountry number
-   * @param cases number
-   * @param deaths number
-   * @param active number
-   * @param timestamp number
+   * @param model IModelData
    * @return sqlite3.RunResult
    */
-  private insert = (idCountry: number, cases: number, deaths: number, active: number, timestamp: number): sqlite3.RunResult => {
+  private insert = (model: IModelData): sqlite3.RunResult => {
     return this._databaseSQLite3
       .prepare(`INSERT INTO data (idCountry, cases, deaths, active, timestamp) VALUES (?, ?, ?, ?, ?)`)
-      .run(idCountry, cases, deaths, active, timestamp);
+      .run(model.countryId, model.cases, model.deaths, model.active, model.timestamp);
   }
 
   /**
@@ -145,6 +156,7 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
       total: () => this._integrationResult.total++,
       success: () => this._integrationResult.success++,
       error: () => this._integrationResult.error++,
+      ignore: () => this._integrationResult.ignore++,
       duplicate: () => this._integrationResult.duplicate++,
     };
   }

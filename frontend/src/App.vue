@@ -14,10 +14,10 @@
         </div>
       </div>
       <div class="row">
-        <div class="col">
+        <div class="col-12 col-sm-12 col-md-6">
           <ChartCasesPopulation></ChartCasesPopulation>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-12 col-md-6">
           <ChartCasesPopulationPorcentage></ChartCasesPopulationPorcentage>
         </div>
       </div>

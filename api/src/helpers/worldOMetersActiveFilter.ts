@@ -11,7 +11,17 @@ export class HelperWorldOMetersActiveFilter extends HelperWorldOMeters implement
    * @return void
    */
   public apply = (model: IModelParseResultIntegration, input: string): void => {
+    const cases = [];
+    let count = 0;
+    model.cases.map(c => {
+      if (c > 0) {
+        count++;
+      }
+    });
+    for (let i = 0; i < (model.cases.length - count); i++) {
+      cases.push(0);
+    }
     const obj = this.getObject(input, 'graph-active-cases-total');
-    model.load({ active: obj.series.find(Boolean).data});
+    model.load({ active: cases.concat(obj.series.find(Boolean).data)});
   }
 }

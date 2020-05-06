@@ -8,6 +8,7 @@ export * from './IHandlerInput';
 export * from './IHelper';
 export * from './ILogger';
 export * from './IModel';
+export * from './IModelAnalyze';
 export * from './IResponse';
 export * from './IRoute';
 export * from './IRouteMethods';
