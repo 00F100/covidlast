@@ -1,9 +1,14 @@
-import { IModel } from '.';
-import { Logger } from './logger';
 import { validate } from 'validate-typescript';
-import { IModelAnalyze } from './interfaces';
+import { IErrorLogReason, IModel } from '.';
+import { Logger } from './logger';
 
 export class Model implements IModel {
+
+  /**
+   * Cache of data on load
+   * @param object
+   */
+  protected _cacheData: any = null;
 
   /**
    * Method to load data into model in "this" context
@@ -12,7 +17,17 @@ export class Model implements IModel {
    * @return void
    */
   public load = <T> (data: T): void => {
+    this._cacheData = { ...data };
     this.populate<T>(this, data);
+  }
+
+  /**
+   * Method to get object from model
+   *
+   * @return Object
+   */
+  public toObject = (): object => {
+    return this._cacheData;
   }
 
   /**
@@ -60,7 +75,7 @@ export class Model implements IModel {
   private analyzeRequired = (context: IModel): void => {
     if (context.required) {
       this.processValidate(context.required, context, (err) => {
-        Logger.get().fatal('Error on validate required fields', err);
+        Logger.get().fatal('Error on validate required fields', this.getErrorLogReason(err));
         throw err;
       });
     }
@@ -75,7 +90,7 @@ export class Model implements IModel {
   private analyzeConditionals = (context: IModel): boolean => {
     if (context.conditionals) {
       return this.processValidate(context.conditionals, context, (err) => {
-        Logger.get().error('Error on validate conditional fields', err);
+        Logger.get().error('Error on validate conditional fields', this.getErrorLogReason(err));
         return false;
       });
     }
@@ -90,12 +105,30 @@ export class Model implements IModel {
    * @param callbackError (err: any) => boolean
    * @return boolean
    */
-  private processValidate = (schema: IModelAnalyze, context: IModel, callbackError: (err: any) => boolean): boolean => {
+  private processValidate = (schema: any, context: IModel, callbackError: (err: any) => boolean): boolean => {
     try {
-      validate(schema, { ... context });
+      validate(schema, { ...context });
       return true;
-    } catch(err) {
+    } catch (err) {
       return callbackError(err);
     }
+  }
+
+  /**
+   * Method to get error log reason from exception
+   *
+   * @param err Error
+   * @return IErrorLogReason[]
+   */
+  private getErrorLogReason = (err): IErrorLogReason[] => {
+    const errLog: IErrorLogReason[] = [];
+    err.child_errors.map(e => {
+      errLog.push({
+        validator: e.validator,
+        property: e.property,
+        value: e.value
+      });
+    });
+    return errLog;
   }
 }

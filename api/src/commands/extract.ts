@@ -49,7 +49,7 @@ export class ExtractCommand extends Command implements IExtractCommand {
 
     this._helperWorldOMetersCasesFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
     this._helperWorldOMetersDeathsFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
-    this._helperWorldOMetersActiveFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    // this._helperWorldOMetersActiveFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
     this._helperWorldOMetersDateFixFilter.apply(modelWorldOMeters);
 
     this._collectionDatas.createCaseFromIntegration(modelCountry, modelWorldOMeters);

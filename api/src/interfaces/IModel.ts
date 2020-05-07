@@ -1,4 +1,4 @@
-import { IModelAnalyze } from '.';
+import { IModelValidation } from '.';
 
 export interface IModel {
 
@@ -6,13 +6,13 @@ export interface IModel {
    * Required fields in model
    * @param IModelAnalyze
    */
-  required?: IModelAnalyze,
+  required?: any,
 
   /**
    * Conditional fields in model
    * @param IModelAnalyze
    */
-  conditionals?: IModelAnalyze,
+  conditionals?: any,
 
   /**
    * Method to load any data into Model
@@ -22,6 +22,13 @@ export interface IModel {
    * @return void
    */
   load?<T>(data: T): void;
+
+  /**
+   * Method to get object from model
+   *
+   * @return Object
+   */
+  toObject?(): object;
 
   /**
    * Method to validate model

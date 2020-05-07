@@ -61,3 +61,16 @@ export interface IModelData extends IModel {
    */
   color?: string;
 }
+
+export interface IModelDataSignature<A> {
+  id?: A;
+  cases?: A;
+  deaths?: A;
+  active?: A;
+  timestamp?: A;
+  date?: A;
+  countryName?: A;
+  countryId?: A;
+  population?: A;
+  color?: A;
+}

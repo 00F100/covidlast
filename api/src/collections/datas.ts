@@ -97,14 +97,14 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
           try {
             if (model.validate()) {
               this.insert(model);
-              Logger.get().debug('Success try INSERT', model);
+              Logger.get().debug('Success try INSERT', model.toObject());
               success();
             } else {
-              Logger.get().error('Ignore on try INSERT', model);
+              Logger.get().error('Ignore on try INSERT', model.toObject());
               ignore();
             }
           } catch (err) {
-            Logger.get().error('Error on try INSERT', {err, model});
+            Logger.get().error('Error on try INSERT', model.toObject());
             error();
           }
         } else {

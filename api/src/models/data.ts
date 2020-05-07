@@ -1,4 +1,5 @@
-import { IModelData } from '..';
+import { ID, Type } from 'validate-typescript';
+import { IModelData, IModelDataSignature } from '..';
 import { Model } from '../model';
 
 export class ModelData extends Model implements IModelData {
@@ -63,7 +64,23 @@ export class ModelData extends Model implements IModelData {
    */
   public color?: string = '';
 
-  public required<IModelData> = {
-
+  /**
+   * Fields required to save
+   * @param IModelDataSignature<Number>
+   */
+  public required: IModelDataSignature<number> = {
+    cases: Type<number, number>(Number),
+    deaths: Type<number, number>(Number),
+    active: Type<number, number>(Number),
+    countryId: Type<number, number>(Number),
+    timestamp: Type<number, number>(Number)
   }
+
+  /**
+   * Fields conditional to save
+   * @param {IModelDataSignature<Number>}
+   */
+  public conditionals: IModelDataSignature<number> = {
+    cases: ID(),
+  };
 }
