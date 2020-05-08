@@ -3,6 +3,12 @@ import { IModelValidation } from '.';
 export interface IModel {
 
   /**
+   * Cache of data on load
+   * @param object
+   */
+  _cacheData?: any;
+
+  /**
    * Required fields in model
    * @param IModelAnalyze
    */

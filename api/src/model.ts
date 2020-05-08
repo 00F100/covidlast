@@ -8,7 +8,7 @@ export class Model implements IModel {
    * Cache of data on load
    * @param object
    */
-  protected _cacheData: any = null;
+  public _cacheData: any = null;
 
   /**
    * Method to load data into model in "this" context

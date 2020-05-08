@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { ICollection, IView, IViewResponse, Logger } from '.';
 import moment from 'moment';
+import { ICollection, IModel, IView, IViewResponse, Logger } from '.';
 
 export class View implements IView {
 
@@ -12,7 +12,7 @@ export class View implements IView {
    */
   public json = (collection: ICollection): IViewResponse => {
     return {
-      data: collection.getData(),
+      data: this.removeCacheJson(collection.getData()),
       meta: {
         page: collection.currentPage(),
         pages: collection.getPages(),
@@ -20,6 +20,19 @@ export class View implements IView {
         date: +moment().utc().format('X')
       }
     };
+  }
+
+  /**
+   * Method to remove cache from models
+   *
+   * @param models IModel[]
+   * @return IModel[]
+   */
+  private removeCacheJson = (models: IModel[]): IModel[] => {
+    models.map((data, i) => {
+      if (data._cacheData !== undefined) models[i]._cacheData = undefined;
+    });
+    return models;
   }
 
   /**
