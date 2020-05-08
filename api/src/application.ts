@@ -125,6 +125,8 @@ export class Application implements IApplication {
           route.onExecute(route);
         }
         this._logger.info(`Request to route ${request.path} by ${request.ip}`);
+        response.header('Access-Control-Allow-Origin', '*');
+        response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
         response.send(route.cache);
       });
     });

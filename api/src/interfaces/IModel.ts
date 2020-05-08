@@ -1,4 +1,3 @@
-import { IModelValidation } from '.';
 
 export interface IModel {
 
@@ -43,4 +42,12 @@ export interface IModel {
    * @return boolean
    */
   validate?(): boolean;
+
+  /**
+   * Method to clean model to JSON
+   *
+   * @param data IModel
+   * @return void
+   */
+  cleanToJson?(model: IModel): void;
 }

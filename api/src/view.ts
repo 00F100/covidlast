@@ -30,7 +30,7 @@ export class View implements IView {
    */
   private removeCacheJson = (models: IModel[]): IModel[] => {
     models.map((data, i) => {
-      if (data._cacheData !== undefined) models[i]._cacheData = undefined;
+      models[i].cleanToJson(models[i]);
     });
     return models;
   }

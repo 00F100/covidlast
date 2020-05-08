@@ -40,6 +40,16 @@ export class Model implements IModel {
   }
 
   /**
+   * Method to clean model to JSON
+   *
+   * @param data IModel
+   * @return void
+   */
+  public cleanToJson = (model: IModel): void => {
+    if (model._cacheData !== undefined) model._cacheData = undefined;
+  }
+
+  /**
    * Method to populate model from data
    *
    * @param context any
