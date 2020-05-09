@@ -23,10 +23,10 @@
       </div>
       <div class="row">
         <div class="col-12 col-sm-12 col-md-6">
-          <ChartCasesPopulation></ChartCasesPopulation>
+          <ChartCasesPopulation :countriesSelected="countriesSelected"></ChartCasesPopulation>
         </div>
         <div class="col-12 col-sm-12 col-md-6">
-          <ChartCasesPopulationPorcentage></ChartCasesPopulationPorcentage>
+          <ChartCasesPopulationPorcentage :countriesSelected="countriesSelected"></ChartCasesPopulationPorcentage>
         </div>
       </div>
     </section>
@@ -56,9 +56,17 @@ export default {
   beforeMount: function() {
     Axios.get(`${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}:${VUE_APP_API_PORT}/cases`)
       .then(response => {
-        this.countriesList = response.data.data
-        this.isLoading = false
-        this.$popup.success('Get data success')
+        if (response.data.data && response.data.data) {
+          response.data.data.map(data => {
+            this.countriesList.push({
+              id: data.countryId,
+              name: data.countryName
+            });
+          });
+          this.isLoading = false
+        } else {
+          this.$popup.error('Response has empty')
+        }
       })
       .catch(err => {
         this.$popup.error(err.message)
@@ -70,12 +78,8 @@ export default {
       fullPage: true,
       countriesSelected: [
         {
-          "countryId": 11,
-          "countryName": "Belgium"
-        },
-        {
-          "countryId": 1,
-          "countryName": "Brazil"
+          "id": 1,
+          "name": "Brazil"
         }
       ],
       countriesList: []

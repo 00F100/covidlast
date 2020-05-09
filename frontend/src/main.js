@@ -17,15 +17,6 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Popup)
 
-// const alertUp = (message) => {
-//   Vue.$toast.open({
-//     message: message,
-//     position: 'top-right',
-//     duration: 4500,
-//     type: 'error'
-//   });
-// }
-
 new Vue({
   render: h => h(App),
 }).$mount('#app')

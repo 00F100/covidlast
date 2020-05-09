@@ -4,8 +4,8 @@
       <multiselect
         v-model="selected"
         :options="countriesList"
-        label="countryName"
-        track-by="countryId"
+        label="name"
+        track-by="id"
         :multiple="true"
         :searchable="true"
         placeholder=""></multiselect>
@@ -32,10 +32,12 @@ export default {
     selected: function() {
       const countries = [];
       this.selected.map(function(country) {
-        countries.push(country.countryId);
+        countries.push({
+          id: country.id,
+          name: country.name
+        });
       });
       this.$emit('update:countriesSelected', countries);
-      console.log(countries)
     }
   },
   data: function() {
