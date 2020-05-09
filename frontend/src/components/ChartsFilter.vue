@@ -35,11 +35,12 @@ export default {
         countries.push(country.countryId);
       });
       this.$emit('update:countriesSelected', countries);
+      console.log(countries)
     }
   },
   data: function() {
     return {
-      selected: [123]
+      selected: []
     };
   },
   components: {

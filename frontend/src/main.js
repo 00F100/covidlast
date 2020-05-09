@@ -4,9 +4,8 @@ import { config as dotenv } from 'dotenv'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import VueToast from 'vue-toast-notification';
-import 'vue-toast-notification/dist/theme-sugar.css';
 import './assets/custom.css';
+import Popup from './plugins/popup'
 
 dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
@@ -16,7 +15,7 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
-Vue.use(VueToast)
+Vue.use(Popup)
 
 // const alertUp = (message) => {
 //   Vue.$toast.open({

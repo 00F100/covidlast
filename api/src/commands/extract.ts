@@ -33,6 +33,13 @@ export class ExtractCommand extends Command implements IExtractCommand {
    * @return void
    */
   public execute = (input: IHandlerInput, response: IResponse): void => {
+
+    const {
+      HELPER_FILTER_CASES,
+      HELPER_FILTER_DEATHS,
+      HELPER_FILTER_ACTIVE
+    } = process.env;
+
     const modelCountry = this._collectionCountries
       .getById(input.country.id)
       .getData<IModelCountry>()
@@ -47,9 +54,21 @@ export class ExtractCommand extends Command implements IExtractCommand {
 
     const modelWorldOMeters = this._factoryModelParseResultIntegration();
 
-    this._helperWorldOMetersCasesFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
-    this._helperWorldOMetersDeathsFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
-    // this._helperWorldOMetersActiveFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    Logger.get().info(`Helper filter cases is "${HELPER_FILTER_CASES}"`);
+    if (HELPER_FILTER_CASES === 'true') {
+      this._helperWorldOMetersCasesFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    }
+
+    Logger.get().info(`Helper filter deaths is "${HELPER_FILTER_DEATHS}"`);
+    if (HELPER_FILTER_DEATHS === 'true') {
+      this._helperWorldOMetersDeathsFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    }
+
+    Logger.get().info(`Helper filter active is "${HELPER_FILTER_ACTIVE}"`);
+    if (HELPER_FILTER_ACTIVE === 'true') {
+      this._helperWorldOMetersActiveFilter.apply(modelWorldOMeters, collectionWorldOMeters.html);
+    }
+
     this._helperWorldOMetersDateFixFilter.apply(modelWorldOMeters);
 
     this._collectionDatas.createCaseFromIntegration(modelCountry, modelWorldOMeters);
