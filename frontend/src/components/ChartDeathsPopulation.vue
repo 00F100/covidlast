@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <div id="chart-population"></div>
+      <div id="chart-deaths-population"></div>
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
 import Highcharts from 'highcharts';
 
 export default {
-  name: 'ChartCasesPopulation',
+  name: 'ChartDeathsPopulation',
   props: {
     countriesSelected: Object
   },
@@ -18,22 +18,22 @@ export default {
     this.update();
   },
   watch: {
-    "countriesSelected.populationCases": function() {
+    "countriesSelected.populationDeaths": function() {
       this.update();
     },
   },
   methods: {
     update: function() {
-      Highcharts.chart('chart-population', {
+      Highcharts.chart('chart-deaths-population', {
           title: {
-              text: 'Cases Unique Count'
+              text: 'Deaths Unique Count'
           },
           yAxis: {
               title: {
-                  text: 'Number of cases'
+                  text: 'Number of deaths'
               }
           },
-          series: this.countriesSelected.populationCases
+          series: this.countriesSelected.populationDeaths
       });
     }
   }

@@ -13,6 +13,8 @@
     "bootstrap-vue": "^2.13.0",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
+    "highcharts": "^8.1.0",
+    "moment": "^2.25.3",
     "vue": "^2.6.11",
     "vue-loading-overlay": "^3.3.2",
     "vue-multiselect": "^2.1.6",

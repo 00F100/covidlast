@@ -11,22 +11,25 @@
         placeholder=""></multiselect>
     </div>
     <div class="col-md-12">
-      <small>Last update: 05/02/2020 03:27:31</small>
+      <small>Last update: {{ lastUpdated }}</small>
     </div>
   </div>
 </template>
 
 <script>
 import Multiselect from 'vue-multiselect'
+import moment from 'moment'
 
 export default {
   name: 'ChartsFilter',
   props: {
     countriesList: Array,
-    countriesSelected: Array
+    countriesSelected: Array,
+    date: String
   },
-  created: function() {
+  mounted: function() {
     this.selected = this.countriesSelected;
+    this.lastUpdated = moment(+this.date * 1000).utc().format('MM/DD/YYYY HH:mm:ssZ');
   },
   watch: {
     selected: function() {
@@ -42,7 +45,8 @@ export default {
   },
   data: function() {
     return {
-      selected: []
+      selected: [],
+      lastUpdated: null
     };
   },
   components: {
