@@ -13,6 +13,7 @@
     "bootstrap-vue": "^2.13.0",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
+    "hex-to-rgba": "^2.0.1",
     "highcharts": "^8.1.0",
     "moment": "^2.25.3",
     "vue": "^2.6.11",

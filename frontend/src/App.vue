@@ -9,13 +9,14 @@
         loader="bars"></loading>
 
     <header>
-      <h1>Covid-19 cases and deaths</h1>
+      <h1 class="title-page-text">COVID-19 CORONAVIRUS PANDEMIC</h1>
     </header>
     <section>
       <div class="row">
-        <div class="col">
+        <div class="col" v-if="meta">
           <ChartsFilter
             :countriesList="countriesList"
+            :options="countriesList"
             :countriesSelected.sync="countriesSelected"
             :date="meta.date"
           ></ChartsFilter>
@@ -26,13 +27,13 @@
           <ChartCasesPopulation :countriesSelected="countriesDataChart"></ChartCasesPopulation>
         </div>
         <div class="col-12 col-sm-12 col-md-6">
-          <ChartCasesPopulationPorcentage :countriesSelected="countriesDataChart"></ChartCasesPopulationPorcentage>
+          <ChartCasesPopulationPercentage :countriesSelected="countriesDataChart"></ChartCasesPopulationPercentage>
         </div>
         <div class="col-12 col-sm-12 col-md-6">
           <ChartDeathsPopulation :countriesSelected="countriesDataChart"></ChartDeathsPopulation>
         </div>
         <div class="col-12 col-sm-12 col-md-6">
-          <ChartDeathsPopulationPorcentage :countriesSelected="countriesDataChart"></ChartDeathsPopulationPorcentage>
+          <ChartDeathsPopulationPercentage :countriesSelected="countriesDataChart"></ChartDeathsPopulationPercentage>
         </div>
       </div>
     </section>
@@ -44,8 +45,8 @@ import Loading from 'vue-loading-overlay'
 import ChartsFilter from './components/ChartsFilter.vue'
 import ChartCasesPopulation from './components/ChartCasesPopulation.vue'
 import ChartDeathsPopulation from './components/ChartDeathsPopulation.vue'
-import ChartDeathsPopulationPorcentage from './components/ChartDeathsPopulationPorcentage.vue'
-import ChartCasesPopulationPorcentage from './components/ChartCasesPopulationPorcentage.vue'
+import ChartDeathsPopulationPercentage from './components/ChartDeathsPopulationPercentage.vue'
+import ChartCasesPopulationPercentage from './components/ChartCasesPopulationPercentage.vue'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import Axios from 'axios'
 import moment from 'moment'
@@ -68,16 +69,16 @@ export default {
       this.mountData('populationCases');
       this.mountData('populationDeaths');
       this.mountData('populationActive');
-      this.mountData('populationPorcentageCases');
-      this.mountData('populationPorcentageDeaths');
-      this.mountData('populationPorcentageActive');
+      this.mountData('populationPercentageCases');
+      this.mountData('populationPercentageDeaths');
+      this.mountData('populationPercentageActive');
     },
     mountData: function(metric) {
       const series = [];
       this.countriesData.map(country => {
         this.countriesSelected.map(selected => {
           if (country.countryId === selected.id) {
-            const serie = this.getSerie(series, selected.name);
+            const serie = this.getSerie(series, selected.name, country.countryColor);
             country.data.map((record, i) => {
               serie.data.push([`${moment(record.timestamp * 1000).utc().format('MM/DD/YYYY')}<br>day ${i+1}`, this.getData(metric, record, country.countryPopulation)]);
             });
@@ -86,10 +87,11 @@ export default {
       });
       this.updateData(metric, series);
     },
-    getSerie: function(series, name) {
+    getSerie: function(series, name, color) {
       if(!series.find(x => x.name == name)) {
           series.push({
             name,
+            color,
             data: []
           });
         }
@@ -99,17 +101,17 @@ export default {
       if (metric === 'populationCases') return record.cases;
       if (metric === 'populationDeaths') return record.deaths;
       if (metric === 'populationActive') return record.active;
-      if (metric === 'populationPorcentageCases') return +((record.cases * 100) / population).toFixed(5);
-      if (metric === 'populationPorcentageDeaths') return +((record.deaths * 100) / population).toFixed(5);
-      if (metric === 'populationPorcentageActive') return +((record.active * 100) / population).toFixed(5);
+      if (metric === 'populationPercentageCases') return +((record.cases * 100) / population).toFixed(5);
+      if (metric === 'populationPercentageDeaths') return +((record.deaths * 100) / population).toFixed(5);
+      if (metric === 'populationPercentageActive') return +((record.active * 100) / population).toFixed(5);
     },
     updateData: function(metric, series) {
       if (metric === 'populationCases') this.countriesDataChart.populationCases = series;
       if (metric === 'populationDeaths') this.countriesDataChart.populationDeaths = series;
       if (metric === 'populationActive') this.countriesDataChart.populationActive = series;
-      if (metric === 'populationPorcentageCases') this.countriesDataChart.populationPorcentageCases = series;
-      if (metric === 'populationPorcentageDeaths') this.countriesDataChart.populationPorcentageDeaths = series;
-      if (metric === 'populationPorcentageActive') this.countriesDataChart.populationPorcentageActive = series;
+      if (metric === 'populationPercentageCases') this.countriesDataChart.populationPercentageCases = series;
+      if (metric === 'populationPercentageDeaths') this.countriesDataChart.populationPercentageDeaths = series;
+      if (metric === 'populationPercentageActive') this.countriesDataChart.populationPercentageActive = series;
     }
   },
   beforeMount: function() {
@@ -120,7 +122,9 @@ export default {
             this.countriesData.push(data);
             this.countriesList.push({
               id: data.countryId,
-              name: data.countryName
+              name: data.countryName,
+              color: data.countryColor,
+              font: '#FFF'
             });
           });
           this.isLoading = false
@@ -142,7 +146,9 @@ export default {
       countriesSelected: [
         {
           "id": 1,
-          "name": "Brazil"
+          "name": "Brazil",
+          "color": "#090",
+          "font": "#FFF"
         }
       ],
       countriesList: [],
@@ -151,9 +157,9 @@ export default {
         populationCases: [],
         populationDeaths: [],
         populationActive: [],
-        populationPorcentageCases: [],
-        populationPorcentageDeaths: [],
-        populationPorcentageActive: []
+        populationPercentageCases: [],
+        populationPercentageDeaths: [],
+        populationPercentageActive: []
       }
     };
   },
@@ -161,9 +167,23 @@ export default {
     Loading,
     ChartsFilter,
     ChartCasesPopulation,
-    ChartCasesPopulationPorcentage,
+    ChartCasesPopulationPercentage,
     ChartDeathsPopulation,
-    ChartDeathsPopulationPorcentage
+    ChartDeathsPopulationPercentage
   }
 }
 </script>
+
+<style>
+.title-page-text {
+  text-align: center;
+  margin: 10px 0px 0px 0px;
+  font-size: 35px;
+}
+
+@media only screen and (max-width: 600px) {
+  .title-page-text {
+    font-size: 20px;
+  }
+}
+</style>

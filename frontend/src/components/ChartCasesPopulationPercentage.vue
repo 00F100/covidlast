@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <div id="chart-population-porcentage"></div>
+      <div id="chart-population-percentage"></div>
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
 import Highcharts from 'highcharts';
 
 export default {
-  name: 'ChartCasesPopulationPorcentage',
+  name: 'ChartCasesPopulationPercentage',
   props: {
     countriesSelected: Object
   },
@@ -18,22 +18,22 @@ export default {
     this.update();
   },
   watch: {
-    "countriesSelected.populationPorcentageCases": function() {
+    "countriesSelected.populationPercentageCases": function() {
       this.update();
     },
   },
   methods: {
     update: function() {
-      Highcharts.chart('chart-population-porcentage', {
+      Highcharts.chart('chart-population-percentage', {
           title: {
-              text: 'Cases by Population Porcentage'
+              text: 'Cases by Population Percentage'
           },
           yAxis: {
               title: {
-                  text: 'Number of cases'
+                  text: 'Percentage of cases'
               }
           },
-          series: this.countriesSelected.populationPorcentageCases
+          series: this.countriesSelected.populationPercentageCases
       });
     }
   }

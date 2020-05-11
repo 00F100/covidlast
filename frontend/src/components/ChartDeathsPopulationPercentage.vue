@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <div id="chart-deaths-population-porcentage"></div>
+      <div id="chart-deaths-population-percentage"></div>
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
 import Highcharts from 'highcharts';
 
 export default {
-  name: 'ChartDeathsPopulationPorcentage',
+  name: 'ChartDeathsPopulationPercentage',
   props: {
     countriesSelected: Object
   },
@@ -18,22 +18,22 @@ export default {
     this.update();
   },
   watch: {
-    "countriesSelected.populationPorcentageDeaths": function() {
+    "countriesSelected.populationPercentageDeaths": function() {
       this.update();
     },
   },
   methods: {
     update: function() {
-      Highcharts.chart('chart-deaths-population-porcentage', {
+      Highcharts.chart('chart-deaths-population-percentage', {
           title: {
-              text: 'Deaths by Population Porcentage'
+              text: 'Deaths by Population Percentage'
           },
           yAxis: {
               title: {
-                  text: 'Number of deaths'
+                  text: 'Percentage of deaths'
               }
           },
-          series: this.countriesSelected.populationPorcentageDeaths
+          series: this.countriesSelected.populationPercentageDeaths
       });
     }
   }
