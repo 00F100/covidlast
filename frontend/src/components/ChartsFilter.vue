@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="select-to-compare-text">
-        <label>Select countries to compare</label>
+        <label>{{ t('Select the countries to compare') }}</label>
       </div>
       <multiselect
         v-model="selected"
@@ -24,20 +24,11 @@
               </slot>
             </template>
           </div>
-
-
-
-
-
-
-
-
-
         </template>
       </multiselect>
     </div>
     <div class="col-md-12">
-      <small class="last-update-text">Last update: {{ lastUpdated }}</small>
+      <small class="last-update-text">{{ tWithParams('Last update: %lastUpdated%', { lastUpdated: 'asadasd' }) }}</small>
     </div>
   </div>
 </template>
@@ -83,6 +74,20 @@ export default {
   },
   components: {
     Multiselect
+  },
+  locales: {
+    en: {
+      'Select the countries to compare': 'Select the countries to compare',
+      'Last update: %lastUpdated%': 'Last update: %lastUpdated%'
+    },
+    pt: {
+      'Select the countries to compare': 'Selecione os países para comparar',
+      'Last update: %lastUpdated%': 'Última atualização: %lastUpdated%'
+    },
+    es: {
+      'Select the countries to compare': 'Seleccione los países para comparar',
+      'Last update: %lastUpdated%': 'Última actualización: %lastUpdated%'
+    }
   }
 }
 </script>

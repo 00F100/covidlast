@@ -9,7 +9,7 @@
         loader="bars"></loading>
 
     <header>
-      <h1 class="title-page-text">COVID-19 CORONAVIRUS PANDEMIC</h1>
+      <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
     </header>
     <section>
       <div class="row">
@@ -63,6 +63,14 @@ export default {
     countriesSelected: function() {
       this.updateCases();
     }
+  },
+  created: function() {
+    let lang = this.$cookie.get('lang')
+    if (!lang) {
+      lang = 'en'
+      this.$cookie.set('lang', lang)
+    }
+    this.$translate.setLang(lang);
   },
   methods: {
     updateCases: function() {
@@ -170,6 +178,17 @@ export default {
     ChartCasesPopulationPercentage,
     ChartDeathsPopulation,
     ChartDeathsPopulationPercentage
+  },
+  locales: {
+    en: {
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIC'
+    },
+    pt: {
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA'
+    },
+    es: {
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA'
+    }
   }
 }
 </script>
