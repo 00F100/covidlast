@@ -26,15 +26,29 @@ export default {
     update: function() {
       Highcharts.chart('chart-population', {
           title: {
-              text: 'Cases Unique Count'
+              text: this.$translate.text('Total cases by day')
           },
           yAxis: {
               title: {
-                  text: 'Number of cases'
+                text: this.$translate.text('Number of cases')
               }
           },
           series: this.countriesSelected.populationCases
       });
+    }
+  },
+  locales: {
+    en: {
+      'Total cases by day': 'Total cases by day',
+      'Number of cases': 'Number of cases'
+    },
+    pt: {
+      'Total cases by day': 'Total de casos por dia',
+      'Number of cases': 'Número de casos'
+    },
+    es: {
+      'Total cases by day': 'Total de casos por día',
+      'Number of cases': 'Numero de casos'
     }
   }
 }

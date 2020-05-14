@@ -65,11 +65,12 @@ export default {
     }
   },
   created: function() {
-    let lang = this.$cookie.get('lang')
-    if (!lang) {
-      lang = 'en'
-      this.$cookie.set('lang', lang)
-    }
+    let lang = 'pt';
+    // let lang = this.$cookie.get('lang')
+    // if (!lang) {
+    //   lang = 'en'
+    //   this.$cookie.set('lang', lang)
+    // }
     this.$translate.setLang(lang);
   },
   methods: {
@@ -130,7 +131,7 @@ export default {
             this.countriesData.push(data);
             this.countriesList.push({
               id: data.countryId,
-              name: data.countryName,
+              name: this.$translate.text(data.countryName),
               color: data.countryColor,
               font: '#FFF'
             });
@@ -154,7 +155,7 @@ export default {
       countriesSelected: [
         {
           "id": 1,
-          "name": "Brazil",
+          "name": this.$translate.text('Brazil'),
           "color": "#090",
           "font": "#FFF"
         }
@@ -181,13 +182,25 @@ export default {
   },
   locales: {
     en: {
-      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIC'
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIC',
+      'Belgium': 'Belgium',
+      'Brazil': 'Brazil',
+      'Canada': 'Canada',
+      'China': 'China'
     },
     pt: {
-      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA'
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
+      'Belgium': 'Bélgica',
+      'Brazil': 'Brasil',
+      'Canada': 'Canadá',
+      'China': 'China'
     },
     es: {
-      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA'
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
+      'Belgium': 'Bélgica',
+      'Brazil': 'Brasil',
+      'Canada': 'Canadá',
+      'China': 'China'
     }
   }
 }
