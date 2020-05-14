@@ -13,9 +13,11 @@ clean:
 install: clean install-api install-frontend
 
 install-api:
+	cp api/.env-dev api/.env;
 	cd api && npm install;
 
 install-frontend:
+	cp frontend/.env-dev frontend/.env;
 	cd frontend && npm install;
 
 up-api:
