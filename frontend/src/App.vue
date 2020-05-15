@@ -8,7 +8,7 @@
         :z-index="9"
         loader="bars"></loading>
     
-    <modal-language v-if="showModal" @close="showModal = false" :lang.sync="lang" :modal.sync="showModal"></modal-language>
+    <modal-language v-if="showModalLang" @close="showModalLang = false" :lang.sync="lang" :modal.sync="showModalLang"></modal-language>
 
     <header>
       <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
@@ -26,16 +26,16 @@
       </div>
       <div class="row">
         <div class="col-12 col-sm-12 col-md-6">
-          <ChartCasesPopulation :countriesSelected="countriesDataChart"></ChartCasesPopulation>
+          <ChartCasesPopulation :countriesSelected="countriesDataChart" :forceUpdate="!showModalLang"></ChartCasesPopulation>
         </div>
         <div class="col-12 col-sm-12 col-md-6">
-          <ChartCasesPopulationPercentage :countriesSelected="countriesDataChart"></ChartCasesPopulationPercentage>
+          <ChartCasesPopulationPercentage :countriesSelected="countriesDataChart" :forceUpdate="!showModalLang"></ChartCasesPopulationPercentage>
         </div>
         <div class="col-12 col-sm-12 col-md-6">
-          <ChartDeathsPopulation :countriesSelected="countriesDataChart"></ChartDeathsPopulation>
+          <ChartDeathsPopulation :countriesSelected="countriesDataChart" :forceUpdate="!showModalLang"></ChartDeathsPopulation>
         </div>
         <div class="col-12 col-sm-12 col-md-6">
-          <ChartDeathsPopulationPercentage :countriesSelected="countriesDataChart"></ChartDeathsPopulationPercentage>
+          <ChartDeathsPopulationPercentage :countriesSelected="countriesDataChart" :forceUpdate="!showModalLang"></ChartDeathsPopulationPercentage>
         </div>
       </div>
     </section>
@@ -68,6 +68,7 @@ export default {
     },
     lang: function() {
       this.$translate.setLang(this.lang);
+      this.updateDataCountry();
     }
   },
   beforeCreate: function() {
@@ -127,24 +128,28 @@ export default {
       if (metric === 'populationPercentageCases') this.countriesDataChart.populationPercentageCases = series;
       if (metric === 'populationPercentageDeaths') this.countriesDataChart.populationPercentageDeaths = series;
       if (metric === 'populationPercentageActive') this.countriesDataChart.populationPercentageActive = series;
+    },
+    updateDataCountry: function() {
+      this.countriesList = [];
+      this.countriesData.map(data => {
+        this.countriesList.push({
+          id: data.countryId,
+          name: this.$translate.text(data.countryName),
+          color: data.countryColor,
+          font: '#FFF'
+        });
+      });
+      this.isLoading = false
+      this.updateCases();
     }
   },
   beforeMount: function() {
     Axios.get(`${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}:${VUE_APP_API_PORT}/cases`)
       .then(response => {
         if (response.data.data && response.data.data) {
-          response.data.data.map(data => {
-            this.countriesData.push(data);
-            this.countriesList.push({
-              id: data.countryId,
-              name: this.$translate.text(data.countryName),
-              color: data.countryColor,
-              font: '#FFF'
-            });
-          });
-          this.isLoading = false
-          this.updateCases();
+          this.countriesData = response.data.data;
           this.meta = response.data.meta;
+          this.updateDataCountry();
         } else {
           this.$popup.error('Response has empty')
         }
@@ -158,7 +163,7 @@ export default {
       meta: null,
       isLoading: true,
       fullPage: true,
-      showModal: true,
+      showModalLang: true,
       lang: 'en',
       countriesSelected: [
         {

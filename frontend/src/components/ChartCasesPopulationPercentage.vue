@@ -7,12 +7,11 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
-
 export default {
   name: 'ChartCasesPopulationPercentage',
   props: {
-    countriesSelected: Object
+    countriesSelected: Object,
+    forceUpdate: Boolean
   },
   mounted: function() {
     this.update();
@@ -21,24 +20,20 @@ export default {
     "countriesSelected.populationPercentageCases": function() {
       this.update();
     },
+    forceUpdate: function() {
+      if (this.forceUpdate) {
+        this.update();
+      }
+    }
   },
   methods: {
     update: function() {
-      Highcharts.chart('chart-population-percentage', {
-          title: {
-              text: this.$translate.text('Total cases by percentage population')
-          },
-          yAxis: {
-              title: {
-                  text: this.$translate.text('Percentage of population')
-              }
-          },
-          series: this.countriesSelected.populationPercentageCases,
-          credits: {
-            text: 'covidlast.com',
-            href: 'http://covidlast.com'
-          }
-      });
+      this.$chart.generate(
+        'chart-population-percentage',
+        this.countriesSelected.populationPercentageCases,
+        this.$translate.text('Total cases by percentage population'),
+        this.$translate.text('Percentage of population')
+      );
     }
   },
   locales: {

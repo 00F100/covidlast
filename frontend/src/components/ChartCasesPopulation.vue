@@ -7,12 +7,11 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
-
 export default {
   name: 'ChartCasesPopulation',
   props: {
-    countriesSelected: Object
+    countriesSelected: Object,
+    forceUpdate: Boolean
   },
   mounted: function() {
     this.update();
@@ -21,24 +20,20 @@ export default {
     "countriesSelected.populationCases": function() {
       this.update();
     },
+    forceUpdate: function() {
+      if (this.forceUpdate) {
+        this.update();
+      }
+    }
   },
   methods: {
     update: function() {
-      Highcharts.chart('chart-population', {
-          title: {
-              text: this.$translate.text('Total cases by day')
-          },
-          yAxis: {
-              title: {
-                text: this.$translate.text('Number of cases')
-              }
-          },
-          series: this.countriesSelected.populationCases,
-          credits: {
-            text: 'covidlast.com',
-            href: 'http://covidlast.com'
-          }
-      });
+      this.$chart.generate(
+        'chart-population',
+        this.countriesSelected.populationCases,
+        this.$translate.text('Total cases by day'),
+        this.$translate.text('Number of cases')
+      );
     }
   },
   locales: {
