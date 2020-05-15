@@ -26,15 +26,33 @@ export default {
     update: function() {
       Highcharts.chart('chart-population-percentage', {
           title: {
-              text: 'Cases by Population Percentage'
+              text: this.$translate.text('Total cases by percentage population')
           },
           yAxis: {
               title: {
-                  text: 'Percentage of cases'
+                  text: this.$translate.text('Percentage of population')
               }
           },
-          series: this.countriesSelected.populationPercentageCases
+          series: this.countriesSelected.populationPercentageCases,
+          credits: {
+            text: 'covidlast.com',
+            href: 'http://covidlast.com'
+          }
       });
+    }
+  },
+  locales: {
+    en: {
+      'Total cases by percentage population': 'Total cases by percentage population',
+      'Percentage of population': 'Percentage of population'
+    },
+    pt: {
+      'Total cases by percentage population': 'Total de casos por porcentagem da população',
+      'Percentage of population': 'Percentagem da população'
+    },
+    es: {
+      'Total cases by percentage population': 'Total de casos por porcentaje de población',
+      'Percentage of population': 'Porcentaje de poblacion'
     }
   }
 }

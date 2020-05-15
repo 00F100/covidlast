@@ -26,15 +26,33 @@ export default {
     update: function() {
       Highcharts.chart('chart-deaths-population', {
           title: {
-              text: 'Deaths Unique Count'
+              text: this.$translate.text('Total deaths by day')
           },
           yAxis: {
               title: {
-                  text: 'Number of deaths'
+                  text: this.$translate.text('Number of deaths')
               }
           },
-          series: this.countriesSelected.populationDeaths
+          series: this.countriesSelected.populationDeaths,
+          credits: {
+            text: 'covidlast.com',
+            href: 'http://covidlast.com'
+          }
       });
+    }
+  },
+  locales: {
+    en: {
+      'Total deaths by day': 'Total deaths by day',
+      'Number of deaths': 'Number of deaths'
+    },
+    pt: {
+      'Total deaths by day': 'Total de mortes por dia',
+      'Number of deaths': 'Número de mortes'
+    },
+    es: {
+      'Total deaths by day': 'Total de muertes por día',
+      'Number of deaths': 'Número de muertes'
     }
   }
 }

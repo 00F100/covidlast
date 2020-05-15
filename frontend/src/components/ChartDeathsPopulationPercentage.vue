@@ -26,15 +26,33 @@ export default {
     update: function() {
       Highcharts.chart('chart-deaths-population-percentage', {
           title: {
-              text: 'Deaths by Population Percentage'
+              text: this.$translate.text('Total deaths by percentage population')
           },
           yAxis: {
               title: {
-                  text: 'Percentage of deaths'
+                  text: this.$translate.text('Percentage of population')
               }
           },
-          series: this.countriesSelected.populationPercentageDeaths
+          series: this.countriesSelected.populationPercentageDeaths,
+          credits: {
+            text: 'covidlast.com',
+            href: 'http://covidlast.com'
+          }
       });
+    }
+  },
+  locales: {
+    en: {
+      'Total deaths by percentage population': 'Total deaths by percentage population',
+      'Percentage of population': 'Percentage of population'
+    },
+    pt: {
+      'Total deaths by percentage population': 'Total de mortes por porcentagem da população',
+      'Percentage of population': 'Porcentagem da população'
+    },
+    es: {
+      'Total deaths by percentage population': 'Total de muertes por porcentaje de población',
+      'Percentage of deaths': 'Porcentaje de poblacion'
     }
   }
 }

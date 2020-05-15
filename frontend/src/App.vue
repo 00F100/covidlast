@@ -7,6 +7,8 @@
         :opacity="0.7"
         :z-index="9"
         loader="bars"></loading>
+    
+    <modal-language v-if="showModal" @close="showModal = false" :lang.sync="lang" :modal.sync="showModal"></modal-language>
 
     <header>
       <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
@@ -50,6 +52,7 @@ import ChartCasesPopulationPercentage from './components/ChartCasesPopulationPer
 import 'vue-loading-overlay/dist/vue-loading.css'
 import Axios from 'axios'
 import moment from 'moment'
+import ModalLanguage from './components/ModalLanguage.vue'
 
 const {
   VUE_APP_API_SCHEMA,
@@ -62,16 +65,19 @@ export default {
   watch: {
     countriesSelected: function() {
       this.updateCases();
+    },
+    lang: function() {
+      this.$translate.setLang(this.lang);
     }
   },
-  created: function() {
-    let lang = 'pt';
+  beforeCreate: function() {
+    // this.lang = 'pt';
     // let lang = this.$cookie.get('lang')
     // if (!lang) {
     //   lang = 'en'
     //   this.$cookie.set('lang', lang)
     // }
-    this.$translate.setLang(lang);
+    this.$translate.setLang(this.lang);
   },
   methods: {
     updateCases: function() {
@@ -89,7 +95,7 @@ export default {
           if (country.countryId === selected.id) {
             const serie = this.getSerie(series, selected.name, country.countryColor);
             country.data.map((record, i) => {
-              serie.data.push([`${moment(record.timestamp * 1000).utc().format('MM/DD/YYYY')}<br>day ${i+1}`, this.getData(metric, record, country.countryPopulation)]);
+              serie.data.push([`${moment(record.timestamp * 1000).utc().format(this.$translate.text('MM/DD/YYYY'))}<br>${this.$translate.text('day')} ${i+1}`, this.getData(metric, record, country.countryPopulation)]);
             });
           }
         });
@@ -152,6 +158,8 @@ export default {
       meta: null,
       isLoading: true,
       fullPage: true,
+      showModal: true,
+      lang: 'en',
       countriesSelected: [
         {
           "id": 1,
@@ -178,29 +186,69 @@ export default {
     ChartCasesPopulation,
     ChartCasesPopulationPercentage,
     ChartDeathsPopulation,
-    ChartDeathsPopulationPercentage
+    ChartDeathsPopulationPercentage,
+    ModalLanguage
   },
   locales: {
     en: {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIC',
+      'day': 'day',
+      'MM/DD/YYYY': 'MM/DD/YYYY',
       'Belgium': 'Belgium',
       'Brazil': 'Brazil',
       'Canada': 'Canada',
-      'China': 'China'
+      'China': 'China',
+      'France': 'France',
+      'Germany': 'Germany',
+      'Iran': 'Iran',
+      'Italy': 'Italy',
+      'Netherlands': 'Netherlands',
+      'Portugal': 'Portugal',
+      'Russia': 'Russia',
+      'Spain': 'Spain',
+      'Switzerland': 'Switzerland',
+      'United Kingdom': 'United Kingdom',
+      'United States': 'United States'
     },
     pt: {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
+      'day': 'dia',
+      'MM/DD/YYYY': 'DD/MM/YYYY',
       'Belgium': 'Bélgica',
       'Brazil': 'Brasil',
       'Canada': 'Canadá',
-      'China': 'China'
+      'China': 'China',
+      'France': 'França',
+      'Germany': 'Alemanha',
+      'Iran': 'Irã',
+      'Italy': 'Itália',
+      'Netherlands': 'Holanda',
+      'Portugal': 'Portugal',
+      'Russia': 'Rússia',
+      'Spain': 'Espanha',
+      'Switzerland': 'Suíça',
+      'United Kingdom': 'Reino Unido',
+      'United States': 'Estados Unidos'
     },
     es: {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
+      'day': 'día',
+      'MM/DD/YYYY': 'DD/MM/YYYY',
       'Belgium': 'Bélgica',
       'Brazil': 'Brasil',
       'Canada': 'Canadá',
-      'China': 'China'
+      'China': 'China',
+      'France': 'Francia',
+      'Germany': 'Alemania',
+      'Iran': 'Irán',
+      'Italy': 'Italia',
+      'Netherlands': 'Holanda',
+      'Portugal': 'Portugal',
+      'Russia': 'Rusia',
+      'Spain': 'España',
+      'Switzerland': 'Suiza',
+      'United Kingdom': 'Reino Unido',
+      'United States': 'Estados Unidos'
     }
   }
 }

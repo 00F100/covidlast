@@ -33,7 +33,11 @@ export default {
                 text: this.$translate.text('Number of cases')
               }
           },
-          series: this.countriesSelected.populationCases
+          series: this.countriesSelected.populationCases,
+          credits: {
+            text: 'covidlast.com',
+            href: 'http://covidlast.com'
+          }
       });
     }
   },
