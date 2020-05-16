@@ -28,7 +28,7 @@
       </multiselect>
     </div>
     <div class="col-md-12">
-      <small class="last-update-text">{{ tWithParams('Last update: %lastUpdated%', { lastUpdated: 'asadasd' }) }}</small>
+      <small class="last-update-text">{{ t('Last update') }}, {{ currentDateTimezoneLabel }}, {{ currentDate }}</small>
     </div>
   </div>
 </template>
@@ -43,15 +43,29 @@ export default {
   props: {
     countriesList: Array,
     countriesSelected: Array,
+    forceUpdate: Boolean,
     date: Number
   },
   mounted: function() {
     this.selected = this.countriesSelected;
-    this.lastUpdated = moment(this.date * 1000).utc().format('MM/DD/YYYY HH:mm:ss z');
+    this.lastUpdated = moment(this.date * 1000).utc().format(this.$translate.text('MM/DD/YYYY HH:mm:ss Z'));
+    this.currentDate = this.getDateClient(this.date * 1000);
+    this.currentDateTimezoneLabel = this.getLabelTimezone();
   },
   methods: {
     torgb: function(color, opacity) {
       return hexToRgba(color, opacity)
+    },
+    getLabelTimezone: function() {
+      const timezone = this.getTimezone().match(/(\(.*\))/g);
+      return timezone[0].replace(/\(|\)/g,'');
+    },
+    getDateClient: function(timestamp) {
+      const timezone = this.getTimezone().match(/([+|-][0-9]{4})/g);
+      return moment(timestamp).utcOffset(timezone[0]).format('MM/DD/YYYY HH:mm:ss Z');
+    },
+    getTimezone: function() {
+      return new Date().toString().match(/([A-Z]+[\\+-][0-9]+.*)/)[1];
     }
   },
   watch: {
@@ -64,12 +78,25 @@ export default {
         });
       });
       this.$emit('update:countriesSelected', countries);
+    },
+    forceUpdate: function() {
+      if (this.forceUpdate) {
+        const selected = [];
+        if (this.selected.length > 0) {
+          this.selected.map(country => {
+            selected.push(this.countriesList.find(x => x.id === country.id));
+          });
+        }
+        this.selected = selected;
+      }
     }
   },
   data: function() {
     return {
       selected: [],
-      lastUpdated: null
+      lastUpdated: null,
+      currentDate: null,
+      currentDateTimezoneLabel: null
     };
   },
   components: {
@@ -78,15 +105,15 @@ export default {
   locales: {
     en: {
       'Select the countries to compare': 'Select the countries to compare',
-      'Last update: %lastUpdated%': 'Last update: %lastUpdated%'
+      'Last update': 'Last update'
     },
     pt: {
       'Select the countries to compare': 'Selecione os países para comparar',
-      'Last update: %lastUpdated%': 'Última atualização: %lastUpdated%'
+      'Last update': 'Última atualização'
     },
     es: {
       'Select the countries to compare': 'Seleccione los países para comparar',
-      'Last update: %lastUpdated%': 'Última actualización: %lastUpdated%'
+      'Last update': 'Última actualización'
     }
   }
 }

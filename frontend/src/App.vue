@@ -21,6 +21,7 @@
             :options="countriesList"
             :countriesSelected.sync="countriesSelected"
             :date="meta.date"
+            :forceUpdate="!showModalLang"
           ></ChartsFilter>
         </div>
       </div>
@@ -170,6 +171,18 @@ export default {
           "id": 1,
           "name": this.$translate.text('Brazil'),
           "color": "#090",
+          "font": "#FFF"
+        },
+        {
+          "id": 6,
+          "name": this.$translate.text('France'),
+          "color": "#002291",
+          "font": "#FFF"
+        },
+        {
+          "id": 15,
+          "name": this.$translate.text('Portugal'),
+          "color": "#006300",
           "font": "#FFF"
         }
       ],
