@@ -68,17 +68,19 @@ export default {
       this.updateCases();
     },
     lang: function() {
-      this.$translate.setLang(this.lang);
-      this.updateDataCountry();
+      this.$translate.setLang(this.lang)
+      this.$cookie.set('lang', this.lang)
+      this.updateDataCountry()
     }
   },
   beforeCreate: function() {
-    // this.lang = 'pt';
-    // let lang = this.$cookie.get('lang')
-    // if (!lang) {
-    //   lang = 'en'
-    //   this.$cookie.set('lang', lang)
-    // }
+    this.lang = this.$cookie.get('lang')
+    if (!this.lang) {
+      this.lang = 'en';
+      this.$cookie.set('lang', this.lang)
+    } else {
+      this.showModalLang = false;
+    }
     this.$translate.setLang(this.lang);
   },
   methods: {
