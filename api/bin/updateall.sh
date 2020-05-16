@@ -1,5 +1,6 @@
 #!/bin/sh
-for (( i=1; i<=16; i++ ))
-do
-  node dist/bootstrap/handler.js extract $i;
-done
+i=0
+while [ "$i" -le $1 ]; do
+    node dist/bootstrap/handler.js extract $i;
+    i=$(( i + 1 ))
+done 
