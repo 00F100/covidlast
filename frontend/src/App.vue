@@ -170,21 +170,27 @@ export default {
       lang: 'en',
       countriesSelected: [
         {
+          "id": 2,
+          "name": this.$translate.text('United States'),
+          "color": "#3A396B",
+          "font": "#FFF"
+        },
+        {
           "id": 1,
           "name": this.$translate.text('Brazil'),
-          "color": "#090",
+          "color": "#009738",
           "font": "#FFF"
         },
         {
-          "id": 6,
-          "name": this.$translate.text('France'),
-          "color": "#002291",
+          "id": 16,
+          "name": this.$translate.text('Russia'),
+          "color": "#0267AE",
           "font": "#FFF"
         },
         {
-          "id": 15,
-          "name": this.$translate.text('Portugal'),
-          "color": "#006300",
+          "id": 9,
+          "name": this.$translate.text('United Kingdom'),
+          "color": "#012066",
           "font": "#FFF"
         }
       ],
