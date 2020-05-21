@@ -10,10 +10,13 @@
     
     <modal-language v-if="showModalLang" @close="showModalLang = false" :lang.sync="lang" :modal.sync="showModalLang"></modal-language>
 
-    <header>
+    <header v-show="!showModalLang">
       <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
+      <div class="d-sm-block d-md-none">
+        <button class="btn btn-light choose-lang-mobile"  @click="showModalLang = true"><b-icon-arrow-up-down></b-icon-arrow-up-down><span></span></button>
+      </div>
     </header>
-    <section>
+    <section v-show="!showModalLang">
       <div class="row">
         <div class="col" v-if="meta">
           <ChartsFilter
@@ -22,6 +25,8 @@
             :countriesSelected.sync="countriesSelected"
             :date="meta.date"
             :forceUpdate="!showModalLang"
+            :lang="lang"
+            :modal.sync="showModalLang"
           ></ChartsFilter>
         </div>
       </div>
@@ -65,7 +70,7 @@ export default {
   name: 'App',
   watch: {
     countriesSelected: function() {
-      this.updateCases();
+        this.updateCases();
     },
     lang: function() {
       this.$translate.setLang(this.lang)
@@ -73,17 +78,23 @@ export default {
       this.updateDataCountry()
     }
   },
-  beforeCreate: function() {
-    this.lang = this.$cookie.get('lang')
-    if (!this.lang) {
-      this.lang = 'en';
-      this.$cookie.set('lang', this.lang)
-    } else {
-      this.showModalLang = false;
-    }
-    this.$translate.setLang(this.lang);
+  updated: function() {
+    this.processLanguage();
   },
   methods: {
+    processLanguage: function() {
+      this.haveCookie = true;
+      this.lang = this.$cookie.get('lang')
+      if (!this.lang) {
+        this.haveCookie = false;
+        this.lang = 'en';
+        this.$cookie.set('lang', this.lang)
+      }
+      if (!this.haveCookie) {
+        this.showModalLang = true;
+      }
+      this.$translate.setLang(this.lang);
+    },
     updateCases: function() {
       this.mountData('populationCases');
       this.mountData('populationDeaths');
@@ -137,6 +148,7 @@ export default {
       this.countriesData.map(data => {
         this.countriesList.push({
           id: data.countryId,
+          cases: data.data[data.data.length-1].cases,
           name: this.$translate.text(data.countryName),
           color: data.countryColor,
           font: '#FFF'
@@ -144,6 +156,16 @@ export default {
       });
       this.isLoading = false
       this.updateCases();
+      this.setDefaultValues();
+    },
+    setDefaultValues: function() {
+      let casesTop5 = [];
+      this.countriesList.map(country => {
+        casesTop5.push(country)
+      });
+      casesTop5.sort((a, b) => (a.cases < b.cases) ? 1 : -1);
+      casesTop5.splice(5, casesTop5.length);
+      this.countriesSelected = casesTop5;
     }
   },
   beforeMount: function() {
@@ -166,34 +188,11 @@ export default {
       meta: null,
       isLoading: true,
       fullPage: true,
-      showModalLang: true,
-      lang: 'en',
-      countriesSelected: [
-        {
-          "id": 2,
-          "name": this.$translate.text('United States'),
-          "color": "#3A396B",
-          "font": "#FFF"
-        },
-        {
-          "id": 1,
-          "name": this.$translate.text('Brazil'),
-          "color": "#009738",
-          "font": "#FFF"
-        },
-        {
-          "id": 16,
-          "name": this.$translate.text('Russia'),
-          "color": "#0267AE",
-          "font": "#FFF"
-        },
-        {
-          "id": 9,
-          "name": this.$translate.text('United Kingdom'),
-          "color": "#012066",
-          "font": "#FFF"
-        }
-      ],
+      showModalLang: null,
+      lang: null,
+      haveCookie: null,
+      waitUpdate: false,
+      countriesSelected: [],
       countriesList: [],
       countriesData: [],
       countriesDataChart: {
@@ -234,7 +233,16 @@ export default {
       'Spain': 'Spain',
       'Switzerland': 'Switzerland',
       'United Kingdom': 'United Kingdom',
-      'United States': 'United States'
+      'United States': 'United States',
+      'Peru': 'Peru',
+      'India': 'India',
+      'Chile': 'Chile',
+      'Mexico': 'Mexico',
+      'Saudi Arabia': 'Saudi Arabia',
+      'Turkey': 'Turkey',
+      'Pakistan': 'Pakistan',
+      'Bangladesh': 'Bangladesh',
+      'Qatar': 'Qatar'
     },
     pt: {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
@@ -254,7 +262,16 @@ export default {
       'Spain': 'Espanha',
       'Switzerland': 'Suíça',
       'United Kingdom': 'Reino Unido',
-      'United States': 'Estados Unidos'
+      'United States': 'Estados Unidos',
+      'Peru': 'Peru',
+      'India': 'Índia',
+      'Chile': 'Chile',
+      'Mexico': 'México',
+      'Saudi Arabia': 'Arábia Saudita',
+      'Turkey': 'Turquia',
+      'Pakistan': 'Paquistão',
+      'Bangladesh': 'Bangladesh',
+      'Qatar': 'Catar'
     },
     es: {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
@@ -274,7 +291,16 @@ export default {
       'Spain': 'España',
       'Switzerland': 'Suiza',
       'United Kingdom': 'Reino Unido',
-      'United States': 'Estados Unidos'
+      'United States': 'Estados Unidos',
+      'Peru': 'Perú',
+      'India': 'India',
+      'Chile': 'Chile',
+      'Mexico': 'Mexico',
+      'Saudi Arabia': 'Arabia Saudita',
+      'Turkey': 'Turkey',
+      'Pakistan': 'Pakistán',
+      'Bangladesh': 'Bangladesh',
+      'Qatar': 'Katar'
     }
   }
 }
@@ -291,5 +317,13 @@ export default {
   .title-page-text {
     font-size: 20px;
   }
+}
+
+.choose-lang-mobile {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #fff !important;
+  border-color: #FFF !important;
 }
 </style>

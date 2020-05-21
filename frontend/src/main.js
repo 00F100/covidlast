@@ -15,18 +15,12 @@ dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
 });
 
-const {
-  VUE_GOOGLE_ANALYTICS_TAG
-} = process.env;
-
 Vue.config.productionTip = false
 
-if (VUE_GOOGLE_ANALYTICS_TAG) {
-  Vue.use(VueAnalytics, {
-    id: VUE_GOOGLE_ANALYTICS_TAG
-  })
-}
-
+Vue.use(VueAnalytics, {
+  id: process.env.VUE_GOOGLE_ANALYTICS_TAG
+})
+//arrow-up-down
 Vue.use(VueCookie)
 Vue.use(VueTranslate)
 Vue.use(BootstrapVue)

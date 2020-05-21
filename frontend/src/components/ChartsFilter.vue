@@ -4,6 +4,8 @@
       <div class="select-to-compare-text">
         <label>{{ t('Select the countries to compare') }}</label>
       </div>
+    </div>
+    <div class="col-md-10">
       <multiselect
         v-model="selected"
         :options="countriesList"
@@ -27,8 +29,11 @@
         </template>
       </multiselect>
     </div>
+    <div class="col-md-2 d-none d-md-block">
+      <button class="btn btn-light choose-lang" @click="openModal"><b-icon-arrow-up-down></b-icon-arrow-up-down><span>{{ t(lang) }}</span></button>
+    </div>
     <div class="col-md-12">
-      <small class="last-update-text">{{ t('Last update') }}, {{ currentDateTimezoneLabel }}, {{ currentDate }}</small>
+      <small class="last-update-text">{{ t('Last update') }}, {{ currentDate }}</small>
     </div>
   </div>
 </template>
@@ -44,7 +49,9 @@ export default {
     countriesList: Array,
     countriesSelected: Array,
     forceUpdate: Boolean,
-    date: Number
+    date: Number,
+    lang: String,
+    modal: Boolean
   },
   mounted: function() {
     this.selected = this.countriesSelected;
@@ -62,12 +69,18 @@ export default {
     },
     getDateClient: function(timestamp) {
       const timezone = this.getTimezone().match(/([+|-][0-9]{4})/g);
-      return moment(timestamp).utcOffset(timezone[0]).format('MM/DD/YYYY HH:mm:ss Z');
+      return moment(timestamp).utcOffset(timezone[0]).format(this.$translate.text('MM/DD/YYYY HH:mm:ss Z'));
     },
     getTimezone: function() {
       return new Date().toString().match(/([A-Z]+[\\+-][0-9]+.*)/)[1];
+    },
+    openModal: function() {
+      this.$emit('update:modal', true);
     }
   },
+  // beforeUpdate: function() {
+  //   console.log(this.countriesList)
+  // },
   watch: {
     selected: function() {
       const countries = [];
@@ -105,15 +118,21 @@ export default {
   locales: {
     en: {
       'Select the countries to compare': 'Select the countries to compare',
-      'Last update': 'Last update'
+      'Last update': 'Last update',
+      'MM/DD/YYYY HH:mm:ss Z': 'MM/DD/YYYY HH:mm:ss Z',
+      'en': 'English'
     },
     pt: {
       'Select the countries to compare': 'Selecione os países para comparar',
-      'Last update': 'Última atualização'
+      'Last update': 'Última atualização',
+      'MM/DD/YYYY HH:mm:ss Z': 'DD/MM/YYYY HH:mm:ss Z',
+      'pt': 'Português'
     },
     es: {
       'Select the countries to compare': 'Seleccione los países para comparar',
-      'Last update': 'Última actualización'
+      'Last update': 'Última actualización',
+      'MM/DD/YYYY HH:mm:ss Z': 'DD/MM/YYYY HH:mm:ss Z',
+      'es': 'Español'
     }
   }
 }
@@ -160,5 +179,12 @@ export default {
     .last-update-text {
       font-size: 10px;
     }
+  }
+  .choose-lang {
+    width: 100%;
+    padding: 15px !important;
+  }
+  .choose-lang span {
+    padding: 0px 0px 0px 10px;
   }
 </style>

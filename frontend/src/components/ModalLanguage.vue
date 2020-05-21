@@ -4,6 +4,10 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div>
+            <slot name="header">
+              <h5>{{ t('COVID-19 PANDEMIC') }}</h5>
+              <small>{{ t('Select your language') }}</small>
+            </slot>
             <slot name="body">
               <button type="button" class="btn btn-light language" @click="change('en')">English</button>
               <button type="button" class="btn btn-light language" @click="change('pt')">Português</button>
@@ -26,7 +30,21 @@ export default {
   methods: {
     change: function(lang) {
       this.$emit('update:lang', lang);
-      this.$emit('update:modal', false);
+      this.$emit('update:modal', null);
+    }
+  },
+  locales: {
+    en: {
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIC',
+      'Select your language': 'Select your language'
+    },
+    pt: {
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
+      'Select your language': 'Selecione seu idioma'
+    },
+    es: {
+      'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
+      'Select your language': 'Elige tu idioma'
     }
   }
 }
@@ -74,15 +92,6 @@ export default {
   float: right;
 }
 
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
 .modal-enter {
   opacity: 0;
 }
@@ -102,6 +111,10 @@ export default {
   width: 100%;
   background-color: #d6d6d6 !important;
   margin: 10px 0px !important;
+}
+
+.modal-container {
+  text-align: center
 }
 
 </style>
