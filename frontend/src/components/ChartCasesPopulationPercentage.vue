@@ -48,6 +48,10 @@ export default {
     es: {
       'Total cases by percentage population': 'Total de casos por porcentaje de población',
       'Percentage of population': 'Porcentaje de poblacion'
+    },
+    ru: {
+      'Total cases by percentage population': 'Всего случаев по процентам населения',
+      'Percentage of population': 'Процент населения'
     }
   }
 }

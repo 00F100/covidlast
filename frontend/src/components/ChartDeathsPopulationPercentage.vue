@@ -48,6 +48,10 @@ export default {
     es: {
       'Total deaths by percentage population': 'Total de muertes por porcentaje de población',
       'Percentage of deaths': 'Porcentaje de poblacion'
+    },
+    ru: {
+      'Total deaths by percentage population': 'Общее количество смертей в процентах населения',
+      'Percentage of deaths': 'Процент смертей'
     }
   }
 }

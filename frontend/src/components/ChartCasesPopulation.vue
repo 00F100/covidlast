@@ -48,6 +48,10 @@ export default {
     es: {
       'Total cases by day': 'Total de casos por día',
       'Number of cases': 'Numero de casos'
+    },
+    ru: {
+      'Total cases by day': 'Всего случаев за день',
+      'Number of cases': 'Количество дел'
     }
   }
 }

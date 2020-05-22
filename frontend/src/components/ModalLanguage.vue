@@ -10,8 +10,9 @@
             </slot>
             <slot name="body">
               <button type="button" class="btn btn-light language" @click="change('en')">English</button>
-              <button type="button" class="btn btn-light language" @click="change('pt')">Português</button>
               <button type="button" class="btn btn-light language" @click="change('es')">Español</button>
+              <button type="button" class="btn btn-light language" @click="change('pt')">Português</button>
+              <button type="button" class="btn btn-light language" @click="change('ru')">Pусский</button>
             </slot>
           </div>
         </div>
@@ -47,6 +48,10 @@ export default {
     es: {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
       'Select your language': 'Elige tu idioma'
+    },
+    ru: {
+      'COVID-19 PANDEMIC': 'COVID-19 ПАНДЕМИЯ',
+      'Select your language': 'Выберите свой язык'
     }
   }
 }

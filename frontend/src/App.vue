@@ -351,6 +351,38 @@ export default {
       'Pakistan': 'Pakistán',
       'Bangladesh': 'Bangladesh',
       'Qatar': 'Katar'
+    },
+    ru: {
+      'COVID-19 PANDEMIC': 'COVID-19 ПАНДЕМИЯ',
+      'day': 'день',
+      'MM/DD/YYYY': 'DD/MM/YYYY',
+      'This is a open source project': 'Это проект с открытым исходным кодом',
+      'Data source': 'Источник данных',
+      'Source code': 'Исходный код',
+      'Belgium': 'Бельгия',
+      'Brazil': 'Бразилия',
+      'Canada': 'Канада',
+      'China': 'Китай',
+      'France': 'Франция',
+      'Germany': 'Германия',
+      'Iran': 'Иран',
+      'Italy': 'Италия',
+      'Netherlands': 'Нидерланды',
+      'Portugal': 'Португалия',
+      'Russia': 'Россия',
+      'Spain': 'Испания',
+      'Switzerland': 'Швейцария',
+      'United Kingdom': 'объединенное Королевство',
+      'United States': 'Соединенные Штаты',
+      'Peru': 'Перу',
+      'India': 'Индия',
+      'Chile': 'Чили',
+      'Mexico': 'Мексика',
+      'Saudi Arabia': 'Саудовская Аравия',
+      'Turkey': 'индейка',
+      'Pakistan': 'Пакистан',
+      'Bangladesh': 'Бангладеш',
+      'Qatar': 'Катар'
     }
   }
 }

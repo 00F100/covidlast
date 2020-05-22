@@ -78,9 +78,6 @@ export default {
       this.$emit('update:modal', true);
     }
   },
-  // beforeUpdate: function() {
-  //   console.log(this.countriesList)
-  // },
   watch: {
     selected: function() {
       const countries = [];
@@ -133,6 +130,12 @@ export default {
       'Last update': 'Última actualización',
       'MM/DD/YYYY HH:mm:ss Z': 'DD/MM/YYYY HH:mm:ss Z',
       'es': 'Español'
+    },
+    ru: {
+      'Select the countries to compare': 'Выберите страны для сравнения',
+      'Last update': 'Последнее обновление',
+      'MM/DD/YYYY HH:mm:ss Z': 'DD/MM/YYYY HH:mm:ss Z',
+      'ru': 'Pусский'
     }
   }
 }

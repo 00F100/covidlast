@@ -48,6 +48,10 @@ export default {
     es: {
       'Total deaths by day': 'Total de muertes por día',
       'Number of deaths': 'Número de muertes'
+    },
+    ru: {
+      'Total deaths by day': 'Всего смертей за день',
+      'Number of deaths': 'Количество смертей'
     }
   }
 }
