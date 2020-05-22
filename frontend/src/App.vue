@@ -90,11 +90,13 @@ export default {
   watch: {
     countriesSelected: function() {
         this.updateCases();
+        this.$ga.event('selectedCountries', 'change', 'countries', this.countriesSelected)
     },
     lang: function() {
       this.$translate.setLang(this.lang)
       this.$cookie.set('lang', this.lang)
       this.updateDataCountry()
+        this.$ga.event('language', 'change', 'lang', this.lang)
     }
   },
   updated: function() {
