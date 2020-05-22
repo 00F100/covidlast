@@ -202,6 +202,9 @@ export default {
         this.$popup.error(err.message)
       });
   },
+  mounted: function() {
+    this.$ga.page('/');
+  },
   data: function() {
     return {
       currentYear: moment().format('YYYY'),

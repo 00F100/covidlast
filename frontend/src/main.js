@@ -19,7 +19,7 @@ dotenv({
 Vue.config.productionTip = false
 
 Vue.use(VueAnalytics, {
-  id: process.env.VUE_GOOGLE_ANALYTICS_TAG
+  id: process.env.VUE_APP_FRONTEND_GOOGLE_ANALYTICS_TAG
 })
 
 Vue.use(VueCookie)
