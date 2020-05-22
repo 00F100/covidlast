@@ -15,9 +15,9 @@
         :z-index="9"
         loader="bars"></loading>
     
-    <modal-language v-if="showModalLang" @close="showModalLang = false" :lang.sync="lang" :modal.sync="showModalLang"></modal-language>
+    <modal-language v-if="showModalLang" @close="showModalLang = false" :lang.sync="lang" :modal.sync="showModalLang" :update.sync="update"></modal-language>
 
-    <header v-show="!showModalLang">
+    <header>
       <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
       <div class="d-sm-block d-md-none">
         <button class="btn btn-light choose-lang-mobile"  @click="showModalLang = true"><b-icon-arrow-up-down></b-icon-arrow-up-down><span></span></button>
@@ -88,6 +88,12 @@ const {
 export default {
   name: 'App',
   watch: {
+    update: function() {
+      if (this.update === true) {
+        this.update = false
+        this.getDataApi()
+      }
+    },
     countriesSelected: function() {
         this.updateCases();
         this.$ga.event('selectedCountries', 'change', 'countries', this.countriesSelected)
@@ -95,14 +101,29 @@ export default {
     lang: function() {
       this.$translate.setLang(this.lang)
       this.$cookie.set('lang', this.lang)
-      this.updateDataCountry()
-        this.$ga.event('language', 'change', 'lang', this.lang)
+      this.$ga.event('language', 'change', 'lang', this.lang)
+      this.updateDataCountry();
     }
   },
   updated: function() {
     this.processLanguage();
   },
   methods: {
+    getDataApi: function() {
+      Axios.get(`${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}:${VUE_APP_API_PORT}/cases`)
+        .then(response => {
+          if (response.data.data && response.data.data) {
+            this.countriesData = response.data.data;
+            this.meta = response.data.meta;
+            this.updateDataCountry()
+          } else {
+            this.$popup.error('Response has empty')
+          }
+        })
+        .catch(err => {
+          this.$popup.error(err.message)
+        });
+    },
     processLanguage: function() {
       this.haveCookie = true;
       this.lang = this.$cookie.get('lang')
@@ -189,21 +210,21 @@ export default {
       this.countriesSelected = casesTop5;
     }
   },
-  beforeMount: function() {
-    Axios.get(`${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}:${VUE_APP_API_PORT}/cases`)
-      .then(response => {
-        if (response.data.data && response.data.data) {
-          this.countriesData = response.data.data;
-          this.meta = response.data.meta;
-          this.updateDataCountry();
-        } else {
-          this.$popup.error('Response has empty')
-        }
-      })
-      .catch(err => {
-        this.$popup.error(err.message)
-      });
-  },
+  // beforeMount: function() {
+  //   Axios.get(`${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}:${VUE_APP_API_PORT}/cases`)
+  //     .then(response => {
+  //       if (response.data.data && response.data.data) {
+  //         this.countriesData = response.data.data;
+  //         this.meta = response.data.meta;
+  //         this.updateDataCountry();
+  //       } else {
+  //         this.$popup.error('Response has empty')
+  //       }
+  //     })
+  //     .catch(err => {
+  //       this.$popup.error(err.message)
+  //     });
+  // },
   mounted: function() {
     this.$ga.page('/');
   },
@@ -217,6 +238,7 @@ export default {
       lang: null,
       haveCookie: null,
       waitUpdate: false,
+      update: false,
       countriesSelected: [],
       countriesList: [],
       countriesData: [],

@@ -25,12 +25,14 @@ export default {
   name: 'ModalLanguage',
   props: {
     lang: String,
-    modal: Boolean
+    modal: Boolean,
+    update: Boolean
   },
   methods: {
     change: function(lang) {
       this.$emit('update:lang', lang);
       this.$emit('update:modal', null);
+      this.$emit('update:update', true);
     }
   },
   locales: {
