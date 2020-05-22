@@ -1,6 +1,13 @@
 <template>
   <div id="app" class="container-fluid">
 
+    <vue-headful
+            :title="t('COVID-19 PANDEMIC')"
+            :description="t('View and compare covid-19 cases and deaths in the world in an easy and practical way')"
+            keywords="covid 19 covid-19 coronavirus last updates últimas noticias ultimas cases deaths day casos mortes dia casos muertes diurnas"
+            :lang="lang"
+            url="covidlast.com"/>
+
     <loading :active.sync="isLoading" 
         :can-cancel="true" 
         :is-full-page="fullPage"
@@ -45,6 +52,18 @@
         </div>
       </div>
     </section>
+    <footer>
+      <div class="row">
+        <div class="col-md-6 left">
+          <p>{{ t('This is a open source project') }}</p>
+          <p>{{ t('Data source') }}: <a href="https://www.worldometers.info/coronavirus/?from=covidlast.com" target="_blank">worldometers.info/coronavirus</a></p>
+          <p>{{ t('Source code') }}: <a href="https://github.com/00F100/covid-chart" target="_blank">github.com/00F100/covid-chart</a></p>
+        </div>
+        <div class="col-md-6 right">
+          <p>covidlast.com<br>{{ currentYear }}</p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -185,6 +204,7 @@ export default {
   },
   data: function() {
     return {
+      currentYear: moment().format('YYYY'),
       meta: null,
       isLoading: true,
       fullPage: true,
@@ -219,6 +239,9 @@ export default {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIC',
       'day': 'day',
       'MM/DD/YYYY': 'MM/DD/YYYY',
+      'This is a open source project': 'This is a open source project',
+      'Data source': 'Data source',
+      'Source code': 'Source code',
       'Belgium': 'Belgium',
       'Brazil': 'Brazil',
       'Canada': 'Canada',
@@ -248,6 +271,9 @@ export default {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
       'day': 'dia',
       'MM/DD/YYYY': 'DD/MM/YYYY',
+      'This is a open source project': 'Este é um projeto de código aberto',
+      'Data source': 'Fonte de dados',
+      'Source code': 'Código fonte',
       'Belgium': 'Bélgica',
       'Brazil': 'Brasil',
       'Canada': 'Canadá',
@@ -277,6 +303,9 @@ export default {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
       'day': 'día',
       'MM/DD/YYYY': 'DD/MM/YYYY',
+      'This is a open source project': 'Este es un proyecto de código abierto',
+      'Data source': 'Fuente de datos',
+      'Source code': 'Código fuente',
       'Belgium': 'Bélgica',
       'Brazil': 'Brasil',
       'Canada': 'Canadá',
@@ -325,5 +354,17 @@ export default {
   right: 0px;
   background-color: #fff !important;
   border-color: #FFF !important;
+}
+footer {
+  padding: 20px 0 20px 20px;
+  background-color: #e2e2e2;
+}
+.left > p, .right > p {
+  margin: 0px;
+  font-size: 10px;
+}
+.right > p {
+  text-align: right;
+  margin: 0px 20px 0px 0px;
 }
 </style>
