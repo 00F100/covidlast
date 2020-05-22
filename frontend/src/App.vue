@@ -110,18 +110,22 @@ export default {
   },
   methods: {
     getDataApi: function() {
+      this.isLoading = true;
       Axios.get(`${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}:${VUE_APP_API_PORT}/cases`)
         .then(response => {
           if (response.data.data && response.data.data) {
             this.countriesData = response.data.data;
             this.meta = response.data.meta;
             this.updateDataCountry()
+            this.isLoading = false
           } else {
             this.$popup.error('Response has empty')
+            this.isLoading = false
           }
         })
         .catch(err => {
           this.$popup.error(err.message)
+          this.isLoading = false
         });
     },
     processLanguage: function() {
