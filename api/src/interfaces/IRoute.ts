@@ -1,3 +1,4 @@
+import express from 'express';
 import { IRouteMethods } from '.';
 
 export interface IRoute {
@@ -18,7 +19,13 @@ export interface IRoute {
    * Cache of response
    * @param string
    */
-  cache?: string | object;
+  cache?: any;
+
+  /**
+   * Response of request
+   * @param string | object
+   */
+  response?: string | object | any;
 
   /**
    * Header of response
@@ -34,7 +41,7 @@ export interface IRoute {
 
   /**
    * Behavior on execute route
-   * @param (context: IRoute) => void
+   * @param (context: IRoute, request: express.Request) => void
    */
-  onExecute?: (context: IRoute) => void;
+  onExecute?: (context: IRoute, request: express.Request) => void;
 }

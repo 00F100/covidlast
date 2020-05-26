@@ -1,7 +1,6 @@
 import express from 'express';
-import * as fs from 'fs';
 import Log4js from 'log4js';
-import { Factory, IApplication, ICollection, ICommand, IFactory, IHandlerInput, IRoute, IRouter, Logger, IView } from '.';
+import { Factory, IApplication, ICollection, ICommand, IFactory, IHandlerInput, IRoute, IRouter, IView, Logger } from '.';
 
 export class Application implements IApplication {
 
@@ -122,12 +121,15 @@ export class Application implements IApplication {
       dispach[route.method.toLowerCase()](route.path, (request: express.Request, response: express.Response) => {
         if (typeof route.onExecute === 'function') {
           this._logger.info(`Execute onExecute to route "${route.method} ${route.path}"`);
-          route.onExecute(route);
+          route.onExecute(route, request);
         }
         this._logger.info(`Request to route ${request.path} by ${request.ip}`);
         response.header('Access-Control-Allow-Origin', '*');
         response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-        response.send(route.cache);
+        if (!route.response) {
+          response.status(500);
+        }
+        response.send(route.response);
       });
     });
   }
