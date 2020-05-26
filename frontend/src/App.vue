@@ -200,7 +200,7 @@ export default {
           font: '#FFF'
         });
       });
-      this.isLoading = false
+      // this.isLoading = false
       this.updateCases();
       this.setDefaultValues();
     },
