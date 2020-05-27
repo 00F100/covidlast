@@ -27,10 +27,12 @@ export default {
   props: {
     lang: String,
     modal: Boolean,
-    update: Boolean
+    update: Boolean,
+    onSelect: Function
   },
   methods: {
     change: function(lang) {
+      this.onSelect();
       this.$emit('update:lang', lang);
       this.$emit('update:modal', null);
       this.$emit('update:update', true);

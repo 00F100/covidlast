@@ -8,14 +8,21 @@
             :lang="lang"
             url="covidlast.com"/>
 
-    <loading :active.sync="isLoading" 
+    <loading
+        :active.sync="isLoading" 
         :can-cancel="true" 
-        :is-full-page="fullPage"
+        :is-full-page="true"
         :opacity="0.7"
         :z-index="9"
         loader="bars"></loading>
     
-    <modal-language v-if="showModalLang" @close="showModalLang = false" :lang.sync="lang" :modal.sync="showModalLang" :update.sync="update"></modal-language>
+    <modal-language
+        v-if="showModalLang"
+      @close="showModalLang = false"
+      :lang.sync="lang"
+      :modal.sync="showModalLang"
+      :update.sync="update"
+      :onSelect="this.fixCountriesName"></modal-language>
 
     <header>
       <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
@@ -23,7 +30,7 @@
         <button class="btn btn-light choose-lang-mobile"  @click="showModalLang = true"><b-icon-arrow-up-down></b-icon-arrow-up-down><span></span></button>
       </div>
     </header>
-    <section v-show="!showModalLang">
+    <section v-if="!showModalLang">
       <div class="row">
         <div class="col" v-if="meta">
           <ChartsFilter
@@ -37,21 +44,8 @@
           ></ChartsFilter>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12 col-sm-12 col-md-6">
-          <ChartCasesPopulation :countriesSelected="countriesDataChart" :forceUpdate="!showModalLang"></ChartCasesPopulation>
-        </div>
-        <div class="col-12 col-sm-12 col-md-6">
-          <ChartCasesPopulationPercentage :countriesSelected="countriesDataChart" :forceUpdate="!showModalLang"></ChartCasesPopulationPercentage>
-        </div>
-        <div class="col-12 col-sm-12 col-md-6">
-          <ChartDeathsPopulation :countriesSelected="countriesDataChart" :forceUpdate="!showModalLang"></ChartDeathsPopulation>
-        </div>
-        <div class="col-12 col-sm-12 col-md-6">
-          <ChartDeathsPopulationPercentage :countriesSelected="countriesDataChart" :forceUpdate="!showModalLang"></ChartDeathsPopulationPercentage>
-        </div>
-      </div>
     </section>
+    
     <footer>
       <div class="row">
         <div class="col-md-6 left">
@@ -70,189 +64,246 @@
 <script>
 import Loading from 'vue-loading-overlay'
 import ChartsFilter from './components/ChartsFilter.vue'
-import ChartCasesPopulation from './components/ChartCasesPopulation.vue'
-import ChartDeathsPopulation from './components/ChartDeathsPopulation.vue'
-import ChartDeathsPopulationPercentage from './components/ChartDeathsPopulationPercentage.vue'
-import ChartCasesPopulationPercentage from './components/ChartCasesPopulationPercentage.vue'
+// import ChartCasesPopulation from './components/ChartCasesPopulation.vue'
+// import ChartDeathsPopulation from './components/ChartDeathsPopulation.vue'
+// import ChartDeathsPopulationPercentage from './components/ChartDeathsPopulationPercentage.vue'
+// import ChartCasesPopulationPercentage from './components/ChartCasesPopulationPercentage.vue'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import Axios from 'axios'
+// // import Axios from 'axios'
 import moment from 'moment'
 import ModalLanguage from './components/ModalLanguage.vue'
 
-const {
-  VUE_APP_API_SCHEMA,
-  VUE_APP_API_HOST,
-  VUE_APP_API_PORT
-} = process.env;
+// const {
+//   VUE_APP_API_SCHEMA,
+//   VUE_APP_API_HOST,
+//   VUE_APP_API_PORT
+// } = process.env;
 
 export default {
   name: 'App',
+  created: function() {
+    this.language()
+  },
   watch: {
-    update: function() {
-      if (this.update === true) {
-        this.update = false
-        this.getDataApi()
-      }
-    },
-    countriesSelected: function() {
-        this.updateCases();
-        this.$ga.event('selectedCountries', 'change', 'countries', this.countriesSelected)
-    },
+    // update: function() {
+    //   if (this.update === true) {
+    //     this.update = false
+    //     this.getDataApi()
+    //   }
+    // },
+    // countriesSelected: function() {
+    //     this.updateCases();
+    //     this.$ga.event('selectedCountries', 'change', 'countries', this.countriesSelected)
+    // },
     lang: function() {
       this.$translate.setLang(this.lang)
       this.$cookie.set('lang', this.lang)
       this.$ga.event('language', 'change', 'lang', this.lang)
-      this.updateDataCountry();
+      // this.loadCountries()
+      // this.fixCountriesName()
     }
   },
   updated: function() {
-    this.processLanguage();
+    // this.language();
   },
   methods: {
-    getDataApi: function() {
+    loadCountries: function() {
+      let stateCountries = false;
+      let stateCountriesTop5 = false;
       this.isLoading = true;
-      Axios.get(`${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}:${VUE_APP_API_PORT}/cases`)
-        .then(response => {
-          if (response.data.data && response.data.data) {
-            this.countriesData = response.data.data;
+      this.$api.getCountries(
+        (response) => {
+          if (response.data.data) {
+            this.countriesList = response.data.data;
             this.meta = response.data.meta;
-            this.updateDataCountry()
-            this.isLoading = false
-          } else {
-            this.$popup.error('Response has empty')
+            this.fixCountriesName()
+            stateCountries = true;
+            if (stateCountriesTop5) {
+              this.isLoading = false
+            }
+          }
+        },
+        (err) => {
+          console.log(err);
+          if (stateCountriesTop5) {
             this.isLoading = false
           }
-        })
-        .catch(err => {
-          this.$popup.error(err.message)
-          this.isLoading = false
-        });
+        }
+      )
+      this.$api.getCountriesTop5(
+        (response) => {
+          if (response.data.data) {
+            this.countriesSelected = response.data.data;
+            this.fixCountriesName()
+            stateCountriesTop5 = true
+            if (stateCountries) {
+              this.isLoading = false
+            }
+          }
+        },
+        (err) => {
+          console.log(err);
+          if (stateCountries) {
+            this.isLoading = false
+          }
+        }
+      );
     },
-    processLanguage: function() {
+    fixCountriesName: function() {
+      this.countriesList.map(country => {
+        country.countryName = this.$translate.text(country.countryName)
+      });
+      this.countriesSelected.map(country => {
+        country.countryName = this.$translate.text(country.countryName)
+      });
+    },
+    // getDataApi: function() {
+    //   this.isLoading = true;
+    //   this.$api.getCases(
+    //     (response) => {
+    //       if (response.data.data && response.data.data) {
+    //         this.countriesData = response.data.data;
+    //         this.meta = response.data.meta;
+    //         this.updateDataCountry()
+    //         this.isLoading = false
+    //       } else {
+    //         this.$popup.error('Response has empty')
+    //         this.isLoading = false
+    //       }
+    //     },
+    //     (err) => {
+    //       this.$popup.error(err.message)
+    //       this.isLoading = false
+    //     }
+    //   );
+    // },
+    language: function() {
       this.haveCookie = true;
       this.lang = this.$cookie.get('lang')
       if (!this.lang) {
-        this.haveCookie = false;
-        this.lang = 'en';
+        this.haveCookie = false
+        this.lang = 'en'
         this.$cookie.set('lang', this.lang)
       }
       if (!this.haveCookie) {
-        this.showModalLang = true;
+        this.showModalLang = true
+        this.isLoading = false
       }
       this.$translate.setLang(this.lang);
+      this.loadCountries()
     },
-    updateCases: function() {
-      this.mountData('populationCases');
-      this.mountData('populationDeaths');
-      this.mountData('populationActive');
-      this.mountData('populationPercentageCases');
-      this.mountData('populationPercentageDeaths');
-      this.mountData('populationPercentageActive');
-    },
-    mountData: function(metric) {
-      const series = [];
-      this.countriesData.map(country => {
-        this.countriesSelected.map(selected => {
-          if (country.countryId === selected.id) {
-            const serie = this.getSerie(series, selected.name, country.countryColor);
-            country.data.map((record, i) => {
-              serie.data.push([`${moment(record.timestamp * 1000).utc().format(this.$translate.text('MM/DD/YYYY'))}<br>${this.$translate.text('day')} ${i+1}`, this.getData(metric, record, country.countryPopulation)]);
-            });
-          }
-        });
-      });
-      this.updateData(metric, series);
-    },
-    getSerie: function(series, name, color) {
-      if(!series.find(x => x.name == name)) {
-          series.push({
-            name,
-            color,
-            data: []
-          });
-        }
-        return series.find(x => x.name == name);
-    },
-    getData: function(metric, record, population) {
-      if (metric === 'populationCases') return record.cases;
-      if (metric === 'populationDeaths') return record.deaths;
-      if (metric === 'populationActive') return record.active;
-      if (metric === 'populationPercentageCases') return +((record.cases * 100) / population).toFixed(5);
-      if (metric === 'populationPercentageDeaths') return +((record.deaths * 100) / population).toFixed(5);
-      if (metric === 'populationPercentageActive') return +((record.active * 100) / population).toFixed(5);
-    },
-    updateData: function(metric, series) {
-      if (metric === 'populationCases') this.countriesDataChart.populationCases = series;
-      if (metric === 'populationDeaths') this.countriesDataChart.populationDeaths = series;
-      if (metric === 'populationActive') this.countriesDataChart.populationActive = series;
-      if (metric === 'populationPercentageCases') this.countriesDataChart.populationPercentageCases = series;
-      if (metric === 'populationPercentageDeaths') this.countriesDataChart.populationPercentageDeaths = series;
-      if (metric === 'populationPercentageActive') this.countriesDataChart.populationPercentageActive = series;
-    },
-    updateDataCountry: function() {
-      this.countriesList = [];
-      this.countriesData.map(data => {
-        this.countriesList.push({
-          id: data.countryId,
-          cases: data.data[data.data.length-1].cases,
-          name: this.$translate.text(data.countryName),
-          color: data.countryColor,
-          font: '#FFF'
-        });
-      });
-      // this.isLoading = false
-      this.updateCases();
-      this.setDefaultValues();
-    },
-    setDefaultValues: function() {
-      let casesTop5 = [];
-      this.countriesList.map(country => {
-        casesTop5.push(country)
-      });
-      casesTop5.sort((a, b) => (a.cases < b.cases) ? 1 : -1);
-      casesTop5.splice(5, casesTop5.length);
-      this.countriesSelected = casesTop5;
-    }
+    // updateCases: function() {
+    //   this.mountData('populationCases');
+    //   this.mountData('populationDeaths');
+    //   this.mountData('populationActive');
+    //   this.mountData('populationPercentageCases');
+    //   this.mountData('populationPercentageDeaths');
+    //   this.mountData('populationPercentageActive');
+    // },
+    // mountData: function(metric) {
+    //   const series = [];
+    //   this.countriesData.map(country => {
+    //     this.countriesSelected.map(selected => {
+    //       if (country.countryId === selected.id) {
+    //         const serie = this.getSerie(series, selected.name, country.countryColor);
+    //         country.data.map((record, i) => {
+    //           serie.data.push([`${moment(record.timestamp * 1000).utc().format(this.$translate.text('MM/DD/YYYY'))}<br>${this.$translate.text('day')} ${i+1}`, this.getData(metric, record, country.countryPopulation)]);
+    //         });
+    //       }
+    //     });
+    //   });
+    //   this.updateData(metric, series);
+    // },
+    // getSerie: function(series, name, color) {
+    //   if(!series.find(x => x.name == name)) {
+    //       series.push({
+    //         name,
+    //         color,
+    //         data: []
+    //       });
+    //     }
+    //     return series.find(x => x.name == name);
+    // },
+    // getData: function(metric, record, population) {
+    //   if (metric === 'populationCases') return record.cases;
+    //   if (metric === 'populationDeaths') return record.deaths;
+    //   if (metric === 'populationActive') return record.active;
+    //   if (metric === 'populationPercentageCases') return +((record.cases * 100) / population).toFixed(5);
+    //   if (metric === 'populationPercentageDeaths') return +((record.deaths * 100) / population).toFixed(5);
+    //   if (metric === 'populationPercentageActive') return +((record.active * 100) / population).toFixed(5);
+    // },
+    // updateData: function(metric, series) {
+    //   if (metric === 'populationCases') this.countriesDataChart.populationCases = series;
+    //   if (metric === 'populationDeaths') this.countriesDataChart.populationDeaths = series;
+    //   if (metric === 'populationActive') this.countriesDataChart.populationActive = series;
+    //   if (metric === 'populationPercentageCases') this.countriesDataChart.populationPercentageCases = series;
+    //   if (metric === 'populationPercentageDeaths') this.countriesDataChart.populationPercentageDeaths = series;
+    //   if (metric === 'populationPercentageActive') this.countriesDataChart.populationPercentageActive = series;
+    // },
+    // updateDataCountry: function() {
+    //   this.countriesList = [];
+    //   this.countriesData.map(data => {
+    //     this.countriesList.push({
+    //       id: data.countryId,
+    //       cases: data.data[data.data.length-1].cases,
+    //       name: this.$translate.text(data.countryName),
+    //       color: data.countryColor,
+    //       font: '#FFF'
+    //     });
+    //   });
+    //   // this.isLoading = false
+    //   this.updateCases();
+    //   this.setDefaultValues();
+    // },
+    // setDefaultValues: function() {
+    //   let casesTop5 = [];
+    //   this.countriesList.map(country => {
+    //     casesTop5.push(country)
+    //   });
+    //   casesTop5.sort((a, b) => (a.cases < b.cases) ? 1 : -1);
+    //   casesTop5.splice(5, casesTop5.length);
+    //   this.countriesSelected = casesTop5;
+    // }
   },
   beforeMount: function() {
-    if (this.$cookie.get('lang')) {
-      this.getDataApi()
-    }
+    // if (this.$cookie.get('lang')) {
+    //   this.getDataApi()
+    // }
   },
   mounted: function() {
-    this.$ga.page('/');
+    // this.$ga.page('/');
   },
   data: function() {
     return {
+      countriesList: [],
       currentYear: moment().format('YYYY'),
       meta: null,
       isLoading: true,
-      fullPage: true,
-      showModalLang: null,
+      showModalLang: false,
       lang: null,
-      haveCookie: null,
-      waitUpdate: false,
+    //   haveCookie: null,
+    //   waitUpdate: false,
       update: false,
       countriesSelected: [],
-      countriesList: [],
-      countriesData: [],
-      countriesDataChart: {
-        populationCases: [],
-        populationDeaths: [],
-        populationActive: [],
-        populationPercentageCases: [],
-        populationPercentageDeaths: [],
-        populationPercentageActive: []
-      }
+    //   countriesList: [],
+    //   countriesData: [],
+    //   countriesDataChart: {
+    //     populationCases: [],
+    //     populationDeaths: [],
+    //     populationActive: [],
+    //     populationPercentageCases: [],
+    //     populationPercentageDeaths: [],
+    //     populationPercentageActive: []
+    //   }
     };
   },
   components: {
     Loading,
     ChartsFilter,
-    ChartCasesPopulation,
-    ChartCasesPopulationPercentage,
-    ChartDeathsPopulation,
-    ChartDeathsPopulationPercentage,
+    // ChartCasesPopulation,
+    // ChartCasesPopulationPercentage,
+    // ChartDeathsPopulation,
+    // ChartDeathsPopulationPercentage,
     ModalLanguage
   },
   locales: {

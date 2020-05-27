@@ -9,8 +9,8 @@
       <multiselect
         v-model="selected"
         :options="countriesList"
-        label="name"
-        track-by="id"
+        label="countryName"
+        track-by="countryId"
         :multiple="true"
         :searchable="true"
         placeholder="">
@@ -20,7 +20,7 @@
             <template v-for="(option, index) of props.values" @mousedown.prevent>
               <slot name="tag" :option="option" :search="props.search" :remove="props.remove">
                 <span class="multiselect__tag" :key="index">
-                  <span v-text="option.name" class="multiselect__tag_custom" v-bind:style="'background-color:' + torgb(option.color, '0.25') + '; color: ' + option.font"></span>
+                  <span v-text="option.countryName" class="multiselect__tag_custom" v-bind:style="'background-color:' + torgb(option.countryColor, '0.25') + '; color: #FFF'"></span>
                   <i aria-hidden="true" tabindex="1" @keypress.enter.prevent="props.remove(option)"  @mousedown.prevent="props.remove(option)" class="multiselect__tag-icon"></i>
                 </span>
               </slot>
@@ -53,7 +53,7 @@ export default {
     lang: String,
     modal: Boolean
   },
-  mounted: function() {
+  created: function() {
     this.selected = this.countriesSelected;
     this.lastUpdated = moment(this.date * 1000).utc().format(this.$translate.text('MM/DD/YYYY HH:mm:ss Z'));
     this.currentDate = this.getDateClient(this.date * 1000);
@@ -79,15 +79,17 @@ export default {
     }
   },
   watch: {
+    countriesSelected: function() {
+      this.selected = this.countriesSelected
+    },
     selected: function() {
-      const countries = [];
-      this.selected.map(function(country) {
-        countries.push({
-          id: country.id,
-          name: country.name
+      if (this.selected.length !== this.countriesSelected.length) {
+        const countries = [];
+        this.selected.map(function(country) {
+          countries.push(country)
         });
-      });
-      this.$emit('update:countriesSelected', countries);
+        this.$emit('update:countriesSelected', countries);
+      }
     },
     forceUpdate: function() {
       if (this.forceUpdate) {

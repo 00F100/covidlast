@@ -7,6 +7,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './assets/custom.css';
 import Popup from './plugins/popup'
 import Chart from './plugins/chart'
+import Api from './plugins/api'
 import VueCookie from 'vue-cookie'
 import VueTranslate from 'vue-translate-plugin';
 import VueAnalytics from 'vue-analytics';
@@ -28,6 +29,7 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Popup)
 Vue.use(Chart)
+Vue.use(Api)
 
 Vue.component('vue-headful', vueHeadful);
 
