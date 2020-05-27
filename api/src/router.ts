@@ -36,6 +36,7 @@ export class Router implements IRouter {
               countryId,
               countryName,
               countryPopulation,
+              countryColor,
               data
             } = model;
 
@@ -43,19 +44,58 @@ export class Router implements IRouter {
               countryId,
               countryName,
               countryPopulation,
-              cases: data[data.length-1].cases
+              countryColor,
+              cases: data[data.length - 1].cases
             });
           });
-          returnData.sort(function(a, b) {
-            if ( a.countryName < b.countryName ){
+          returnData.sort((a, b) => {
+            if (a.countryName < b.countryName){
               return -1;
             }
-            if ( a.countryName > b.countryName ){
+            if (a.countryName > b.countryName){
               return 1;
             }
             return 0;
           });
-          context.response = { ... application.view().json(collection), data: returnData};
+          context.response = { ...application.view().json(collection), data: returnData};
+          context.response.meta.total = returnData.length;
+        }
+      },
+      {
+        method: IRouteMethods.GET,
+        path: '/countries/top5',
+        onCreate: (context: IRoute) => {
+          const collection = application.controller('cases');
+          const returnData = [];
+          collection.getData<IModelCase>().map(model => {
+
+            const {
+              countryId,
+              countryName,
+              countryPopulation,
+              countryColor,
+              data
+            } = model;
+
+            returnData.push({
+              countryId,
+              countryName,
+              countryPopulation,
+              countryColor,
+              cases: data[data.length - 1].cases
+            });
+          });
+          returnData.sort((a, b) => {
+            if (a.cases > b.cases){
+              return -1;
+            }
+            if (a.cases < b.cases){
+              return 1;
+            }
+            return 0;
+          });
+          returnData.splice(5, returnData.length);
+          context.response = { ...application.view().json(collection), data: returnData};
           context.response.meta.total = returnData.length;
         }
       },
@@ -74,7 +114,7 @@ export class Router implements IRouter {
                 returnData.push(model);
               }
             });
-            context.response = { ... application.view().json(context.cache), data: returnData};
+            context.response = { ...application.view().json(context.cache), data: returnData};
             context.response.meta.total = returnData.length;
           }
         }
