@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     change: function(lang) {
-      this.onSelect();
       this.$emit('update:lang', lang);
       this.$emit('update:modal', null);
       this.$emit('update:update', true);
