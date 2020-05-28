@@ -82,7 +82,7 @@ export class Router implements IRouter {
               countryName,
               countryPopulation,
               countryColor,
-              cases: data[data.length - 1].cases
+              cases: data[data.length - 1][1][0]
             });
           });
           returnData.sort((a, b) => {

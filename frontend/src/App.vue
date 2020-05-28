@@ -130,11 +130,11 @@ export default {
         const casesPercentage = [];
         const deathsTotal = [];
         const deathsPercentage = [];
-        country.data.map(data => {
-          casesTotal.push(data[1][0])
-          casesPercentage.push(data[2][0])
-          deathsTotal.push(data[1][1])
-          deathsPercentage.push(data[2][1])
+        country.data.map((data, day) => {
+          casesTotal.push([`${this.$translate.text('day')}: ${day}`, data[1][0]])
+          casesPercentage.push([`${this.$translate.text('day')}: ${day}`, data[2][0]])
+          deathsTotal.push([`${this.$translate.text('day')}: ${day}`, data[1][1]])
+          deathsPercentage.push([`${this.$translate.text('day')}: ${day}`, data[2][1]])
         })
         const sCountry = this.originalCountriesList.find(x => x.countryId === country.countryId)
         this.casesSeries.populationCases.push({
