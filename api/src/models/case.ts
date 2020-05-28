@@ -29,7 +29,7 @@ export class ModelCase extends Model implements IModelCase {
 
   /**
    * Data of cases by time
-   * @param [number, number][]
+   * @param number[]
    */
-  public data: [number, number][] = [];
+  public data: [number, number, number, number][] = [];
 }
