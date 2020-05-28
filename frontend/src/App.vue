@@ -131,10 +131,11 @@ export default {
         const deathsTotal = [];
         const deathsPercentage = [];
         country.data.map((data, day) => {
-          casesTotal.push([`${this.$translate.text('day')}: ${day}`, data[1][0]])
-          casesPercentage.push([`${this.$translate.text('day')}: ${day}`, data[2][0]])
-          deathsTotal.push([`${this.$translate.text('day')}: ${day}`, data[1][1]])
-          deathsPercentage.push([`${this.$translate.text('day')}: ${day}`, data[2][1]])
+          const label = `${moment(data[0] * 1000).utc().format(this.$translate.text('MM/DD/YYYY'))}<br>${this.$translate.text('day')}: ${day}`
+          casesTotal.push([label, data[1][0]])
+          casesPercentage.push([label, data[2][0]])
+          deathsTotal.push([label, data[1][1]])
+          deathsPercentage.push([label, data[2][1]])
         })
         const sCountry = this.originalCountriesList.find(x => x.countryId === country.countryId)
         this.casesSeries.populationCases.push({
@@ -217,6 +218,15 @@ export default {
       this.countriesList.map(country => {
         country.countryName = this.$translate.text(country.countryName)
       });
+      this.countriesList.sort(function(a, b) {
+        if (a.countryName < b.countryName) {
+          return -1;
+        }
+        if (a.countryName > b.countryName) {
+          return 1;
+        }
+        return 0;
+      })
       this.countriesSelected.map(country => {
         const data = this.countriesList.find(x => x.countryId === country.countryId);
         country.countryName = data.countryName;
@@ -326,7 +336,7 @@ export default {
       'United Kingdom': 'Reino Unido',
       'United States': 'Estados Unidos',
       'Peru': 'Peru',
-      'India': 'Índia',
+      'India': 'India',
       'Chile': 'Chile',
       'Mexico': 'México',
       'Saudi Arabia': 'Arábia Saudita',

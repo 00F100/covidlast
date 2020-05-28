@@ -8,6 +8,7 @@
     <div class="col-md-10">
       <multiselect
         v-model="selected"
+        :allow-empty="false"
         :options="countriesList"
         label="countryName"
         track-by="countryId"
