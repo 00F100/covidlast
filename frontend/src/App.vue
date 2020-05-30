@@ -215,28 +215,24 @@ export default {
       this.isLoading++
       this.countriesList = [];
       this.countriesList = JSON.parse(JSON.stringify(this.originalCountriesList));
-      if (this.countriesList.length > 0) {
-        this.countriesList.map(country => {
-          country.countryName = this.$translate.text(country.countryName)
-        });
-        this.countriesList.sort(function(a, b) {
-          if (a.countryName < b.countryName) {
-            return -1;
-          }
-          if (a.countryName > b.countryName) {
-            return 1;
-          }
-          return 0;
-        })
-        if (this.countriesSelected > 0) {
-          this.countriesSelected.map(country => {
-            const data = this.countriesList.find(x => x.countryId === country.countryId);
-            if (data) {
-              country.countryName = data.countryName;
-            }
-          });
+      this.countriesList.map(country => {
+        country.countryName = this.$translate.text(country.countryName)
+      });
+      this.countriesList.sort(function(a, b) {
+        if (a.countryName < b.countryName) {
+          return -1;
         }
-      }
+        if (a.countryName > b.countryName) {
+          return 1;
+        }
+        return 0;
+      })
+      this.countriesSelected.map(country => {
+        const data = this.countriesList.find(x => x.countryId === country.countryId);
+        if (data) {
+          country.countryName = data.countryName;
+        }
+      });
       this.isLoading--
     },
     language: function() {
