@@ -390,6 +390,7 @@ export default {
       'This is a open source project': 'Это проект с открытым исходным кодом',
       'Data source': 'Источник данных',
       'Source code': 'Исходный код',
+      'Version': 'Версия',
       'Belgium': 'Бельгия',
       'Brazil': 'Бразилия',
       'Canada': 'Канада',
