@@ -68,7 +68,7 @@
           <p>{{ t('Source code') }}: <a href="https://github.com/00F100/covid-chart" target="_blank">github.com/00F100/covid-chart</a></p>
         </div>
         <div class="col-md-6 right">
-          <p>covidlast.com<br>{{ currentYear }}</p>
+          <p>covidlast.com<br>{{ t('Version') }} {{ version }}<br>{{ currentYear }}</p>
         </div>
       </div>
     </footer>
@@ -254,6 +254,7 @@ export default {
   },
   data: function() {
     return {
+      version: '1.0.0',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),
@@ -290,6 +291,7 @@ export default {
       'This is a open source project': 'This is a open source project',
       'Data source': 'Data source',
       'Source code': 'Source code',
+      'Version': 'Version',
       'Belgium': 'Belgium',
       'Brazil': 'Brazil',
       'Canada': 'Canada',
@@ -322,6 +324,7 @@ export default {
       'This is a open source project': 'Este é um projeto de código aberto',
       'Data source': 'Fonte de dados',
       'Source code': 'Código fonte',
+      'Version': 'Versão',
       'Belgium': 'Bélgica',
       'Brazil': 'Brasil',
       'Canada': 'Canadá',
@@ -354,6 +357,7 @@ export default {
       'This is a open source project': 'Este es un proyecto de código abierto',
       'Data source': 'Fuente de datos',
       'Source code': 'Código fuente',
+      'Version': 'Versión',
       'Belgium': 'Bélgica',
       'Brazil': 'Brasil',
       'Canada': 'Canadá',
