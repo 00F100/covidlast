@@ -48,7 +48,7 @@
         <div class="col-12 col-sm-12 col-md-6">
           <ChartCasesPopulation :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesPopulation>
         </div>
-        <hr>
+        <hr class="d-block d-sm-none">
         <div class="col-12 col-sm-12 col-md-6">
           <ChartCasesPopulationPercentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesPopulationPercentage>
         </div>
@@ -56,7 +56,7 @@
         <div class="col-12 col-sm-12 col-md-6">
           <ChartDeathsPopulation :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsPopulation>
         </div>
-        <hr>
+        <hr class="d-block d-sm-none">
         <div class="col-12 col-sm-12 col-md-6">
           <ChartDeathsPopulationPercentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsPopulationPercentage>
         </div>
