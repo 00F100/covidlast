@@ -62,12 +62,12 @@
     
     <footer>
       <div class="row">
-        <div class="col-md-6 left">
+        <div class="col-6 col-sm-6 left">
           <p>{{ t('This is a open source project') }}</p>
           <p>{{ t('Data source') }}: <a href="https://www.worldometers.info/coronavirus/?from=covidlast.com" target="_blank">worldometers.info/coronavirus</a></p>
           <p>{{ t('Source code') }}: <a href="https://github.com/00F100/covid-chart" target="_blank">github.com/00F100/covid-chart</a></p>
         </div>
-        <div class="col-md-6 right">
+        <div class="col-6 col-sm-6 right">
           <p>covidlast.com<br>{{ t('Version') }} {{ version }}<br>{{ currentYear }}</p>
         </div>
       </div>
@@ -85,6 +85,7 @@ import ChartCasesPopulationPercentage from './components/ChartCasesPopulationPer
 import 'vue-loading-overlay/dist/vue-loading.css'
 import moment from 'moment'
 import ModalLanguage from './components/ModalLanguage.vue'
+import randomColor from 'random-color'
 
 export default {
   name: 'App',
@@ -138,24 +139,25 @@ export default {
           deathsPercentage.push([label, data[2][1]])
         })
         const sCountry = this.originalCountriesList.find(x => x.countryId === country.countryId)
+        const countryLabel = this.countriesSelected.find(x => x.countryId === country.countryId);
         this.casesSeries.populationCases.push({
+          color: countryLabel.countryColor,
           name: this.$translate.text(sCountry.countryName),
-          color: sCountry.countryColor,
           data: casesTotal
         });
         this.casesSeries.populationPercentageCases.push({
+          color: countryLabel.countryColor,
           name: this.$translate.text(sCountry.countryName),
-          color: sCountry.countryColor,
           data: casesPercentage
         });
         this.casesSeries.populationDeaths.push({
+          color: countryLabel.countryColor,
           name: this.$translate.text(sCountry.countryName),
-          color: sCountry.countryColor,
           data: deathsTotal
         });
         this.casesSeries.populationPercentageDeaths.push({
+          color: countryLabel.countryColor,
           name: this.$translate.text(sCountry.countryName),
-          color: sCountry.countryColor,
           data: deathsPercentage
         });
       });
@@ -197,6 +199,7 @@ export default {
         this.isLoading++;
         const countries = [];
         this.countriesSelected.map(country => {
+          country.countryColor = randomColor().hexString();
           countries.push(country.countryId)
         })
         this.$api.getCases(countries,
@@ -254,7 +257,7 @@ export default {
   },
   data: function() {
     return {
-      version: '1.0.0',
+      version: '1.1.0',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),
@@ -315,7 +318,32 @@ export default {
       'Turkey': 'Turkey',
       'Pakistan': 'Pakistan',
       'Bangladesh': 'Bangladesh',
-      'Qatar': 'Qatar'
+      'Qatar': 'Qatar',
+      'Belarus': 'Belarus',
+      'Ecuador': 'Ecuador',
+      'Sweden': 'Sweden',
+      'Singapore': 'Singapore',
+      'United Arab Emirates': 'United Arab Emirates',
+      'South Africa': 'South Africa',
+      'Colombia': 'Colombia',
+      'Kuwait': 'Kuwait',
+      'Indonesia': 'Indonesia',
+      'Ireland': 'Ireland',
+      'Poland': 'Poland',
+      'Ukraine': 'Ukraine',
+      'Egypt': 'Egypt',
+      'Romania': 'Romania',
+      'Philippines': 'Philippines',
+      'Israel': 'Israel',
+      'Dominican Republic': 'Dominican Republic',
+      'Japan': 'Japan',
+      'Austria': 'Austria',
+      'Argentina': 'Argentina',
+      'Afghanistan': 'Afghanistan',
+      'Panama': 'Panama',
+      'Bolivia': 'Bolivia',
+      'Honduras': 'Honduras',
+      'Haiti': 'Haiti'
     },
     pt: {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
@@ -348,7 +376,32 @@ export default {
       'Turkey': 'Turquia',
       'Pakistan': 'Paquistão',
       'Bangladesh': 'Bangladesh',
-      'Qatar': 'Catar'
+      'Qatar': 'Catar',
+      'Belarus': 'Bielorrússia',
+      'Ecuador': 'Equador',
+      'Sweden': 'Suécia',
+      'Singapore': 'Cingapura',
+      'United Arab Emirates': 'Emirados Árabes Unidos',
+      'South Africa': 'África do Sul',
+      'Colombia': 'Colômbia',
+      'Kuwait': 'Kuwait',
+      'Indonesia': 'Indonésia',
+      'Ireland': 'Irlanda',
+      'Poland': 'Polônia',
+      'Ukraine': 'Ucrânia',
+      'Egypt': 'Egito',
+      'Romania': 'Romênia',
+      'Philippines': 'Filipinas',
+      'Israel': 'Israel',
+      'Dominican Republic': 'República Dominicana',
+      'Japan': 'Japão',
+      'Austria': 'Áustria',
+      'Argentina': 'Argentina',
+      'Afghanistan': 'Afeganistão',
+      'Panama': 'Panamá',
+      'Bolivia': 'Bolívia',
+      'Honduras': 'Honduras',
+      'Haiti': 'Haiti'
     },
     es: {
       'COVID-19 PANDEMIC': 'COVID-19 PANDEMIA',
@@ -381,7 +434,32 @@ export default {
       'Turkey': 'Turkey',
       'Pakistan': 'Pakistán',
       'Bangladesh': 'Bangladesh',
-      'Qatar': 'Katar'
+      'Qatar': 'Katar',
+      'Belarus': 'Bielorrusia',
+      'Ecuador': 'Ecuador',
+      'Sweden': 'Suecia',
+      'Singapore': 'Singapur',
+      'United Arab Emirates': 'Emiratos Árabes Unidos',
+      'South Africa': 'Sudáfrica',
+      'Colombia': 'Colombia',
+      'Kuwait': 'Kuwait',
+      'Indonesia': 'Indonesia',
+      'Ireland': 'Irlanda',
+      'Poland': 'Polonia',
+      'Ukraine': 'Ucrania',
+      'Egypt': 'Egipto',
+      'Romania': 'Rumania',
+      'Philippines': 'Filipinas',
+      'Israel': 'Israel',
+      'Dominican Republic': 'República Dominicana',
+      'Japan': 'Japón',
+      'Austria': 'Austria',
+      'Argentina': 'Argentina',
+      'Afghanistan': 'Afganistán',
+      'Panama': 'Panamá',
+      'Bolivia': 'Bolivia',
+      'Honduras': 'Honduras',
+      'Haiti': 'Haití'
     },
     ru: {
       'COVID-19 PANDEMIC': 'COVID-19 ПАНДЕМИЯ',
@@ -414,7 +492,32 @@ export default {
       'Turkey': 'индейка',
       'Pakistan': 'Пакистан',
       'Bangladesh': 'Бангладеш',
-      'Qatar': 'Катар'
+      'Qatar': 'Катар',
+      'Belarus': 'Беларусь',
+      'Ecuador': 'Эквадор',
+      'Sweden': 'Швеция',
+      'Singapore': 'Сингапур',
+      'United Arab Emirates': 'Объединенные Арабские Эмираты',
+      'South Africa': 'Южная Африка',
+      'Colombia': 'Колумбия',
+      'Kuwait': 'Кувейт',
+      'Indonesia': 'Индонезия',
+      'Ireland': 'Ирландия',
+      'Poland': 'Польша',
+      'Ukraine': 'Украина',
+      'Egypt': 'Египет',
+      'Romania': 'Румыния',
+      'Philippines': 'Филиппины',
+      'Israel': 'Израиль',
+      'Dominican Republic': 'Доминиканская Республика',
+      'Japan': 'Япония',
+      'Austria': 'Австрия',
+      'Argentina': 'Аргентина',
+      'Afghanistan': 'Афганистан',
+      'Panama': 'Панама',
+      'Bolivia': 'Боливия',
+      'Honduras': 'Honduras',
+      'Haiti': 'Гаити'
     }
   }
 }
@@ -430,6 +533,9 @@ export default {
 @media only screen and (max-width: 600px) {
   .title-page-text {
     font-size: 20px;
+  }
+  footer p {
+    font-size: 10px !important;
   }
 }
 

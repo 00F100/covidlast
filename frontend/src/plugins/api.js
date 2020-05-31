@@ -8,11 +8,18 @@ const Api = {
       execute: function(path, callback, callbackException, options = {}) {
         const {
           VUE_APP_API_SCHEMA,
-          VUE_APP_API_HOST
+          VUE_APP_API_HOST,
+          VUE_APP_API_PORT
         } = process.env;
 
+        let url = `${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}`;
+        if (VUE_APP_API_PORT) {
+          url += `:${VUE_APP_API_PORT}`;
+        }
+        url += `/${path}`;
+
         Axios
-        .get(`${VUE_APP_API_SCHEMA}://${VUE_APP_API_HOST}/${path}`, {
+        .get(url, {
           params: options.query || null
         })
         .then(response => {
