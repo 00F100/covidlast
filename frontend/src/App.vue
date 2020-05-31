@@ -48,12 +48,15 @@
         <div class="col-12 col-sm-12 col-md-6">
           <ChartCasesPopulation :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesPopulation>
         </div>
+        <hr>
         <div class="col-12 col-sm-12 col-md-6">
           <ChartCasesPopulationPercentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesPopulationPercentage>
         </div>
+        <hr>
         <div class="col-12 col-sm-12 col-md-6">
           <ChartDeathsPopulation :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsPopulation>
         </div>
+        <hr>
         <div class="col-12 col-sm-12 col-md-6">
           <ChartDeathsPopulationPercentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsPopulationPercentage>
         </div>
@@ -524,6 +527,12 @@ export default {
 </script>
 
 <style>
+
+hr {
+  background: rgb(51, 51, 51, 0.5);
+  width: 90%;
+}
+
 .title-page-text {
   text-align: center;
   margin: 10px 0px 0px 0px;
