@@ -43,9 +43,12 @@ export class CollectionCases extends Collection implements ICollectionsCases {
     const datas = collectionDatas.getData<IModelData>();
     datas.map((data: IModelData, index: number) => {
       const model = this.getModelByCountryId(data);
+      const metricPopMi = +(data.population / 1000000).toFixed(2);
+      const metricPopMiCases = +(data.cases / metricPopMi).toFixed(0);
+      const metricPopMiDeaths = +(data.deaths / metricPopMi).toFixed(0);
       const casesPercentage = +((data.cases * 100) / data.population).toFixed(5);
       const deathsPercentage = +((data.deaths * 100) / data.population).toFixed(5);
-      model.data.push([data.timestamp, [data.cases, data.deaths, data.active], [casesPercentage, deathsPercentage, 0]]);
+      model.data.push([data.timestamp, [data.cases, data.deaths, data.active], [casesPercentage, deathsPercentage, 0], [metricPopMiCases, metricPopMiDeaths, 0]]);
     });
     this.sortDataByCountry();
     return this;

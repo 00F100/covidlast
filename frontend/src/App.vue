@@ -45,19 +45,27 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 col-sm-12 col-md-6">
+        <div class="col-12 col-sm-12 col-md-4">
           <ChartCasesPopulation :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesPopulation>
         </div>
         <hr class="d-block d-sm-none">
-        <div class="col-12 col-sm-12 col-md-6">
+        <div class="col-12 col-sm-12 col-md-4">
+          <ChartCasesTopMi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesTopMi>
+        </div>
+        <hr class="d-block d-sm-none">
+        <div class="col-12 col-sm-12 col-md-4">
           <ChartCasesPopulationPercentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesPopulationPercentage>
         </div>
         <hr>
-        <div class="col-12 col-sm-12 col-md-6">
+        <div class="col-12 col-sm-12 col-md-4">
           <ChartDeathsPopulation :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsPopulation>
         </div>
         <hr class="d-block d-sm-none">
-        <div class="col-12 col-sm-12 col-md-6">
+        <div class="col-12 col-sm-12 col-md-4">
+          <ChartDeathsTopMi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsTopMi>
+        </div>
+        <hr class="d-block d-sm-none">
+        <div class="col-12 col-sm-12 col-md-4">
           <ChartDeathsPopulationPercentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsPopulationPercentage>
         </div>
       </div>
@@ -83,8 +91,10 @@ import Loading from 'vue-loading-overlay'
 import ChartsFilter from './components/ChartsFilter.vue'
 import ChartCasesPopulation from './components/ChartCasesPopulation.vue'
 import ChartDeathsPopulation from './components/ChartDeathsPopulation.vue'
+import ChartCasesTopMi from './components/ChartCasesTopMi.vue'
 import ChartDeathsPopulationPercentage from './components/ChartDeathsPopulationPercentage.vue'
 import ChartCasesPopulationPercentage from './components/ChartCasesPopulationPercentage.vue'
+import ChartDeathsTopMi from './components/ChartDeathsTopMi.vue'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import moment from 'moment'
 import ModalLanguage from './components/ModalLanguage.vue'
@@ -126,20 +136,26 @@ export default {
       this.casesSeries = {
         populationCases: [],
         populationPercentageCases: [],
+        topMiCases: [],
         populationDeaths: [],
-        populationPercentageDeaths: []
+        populationPercentageDeaths: [],
+        topMiDeaths: []
       }
       this.countriesCases.map(country => {
         const casesTotal = [];
         const casesPercentage = [];
+        const casesTopMi = [];
         const deathsTotal = [];
         const deathsPercentage = [];
+        const deathsTopMi = [];
         country.data.map((data, day) => {
           const label = `${moment(data[0] * 1000).utc().format(this.$translate.text('MM/DD/YYYY'))}<br>${this.$translate.text('day')}: ${day}`
           casesTotal.push([label, data[1][0]])
           casesPercentage.push([label, data[2][0]])
+          casesTopMi.push([label, data[3][0]])
           deathsTotal.push([label, data[1][1]])
           deathsPercentage.push([label, data[2][1]])
+          deathsTopMi.push([label, data[3][1]])
         })
         const sCountry = this.originalCountriesList.find(x => x.countryId === country.countryId)
         const countryLabel = this.countriesSelected.find(x => x.countryId === country.countryId);
@@ -153,6 +169,11 @@ export default {
           name: this.$translate.text(sCountry.countryName),
           data: casesPercentage
         });
+        this.casesSeries.topMiCases.push({
+          color: countryLabel.countryColor,
+          name: this.$translate.text(sCountry.countryName),
+          data: casesTopMi
+        });
         this.casesSeries.populationDeaths.push({
           color: countryLabel.countryColor,
           name: this.$translate.text(sCountry.countryName),
@@ -162,6 +183,11 @@ export default {
           color: countryLabel.countryColor,
           name: this.$translate.text(sCountry.countryName),
           data: deathsPercentage
+        });
+        this.casesSeries.topMiDeaths.push({
+          color: countryLabel.countryColor,
+          name: this.$translate.text(sCountry.countryName),
+          data: deathsTopMi
         });
       });
     },
@@ -285,8 +311,10 @@ export default {
     ChartsFilter,
     ChartCasesPopulation,
     ChartCasesPopulationPercentage,
+    ChartCasesTopMi,
     ChartDeathsPopulation,
     ChartDeathsPopulationPercentage,
+    ChartDeathsTopMi,
     ModalLanguage
   },
   locales: {
