@@ -14,7 +14,8 @@
         track-by="countryId"
         :multiple="true"
         :searchable="true"
-        placeholder="">
+        :taggable="false"
+        :placeholder="t('Type to search')">
         <template slot="selection" slot-scope="props">
 
           <div class="multiselect__tags-wrap" v-show="props.values.length > 0">
@@ -28,6 +29,7 @@
             </template>
           </div>
         </template>
+        <span slot="noResult">{{ t('No country found. Consider changing the search query.') }}</span>
       </multiselect>
     </div>
     <div class="col-md-2 d-none d-md-block">
@@ -120,24 +122,32 @@ export default {
       'Select the countries to compare': 'Select the countries to compare',
       'Last update': 'Last update',
       'MM/DD/YYYY HH:mm:ss Z': 'MM/DD/YYYY HH:mm:ss Z',
+      'Type to search': 'Type to search',
+      'No country found. Consider changing the search query.': 'No country found. Consider changing the search query.',
       'en': 'English'
     },
     pt: {
       'Select the countries to compare': 'Selecione os países para comparar',
       'Last update': 'Última atualização',
       'MM/DD/YYYY HH:mm:ss Z': 'DD/MM/YYYY HH:mm:ss Z',
+      'Type to search': 'Escreva para pesquisar',
+      'No country found. Consider changing the search query.': 'Nenhum país encontrado. Considere alterar a consulta de pesquisa.',
       'pt': 'Português'
     },
     es: {
       'Select the countries to compare': 'Seleccione los países para comparar',
       'Last update': 'Última actualización',
       'MM/DD/YYYY HH:mm:ss Z': 'DD/MM/YYYY HH:mm:ss Z',
+      'Type to search': 'Escribe para buscar',
+      'No country found. Consider changing the search query.': 'Ningún país encontrado Considere cambiar la consulta de búsqueda.',
       'es': 'Español'
     },
     ru: {
       'Select the countries to compare': 'Выберите страны для сравнения',
       'Last update': 'Последнее обновление',
       'MM/DD/YYYY HH:mm:ss Z': 'DD/MM/YYYY HH:mm:ss Z',
+      'Type to search': 'Введите для поиска',
+      'No country found. Consider changing the search query.': 'Страна не найдена. Попробуйте изменить поисковый запрос.',
       'ru': 'Pусский'
     }
   }

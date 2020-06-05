@@ -251,13 +251,7 @@ export default {
         country.countryName = this.$translate.text(country.countryName)
       });
       this.countriesList.sort(function(a, b) {
-        if (a.countryName < b.countryName) {
-          return -1;
-        }
-        if (a.countryName > b.countryName) {
-          return 1;
-        }
-        return 0;
+        return a.countryName.localeCompare(b.countryName);
       })
       this.countriesSelected.map(country => {
         const data = this.countriesList.find(x => x.countryId === country.countryId);
@@ -286,7 +280,7 @@ export default {
   },
   data: function() {
     return {
-      version: '1.2.0',
+      version: '1.2.1',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),
