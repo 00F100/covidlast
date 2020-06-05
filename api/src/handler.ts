@@ -25,5 +25,6 @@ export const handler = (input: IHandlerInput, context: any, callback: any): void
     Logger.get().info('Handler has success!');
   } else {
     Logger.get().fatal('Handler has error!');
+    throw new Error('Handler has error!');
   }
 };

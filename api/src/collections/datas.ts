@@ -63,6 +63,24 @@ export class CollectionDatas extends Collection implements ICollectionsDatas {
   }
 
   /**
+   * Method to get data to compare
+   *
+   * @return ICollectionsDatas
+   */
+  public getDataToCompare = (): ICollectionsDatas => {
+    const rows = this._databaseSQLite3.prepare(`SELECT DISTINCT
+        c.name AS countryName,
+        (SELECT dd.cases FROM data AS dd WHERE dd.idCountry = c.id ORDER BY dd.cases DESC LIMIT 1) AS cases
+      FROM data AS d
+      INNER JOIN countries AS c ON c.id = d.idCountry
+      ORDER BY c.name ASC`).all();
+    rows.map(row => {
+      this.populateModel(this._factoryModelData, row, this._data);
+    });
+    return this;
+  }
+
+  /**
    * Method to create datas after regex process HTML
    *
    * @param modelCountry IModelCountry

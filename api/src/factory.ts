@@ -1,8 +1,9 @@
 import sqlite3 from 'better-sqlite3';
 import express from 'express';
+import md5 from 'md5';
 import { IFactory, Response, Router, View } from '.';
 import { CollectionCases, CollectionCountries, CollectionDatas, CollectionWorldOMeters } from './collections';
-import { ExtractCommand } from './commands';
+import { ExtractCommand, TestDatasourceCommand } from './commands';
 import { ControllerCases } from './controllers';
 import { HelperWorldOMetersActiveFilter, HelperWorldOMetersCasesFilter, HelperWorldOMetersDateFixFilter, HelperWorldOMetersDeathsFilter, IHelperWorldOMetersActiveFilter, IHelperWorldOMetersCasesFilter, IHelperWorldOMetersDateFixFilter, IHelperWorldOMetersDeathsFilter } from './helpers';
 import { ICommand, IController, IResponse, IRouter, IView } from './interfaces';
@@ -14,7 +15,7 @@ export class Factory implements IFactory {
    * SQLite connection
    * @param sqlite3.Database
    */
-  private _sqliteConnection: sqlite3.Database = null;
+  private _sqliteConnection: sqlite3.Database[] = [];
 
   /**
    * List of instances singleton
@@ -43,7 +44,7 @@ export class Factory implements IFactory {
    * @throws Error Collection not found
    * @return any
    */
-  public getCollection = (name: string): any => {
+  public getCollection = (name: string, connection: string = null): any => {
 
     const {
       EXTRACT_TARGET_HOSTNAME,
@@ -52,14 +53,14 @@ export class Factory implements IFactory {
     } = process.env;
 
     if (name === 'datas') return new CollectionDatas(
-      this.getSQLiteConnection(),
+      this.getSQLiteConnection(connection),
       () => { return new ModelData() }
     );
     if (name === 'cases') return new CollectionCases(
       () => { return new ModelCase() }
     );
     if (name === 'countries') return new CollectionCountries(
-      this.getSQLiteConnection(),
+      this.getSQLiteConnection(connection),
       () => { return new ModelCountry() }
     );
     if (name === 'worldometers') return new CollectionWorldOMeters(
@@ -88,6 +89,10 @@ export class Factory implements IFactory {
    */
   public getCommand = (command: string): ICommand => {
 
+    const {
+      DATASOURCE_lOCATION_ORIGINAL
+    } = process.env;
+
     if (command === 'extract') return new ExtractCommand(
       this.getCollection('countries'),
       this.getCollection('worldometers'),
@@ -97,6 +102,11 @@ export class Factory implements IFactory {
       this.getHelper<IHelperWorldOMetersActiveFilter>('worldometersactivefilter'),
       this.getHelper<IHelperWorldOMetersDateFixFilter>('worldometersdatefixfilter'),
       () => { return new ModelParseResultIntegration() }
+    );
+
+    if (command === 'test-datasource') return new TestDatasourceCommand(
+      this.getCollection('datas', DATASOURCE_lOCATION_ORIGINAL),
+      this.getCollection('datas')
     );
     throw new Error(`Command "${command}" not found`);
   }
@@ -140,16 +150,18 @@ export class Factory implements IFactory {
    *
    * @return sqlite3.Database
    */
-  private getSQLiteConnection = (): sqlite3.Database => {
+  private getSQLiteConnection = (connection: string = null): sqlite3.Database => {
 
     const {
       DATASOURCE_lOCATION
     } = process.env;
 
-    if (!this._sqliteConnection) {
-      this._sqliteConnection = sqlite3(DATASOURCE_lOCATION || ':memory:');
+    const hash = md5(connection || DATASOURCE_lOCATION || ':memory:');
+
+    if (!this._sqliteConnection[hash]) {
+      this._sqliteConnection[hash] = sqlite3(connection || DATASOURCE_lOCATION || ':memory:');
     }
 
-    return this._sqliteConnection;
+    return this._sqliteConnection[hash];
   }
 }

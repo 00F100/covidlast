@@ -10,6 +10,13 @@ export interface ICollectionsDatas extends ICollection {
   getOrderByDate(): ICollectionsDatas;
 
   /**
+   * Method to get data to compare
+   *
+   * @return ICollectionsDatas
+   */
+  getDataToCompare(): ICollectionsDatas;
+
+  /**
    * Method to create datas by regex response
    *
    * @param modelCountry IModelCountry

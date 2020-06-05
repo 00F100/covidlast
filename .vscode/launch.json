@@ -47,7 +47,7 @@
       "outputCapture": "std"
     },
     {
-      "name": "Handle (TypeScript)",
+      "name": "Handle Extract (TypeScript)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
@@ -55,6 +55,21 @@
         "${workspaceRoot}/api/src/bootstrap/handler",
         "extract",
         "1"
+      ],
+      "cwd": "${workspaceRoot}/api/src",
+      "protocol": "inspector",
+      "envFile": "${workspaceFolder}/api/.env",
+      "console": "internalConsole", 
+      "outputCapture": "std"
+    },
+    {
+      "name": "Handle Test Datasource (TypeScript)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/api/node_modules/ts-node/dist/bin.js",
+      "args": [
+        "${workspaceRoot}/api/src/bootstrap/handler",
+        "test-datasource"
       ],
       "cwd": "${workspaceRoot}/api/src",
       "protocol": "inspector",
