@@ -23,8 +23,8 @@ export class TestDatasourceCommand implements ICommand {
     const dataOriginal = this._collectionDatasOriginal.getDataToCompare().getData<IModelData>();
     const dataNew = this._collectionDatasNew.getDataToCompare().getData<IModelData>();
     if (dataOriginal.length > 0 && dataNew.length > 0) {
-      dataNew.map((data, index) => {
-        const item = dataOriginal.find(x => x.countryName === data.countryName);
+      dataOriginal.map((data, index) => {
+        const item = dataNew.find(x => x.countryName === data.countryName);
         if (item) {
           if (item.cases < data.cases) {
             hasError.push(`Found a minor value in new [country: ${data.countryName}, original: ${data.cases}, new: ${item.cases}]`);
