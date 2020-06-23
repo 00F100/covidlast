@@ -33,7 +33,7 @@
     <section v-if="!showModalLang">
       <div class="row">
         <div class="col" v-if="meta">
-          <ChartsFilter
+          <charts-filter
             :countriesList="countriesList"
             :options="countriesList"
             :countriesSelected.sync="countriesSelected"
@@ -41,32 +41,32 @@
             :forceUpdate="!showModalLang"
             :lang="lang"
             :modal.sync="showModalLang"
-          ></ChartsFilter>
+          ></charts-filter>
         </div>
       </div>
       <div class="row">
         <div class="col-12 col-sm-12 col-md-4">
-          <ChartCasesPopulation :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesPopulation>
+          <chart-cases-population :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population>
         </div>
         <hr class="d-block d-sm-none">
         <div class="col-12 col-sm-12 col-md-4">
-          <ChartCasesTopMi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesTopMi>
+          <chart-cases-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-top-mi>
         </div>
         <hr class="d-block d-sm-none">
         <div class="col-12 col-sm-12 col-md-4">
-          <ChartCasesPopulationPercentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartCasesPopulationPercentage>
+          <chart-cases-population-percentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population-percentage>
         </div>
         <hr>
         <div class="col-12 col-sm-12 col-md-4">
-          <ChartDeathsPopulation :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsPopulation>
+          <chart-deaths-population :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-deaths-population>
         </div>
         <hr class="d-block d-sm-none">
         <div class="col-12 col-sm-12 col-md-4">
-          <ChartDeathsTopMi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsTopMi>
+          <chart-deaths-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-deaths-top-mi>
         </div>
         <hr class="d-block d-sm-none">
         <div class="col-12 col-sm-12 col-md-4">
-          <ChartDeathsPopulationPercentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></ChartDeathsPopulationPercentage>
+          <chart-deaths-population-percentage :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-deaths-population-percentage>
         </div>
       </div>
     </section>
@@ -87,17 +87,8 @@
 </template>
 
 <script>
-import Loading from 'vue-loading-overlay'
-import ChartsFilter from './components/ChartsFilter.vue'
-import ChartCasesPopulation from './components/ChartCasesPopulation.vue'
-import ChartDeathsPopulation from './components/ChartDeathsPopulation.vue'
-import ChartCasesTopMi from './components/ChartCasesTopMi.vue'
-import ChartDeathsPopulationPercentage from './components/ChartDeathsPopulationPercentage.vue'
-import ChartCasesPopulationPercentage from './components/ChartCasesPopulationPercentage.vue'
-import ChartDeathsTopMi from './components/ChartDeathsTopMi.vue'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import moment from 'moment'
-import ModalLanguage from './components/ModalLanguage.vue'
 import randomColor from 'random-color'
 
 export default {
@@ -280,7 +271,7 @@ export default {
   },
   data: function() {
     return {
-      version: '1.2.1',
+      version: '1.2.2',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),
@@ -301,15 +292,15 @@ export default {
     };
   },
   components: {
-    Loading,
-    ChartsFilter,
-    ChartCasesPopulation,
-    ChartCasesPopulationPercentage,
-    ChartCasesTopMi,
-    ChartDeathsPopulation,
-    ChartDeathsPopulationPercentage,
-    ChartDeathsTopMi,
-    ModalLanguage
+    'loading': () => import('vue-loading-overlay'),
+    'charts-filter': () => import('./components/ChartsFilter'),
+    'chart-cases-population': () => import('./components/ChartCasesPopulation'),
+    'chart-cases-population-percentage': () => import('./components/ChartCasesPopulationPercentage'),
+    'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),
+    'chart-deaths-population': () => import('./components/ChartDeathsPopulation'),
+    'chart-deaths-population-percentage': () => import('./components/ChartDeathsPopulationPercentage'),
+    'chart-deaths-top-mi': () => import('./components/ChartDeathsTopMi'),
+    'modal-language': () => import('./components/ModalLanguage')
   },
   locales: {
     en: {
