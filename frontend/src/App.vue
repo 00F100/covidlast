@@ -292,15 +292,15 @@ export default {
     };
   },
   components: {
-    'loading': () => import('vue-loading-overlay'),
-    'charts-filter': () => import('./components/ChartsFilter'),
-    'chart-cases-population': () => import('./components/ChartCasesPopulation'),
-    'chart-cases-population-percentage': () => import('./components/ChartCasesPopulationPercentage'),
-    'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),
-    'chart-deaths-population': () => import('./components/ChartDeathsPopulation'),
-    'chart-deaths-population-percentage': () => import('./components/ChartDeathsPopulationPercentage'),
-    'chart-deaths-top-mi': () => import('./components/ChartDeathsTopMi'),
-    'modal-language': () => import('./components/ModalLanguage')
+    'loading': () => import(/* webpackPrefetch: true */ 'vue-loading-overlay'),
+    'charts-filter': () => import(/* webpackPrefetch: true */ './components/ChartsFilter'),
+    'chart-cases-population': () => import(/* webpackPrefetch: true */ './components/ChartCasesPopulation'),
+    'chart-cases-population-percentage': () => import(/* webpackPrefetch: true */ './components/ChartCasesPopulationPercentage'),
+    'chart-cases-top-mi': () => import(/* webpackPrefetch: true */ './components/ChartCasesTopMi'),
+    'chart-deaths-population': () => import(/* webpackPrefetch: true */ './components/ChartDeathsPopulation'),
+    'chart-deaths-population-percentage': () => import(/* webpackPrefetch: true */ './components/ChartDeathsPopulationPercentage'),
+    'chart-deaths-top-mi': () => import(/* webpackPrefetch: true */ './components/ChartDeathsTopMi'),
+    'modal-language': () => import(/* webpackPrefetch: true */ './components/ModalLanguage')
   },
   locales: {
     en: {
