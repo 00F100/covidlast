@@ -4,7 +4,7 @@ import md5 from 'md5';
 import { IFactory, Response, Router, View } from '.';
 import { CollectionCases, CollectionCountries, CollectionDatas, CollectionWorldOMeters } from './collections';
 import { ExtractCommand, TestDatasourceCommand } from './commands';
-import { ControllerCases } from './controllers';
+import { ControllerCases, ControllerStatus, ControllerCountries, ControllerCountriesTop5 } from './controllers';
 import { HelperWorldOMetersActiveFilter, HelperWorldOMetersCasesFilter, HelperWorldOMetersDateFixFilter, HelperWorldOMetersDeathsFilter, IHelperWorldOMetersActiveFilter, IHelperWorldOMetersCasesFilter, IHelperWorldOMetersDateFixFilter, IHelperWorldOMetersDeathsFilter } from './helpers';
 import { ICommand, IController, IResponse, IRouter, IView } from './interfaces';
 import { ModelCase, ModelCountry, ModelData, ModelHtmlResponse, ModelParseResultIntegration } from './models';
@@ -32,8 +32,11 @@ export class Factory implements IFactory {
    * @throws Error Controller not found
    * @return IController
    */
-  public getController = (name: string, request?: express.Request, response?: express.Response): IController => {
+  public getController = <T> (name: string, request?: express.Request, response?: express.Response): T | any => {
+    if (name === 'status') return new ControllerStatus();
     if (name === 'cases') return new ControllerCases(this.getCollection('datas'), this.getCollection('cases'), request, response);
+    if (name === 'countries') return new ControllerCountries();
+    if (name === 'countriesTop5') return new ControllerCountriesTop5();
     throw new Error(`Controller "${name}" not found`);
   }
 

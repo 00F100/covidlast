@@ -1,6 +1,7 @@
 import express from 'express';
 import Log4js from 'log4js';
-import { Factory, IApplication, ICollection, ICommand, IFactory, IHandlerInput, IRoute, IRouter, IView, Logger } from '.';
+import { Factory, IApplication, ICommand, IFactory, IHandlerInput, IRoute, IRouter, IView, Logger } from '.';
+import { IController } from './interfaces';
 
 export class Application implements IApplication {
 
@@ -89,10 +90,10 @@ export class Application implements IApplication {
    * @param name string
    * @param request express.Request
    * @param response express.Response
-   * @return ICollection
+   * @return T
    */
-  public controller = (name: string, request?: express.Request, response?: express.Response): ICollection => {
-    return this._factory.getController(name, request, response).execute();
+  public controller = <T> (name: string, request?: express.Request, response?: express.Response): T => {
+    return this._factory.getController<T>(name, request, response);
   }
 
   /**
@@ -112,16 +113,17 @@ export class Application implements IApplication {
    */
   private routes = (dispach: express.Router): void => {
     const router: IRouter = this._factory.getRouter();
-    const routes: IRoute[] = router.mount(this);
+    const routes: IRoute[] = router.mount();
     routes.map(route => {
-      if (typeof route.onCreate === 'function') {
-        this._logger.info(`Execute onCreate to route "${route.method} ${route.path}"`);
-        route.onCreate(route);
+      const controller = this.controller<IController>(route.controller);
+      if (typeof controller.onCreate === 'function') {
+        this._logger.info(`Execute "${route.controller}".onCreate to route "${route.method} ${route.path}"`);
+        controller.onCreate(this, route);
       }
       dispach[route.method.toLowerCase()](route.path, (request: express.Request, response: express.Response) => {
-        if (typeof route.onExecute === 'function') {
-          this._logger.info(`Execute onExecute to route "${route.method} ${route.path}"`);
-          route.onExecute(route, request);
+        if (typeof controller.onExecute === 'function') {
+          this._logger.info(`Execute "${route.controller}".onExecute to route "${route.method} ${route.path}"`);
+          controller.onExecute(this, route, request);
         }
         this._logger.info(`Request to route ${request.path} by ${request.ip}`);
         response.header('Access-Control-Allow-Origin', '*');

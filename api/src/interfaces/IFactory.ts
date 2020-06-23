@@ -9,9 +9,9 @@ export interface IFactory {
    * @param name string
    * @param request express.Request
    * @param response express.Response
-   * @return IController
+   * @return T
    */
-  getController(name: string, request?: express.Request, response?: express.Response): IController;
+  getController<T>(name: string, request?: express.Request, response?: express.Response): T;
 
   /**
    * Method to get Router instance

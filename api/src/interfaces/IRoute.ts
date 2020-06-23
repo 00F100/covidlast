@@ -34,14 +34,8 @@ export interface IRoute {
   header?: string;
 
   /**
-   * Behavior on create route
-   * @param (context: IRoute) => void
+   * Method to set controller of route
+   * @param string
    */
-  onCreate?: (context: IRoute) => void;
-
-  /**
-   * Behavior on execute route
-   * @param (context: IRoute, request: express.Request) => void
-   */
-  onExecute?: (context: IRoute, request: express.Request) => void;
+  controller: string;
 }

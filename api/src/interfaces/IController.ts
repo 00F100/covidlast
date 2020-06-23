@@ -1,11 +1,19 @@
-import { ICollection } from '.';
+import express from 'express';
+import { IRoute, IApplication } from '.';
 
 export interface IController {
 
   /**
-   * Method to execute on call controller
+   * Method to call on create route
    *
-   * @return ICollection
+   * @return (application: IApplication, context: IRoute) => void
    */
-  execute(): ICollection;
+  onCreate?: (application: IApplication, context: IRoute) => void;
+
+  /**
+   * Method to call on execute route
+   *
+   * @return (application: IApplication, context: IRoute, request: express.Request) => void
+   */
+  onExecute?: (application: IApplication, context: IRoute, request: express.Request) => void;
 }

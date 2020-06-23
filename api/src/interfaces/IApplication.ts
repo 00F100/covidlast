@@ -1,5 +1,5 @@
 import express from 'express';
-import { ICollection, IHandlerInput } from '.';
+import { IController, IHandlerInput } from '.';
 import { IView } from './IView';
 
 export interface IApplication {
@@ -26,9 +26,9 @@ export interface IApplication {
    * @param name string
    * @param request express.Request
    * @param response express.Response
-   * @return ICollection
+   * @return T
    */
-  controller(name: string, request?: express.Request, response?: express.Response): ICollection;
+  controller<T>(name: string, request?: express.Request, response?: express.Response): T;
 
   /**
    * Method to get view
