@@ -5,6 +5,6 @@ node_js:
 jobs:
   include:
     - stage: API
-      script: cd api && npm install && npm run build && node dist/bootstrap/handler.js extract 1
+      script: cd api && npm install && cp .env-dev .env && npm run build && node dist/bootstrap/handler.js extract 1
     - stage: Frontend
       script: cd frontend && npm install && cp .env-dev .env && npm run build && npm install -g http-server && http-server dist -p 8080
