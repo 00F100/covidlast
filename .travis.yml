@@ -2,9 +2,30 @@ language: node_js
 node_js:
   - 10
 
+env:
+  - API_PORT=3000
+  - DATASOURCE_lOCATION=/home/travis/build/00F100/covid-chart/api/infra/data/database.sqlite
+  - DATASOURCE_lOCATION_ORIGINAL=/home/travis/build/00F100/covid-chart/api/infra/data/database.sqlite
+  - VIEW_INDEX=/home/travis/build/00F100/covid-chart/api/src/public
+  - LOGGER_LEVEL=info
+  - LOGGER_TYPE=file
+  - LOGGER_FILE=/var/log/covidlast-api-extractor.log
+  - DIR_NAME=/home/travis/build/00F100/covid-chart/api/src
+  - NODE_ENV=production
+  - EXTRACT_TARGET_HOSTNAME=https://www.worldometers.info
+  - EXTRACT_TARGET_METHOD=GET
+  - EXTRACT_TARGET_PATH=/coronavirus/country/%s
+  - HELPER_FILTER_CASES=true
+  - HELPER_FILTER_DEATHS=true
+  - HELPER_FILTER_ACTIVE=false
+  - VUE_APP_API_SCHEMA=https
+  - VUE_APP_API_HOST=api.covidlast.com
+  - VUE_APP_API_PORT=
+  - VUE_GOOGLE_ANALYTICS_TAG=
+
 jobs:
   include:
     - stage: API
-      script: cd api && npm install && cp .env-dev .env && npm run build && node dist/bootstrap/handler.js extract 1
+      script: cd api && npm install && npm run build && node dist/bootstrap/handler.js extract 1
     - stage: Frontend
-      script: cd frontend && npm install && cp .env-dev .env && npm run build && npm install -g http-server && http-server dist -p 8080
+      script: cd frontend && npm install && npm run build && npm install -g http-server && http-server dist -p 8080
