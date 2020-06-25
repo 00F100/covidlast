@@ -27,6 +27,10 @@ env:
 jobs:
   include:
     - stage: API
+      script: cd api && npm install && npm run build
+    - stage: Extract
       script: cd api && npm install && npm run build && node dist/bootstrap/handler.js extract 1
+    - stage: Validate
+      script: cd api && npm install && npm run build && node dist/bootstrap/handler.js test-datasource
     - stage: Frontend
-      script: cd frontend && npm install && npm run build && npm install -g http-server && http-server dist -p 8080
+      script: cd frontend && npm install && npm run build
