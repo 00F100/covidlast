@@ -2,9 +2,9 @@ language: node_js
 node_js:
   - 10
 
-before_script:
-  - travis_retry cd api && npm install && npm run build
-  - travis_retry cd ../frontend && npm install && npm run build
-
-script:
-  - node api/dist/bootstrap/handler.js extract 1
+jobs:
+  include:
+    - stage: API
+      script: cd api && npm install && npm run build && node dist/bootstrap/handler.js extract 1
+    - stage: Frontend
+      script: cd frontend && npm install && cp .env-dev .env && npm run build && npm install -g http-server && http-server dist -p 8080
