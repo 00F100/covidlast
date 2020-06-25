@@ -12,7 +12,7 @@ env:
     - LOGGER_TYPE=file
     - LOGGER_FILE=/var/log/covidlast-api-extractor.log
     - DIR_NAME=/home/travis/build/00F100/covid-chart/api/src
-    - NODE_ENV=production
+    - NODE_ENV=development
     - EXTRACT_TARGET_HOSTNAME=https://www.worldometers.info
     - EXTRACT_TARGET_METHOD=GET
     - EXTRACT_TARGET_PATH=/coronavirus/country/%s
