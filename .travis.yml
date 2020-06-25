@@ -4,7 +4,7 @@ node_js:
 
 before_script:
   - travis_retry cd api && npm install && npm run build
-  - travis_retry cd frontend && npm install && npm run build
+  - travis_retry cd ../frontend && npm install && npm run build
 
 script:
   - node api/dist/bootstrap/handler.js extract 1
