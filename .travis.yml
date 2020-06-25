@@ -1,8 +1,10 @@
 language: node_js
+node_js:
+  - "10"
 
 before_script:
-  - travis_retry cd api && npm install
-  - travis_retry cd api && npm run build
+  - travis_retry cd api && npm install && npm run build
+  - travis_retry cd frontend && npm install && npm run build
 
 script:
-  - node api/dist/bootstrap/handler.js
+  - node api/dist/bootstrap/handler.js extract 1
