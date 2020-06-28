@@ -264,7 +264,7 @@ export default {
   },
   data: function() {
     return {
-      version: '1.2.3',
+      version: '1.2.4',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),
