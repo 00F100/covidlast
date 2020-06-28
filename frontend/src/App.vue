@@ -1,13 +1,6 @@
 <template>
   <div id="app" class="container-fluid">
 
-    <vue-headful
-            :title="t('COVID-19 PANDEMIC')"
-            :description="t('View and compare covid-19 cases and deaths in the world in an easy and practical way')"
-            keywords="covid 19 covid-19 coronavirus last updates últimas noticias ultimas cases deaths day casos mortes dia casos muertes diurnas"
-            :lang="lang"
-            url="covidlast.com"/>
-
     <loading
         :active.sync="activeLoading" 
         :can-cancel="true" 

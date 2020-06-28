@@ -20,7 +20,6 @@
     "vue": "^2.6.11",
     "vue-analytics": "^5.22.1",
     "vue-cookie": "^1.1.4",
-    "vue-headful": "^2.1.0",
     "vue-loading-overlay": "^3.3.2",
     "vue-multiselect": "^2.1.6",
     "vue-toast-notification": "^0.3.0",

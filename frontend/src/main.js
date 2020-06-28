@@ -11,7 +11,6 @@ import Api from './plugins/api'
 import VueCookie from 'vue-cookie'
 import VueTranslate from 'vue-translate-plugin';
 import VueAnalytics from 'vue-analytics';
-import vueHeadful from 'vue-headful'
 
 dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
@@ -30,8 +29,6 @@ Vue.use(IconsPlugin)
 Vue.use(Popup)
 Vue.use(Chart)
 Vue.use(Api)
-
-Vue.component('vue-headful', vueHeadful);
 
 new Vue({
   render: h => h(App),

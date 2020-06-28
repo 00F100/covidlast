@@ -9,7 +9,8 @@
 * [Tecnologias](#tecnologias)
 * [Infraestrutura](#infraestrutura)
 * [Base de dados](#base-de-dados)
-* [Ambiente de desenvolvimento](#ambiente-de-desenvolvimento)
+* [Ambiente desenvolvimento](#ambiente-desenvolvimento)
+* [Ambiente Producao](#ambiente-producao)
 
 ## Tecnologias
 
@@ -77,7 +78,7 @@
 | SQLite | 3.27.2 | Banco de dados para salvar os dados capturados |
 
 
-## Ambiente de desenvolvimento
+## Ambiente desenvolvimento
 
 > Para maior facilidade utilize [Visual Studio Code](https://code.visualstudio.com/) para edicao de codigo.
 
@@ -119,24 +120,55 @@ $ cp frontend/.env-dev frontend/.env
 | VUE_APP_API_PORT | integer | Porta da API de dados, ex: 3000 |
 | VUE_GOOGLE_ANALYTICS_TAG | string | Tag GA para acompanhamento |
 
-* Apos execute `NPM Install`, conforme abaixo:
+* Apos execute `npm install`, conforme abaixo:
 
+API
 ```bash
 $ cd api && npm install
+```
+
+Interface
+```bash
 $ cd frontend && npm install
 ```
 
+----
+
 #### API
 
-No `Debug` do Visual Studio Code selecione `API Web server (TypeScript)` e execute.
+Visual Studio:
+
+> No `Debug` selecione `API Web server (TypeScript)` e execute.
+
+Terminal:
+
+> Execute `cd api && npm run api-develop`
+
+----
 
 #### Captura de dados
 
-No `Debug` do Visual Studio Code selecione `Handle Extract (TypeScript)` e execute.
+Visual Studio:
+
+> No `Debug` selecione `Handle Extract (TypeScript)` e execute.
+
+Terminal:
+
+> Execute `cd api && node dist/bootstrap/handler.js extract [idCountry]` onde `[IdCountry]` e o ID do pais no banco de dados `datasource.sqlite`.
+
+----
 
 #### Verificar integridade do banco de dados antes de atualizar
 
-No `Debug` do Visual Studio Code selecione `Handle Test Datasource (TypeScript)` e execute.
+Visual Studio Code:
+
+> No `Debug` selecione `Handle Test Datasource (TypeScript)` e execute.
+
+Terminal:
+
+> Execute `cd api && node dist/bootstrap/handler.js test-datasource`
+
+----
 
 #### Interface
 
@@ -144,4 +176,79 @@ No `terminal bash` execute:
 
 ```bash
 $ cd frontend && npm run serve
+```
+
+## Ambiente Producao
+
+### Nginx
+
+Interface
+
+```
+server {
+   server_name covidlast.com www.covidlast.com;
+   listen 443 ssl http2;
+   root /var/www/frontend;
+   ssl on;
+   ssl_certificate      /etc/nginx/ssl/covidlast.pem;
+   ssl_certificate_key  /etc/nginx/ssl/covidlast.key;
+   location / {
+      index index.html;
+   }
+}
+```
+
+API
+
+```
+server {
+   server_name api.covidlast.com;
+   listen 443 ssl http2;
+   ssl on;
+   ssl_certificate      /etc/nginx/ssl/covidlast.pem;
+   ssl_certificate_key  /etc/nginx/ssl/covidlast.key;
+   location / {
+        proxy_set_header   X-Forwarded-For $remote_addr;
+        proxy_set_header   Host $http_host;
+        proxy_pass         http://localhost:3000;
+   }
+}
+```
+
+----
+
+### API
+
+Build:
+
+```bash
+$ git clone https://github.com/00F100/covid-chart.git
+$ cd covid-chart/api
+$ cp .env-prd .env
+$ npm install && npm run build
+```
+
+Deploy:
+
+```bash
+$ cd covid-chart/api
+$ sudo kill `ps -ef | grep node | grep -v grep | awk '{print $2}'` || true
+$ sudo nohup node dist/bootstrap/web.js > /var/log/covidlast-api-nohup.log &
+```
+
+### Interface
+
+Build:
+
+```bash
+$ git clone https://github.com/00F100/covid-chart.git
+$ cd covid-chart/frontend
+$ cp .env-prd .env
+$ npm install && npm run build
+```
+
+Deploy:
+
+```bash
+$ cp covid-chart/frontend/dist/* /var/www/frontend
 ```
