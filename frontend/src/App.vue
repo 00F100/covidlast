@@ -264,7 +264,7 @@ export default {
   },
   data: function() {
     return {
-      version: '1.2.4',
+      version: '1.2.5',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),
@@ -285,15 +285,15 @@ export default {
     };
   },
   components: {
-    'loading': () => import(/* webpackPrefetch: true */ 'vue-loading-overlay'),
-    'charts-filter': () => import(/* webpackPrefetch: true */ './components/ChartsFilter'),
-    'chart-cases-population': () => import(/* webpackPrefetch: true */ './components/ChartCasesPopulation'),
-    'chart-cases-population-percentage': () => import(/* webpackPrefetch: true */ './components/ChartCasesPopulationPercentage'),
-    'chart-cases-top-mi': () => import(/* webpackPrefetch: true */ './components/ChartCasesTopMi'),
-    'chart-deaths-population': () => import(/* webpackPrefetch: true */ './components/ChartDeathsPopulation'),
-    'chart-deaths-population-percentage': () => import(/* webpackPrefetch: true */ './components/ChartDeathsPopulationPercentage'),
-    'chart-deaths-top-mi': () => import(/* webpackPrefetch: true */ './components/ChartDeathsTopMi'),
-    'modal-language': () => import(/* webpackPrefetch: true */ './components/ModalLanguage')
+    'loading': () => import(/* webpackPreload: true */ 'vue-loading-overlay'),
+    'charts-filter': () => import(/* webpackPreload: true */ './components/ChartsFilter'),
+    'chart-cases-population': () => import(/* webpackPreload: true */ './components/ChartCasesPopulation'),
+    'chart-cases-population-percentage': () => import(/* webpackPreload: true */ './components/ChartCasesPopulationPercentage'),
+    'chart-cases-top-mi': () => import(/* webpackPreload: true */ './components/ChartCasesTopMi'),
+    'chart-deaths-population': () => import(/* webpackPreload: true */ './components/ChartDeathsPopulation'),
+    'chart-deaths-population-percentage': () => import(/* webpackPreload: true */ './components/ChartDeathsPopulationPercentage'),
+    'chart-deaths-top-mi': () => import(/* webpackPreload: true */ './components/ChartDeathsTopMi'),
+    'modal-language': () => import(/* webpackPreload: true */ './components/ModalLanguage')
   },
   locales: {
     en: {
