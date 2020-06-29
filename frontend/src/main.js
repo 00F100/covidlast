@@ -1,4 +1,3 @@
-// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import { config as dotenv } from 'dotenv'
 import Vue from 'vue'
 import VueAnalytics from 'vue-analytics'
@@ -7,9 +6,7 @@ import VueTranslate from 'vue-translate-plugin'
 import App from './App.vue'
 import Api from './plugins/api'
 import Chart from './plugins/chart'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-// import 'bootstrap/dist/css/bootstrap-grid.css'
 
 dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
@@ -23,8 +20,6 @@ Vue.use(VueAnalytics, {
 
 Vue.use(VueCookie)
 Vue.use(VueTranslate)
-// Vue.use(BootstrapVue)
-// Vue.use(IconsPlugin)
 Vue.use(Chart)
 Vue.use(Api)
 

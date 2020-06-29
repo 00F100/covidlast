@@ -254,8 +254,8 @@ export default {
         this.lang = 'en'
         this.$cookie.set('lang', this.lang)
       }
-      if (!this.haveCookie) {
-        this.showModalLang = true
+      if (this.haveCookie) {
+        this.showModalLang = false
       }
       this.$translate.setLang(this.lang);
       this.loadCountries()
@@ -264,13 +264,13 @@ export default {
   },
   data: function() {
     return {
-      version: '1.2.6',
+      version: '1.2.7',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),
       meta: null,
       isLoading: 0,
-      showModalLang: false,
+      showModalLang: true,
       lang: null,
       timeoutLoadCasesApi: null,
       countriesCases: [],
