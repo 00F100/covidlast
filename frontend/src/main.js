@@ -1,16 +1,15 @@
-import Vue from 'vue'
-import App from './App.vue'
+// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import { config as dotenv } from 'dotenv'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import './assets/custom.css';
-import Popup from './plugins/popup'
-import Chart from './plugins/chart'
-import Api from './plugins/api'
+import Vue from 'vue'
+import VueAnalytics from 'vue-analytics'
 import VueCookie from 'vue-cookie'
-import VueTranslate from 'vue-translate-plugin';
-import VueAnalytics from 'vue-analytics';
+import VueTranslate from 'vue-translate-plugin'
+import App from './App.vue'
+import Api from './plugins/api'
+import Chart from './plugins/chart'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap-grid.css'
 
 dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
@@ -24,9 +23,8 @@ Vue.use(VueAnalytics, {
 
 Vue.use(VueCookie)
 Vue.use(VueTranslate)
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
-Vue.use(Popup)
+// Vue.use(BootstrapVue)
+// Vue.use(IconsPlugin)
 Vue.use(Chart)
 Vue.use(Api)
 

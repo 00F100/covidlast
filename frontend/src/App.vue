@@ -20,7 +20,7 @@
     <header>
       <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
       <div class="d-sm-block d-md-none">
-        <button class="btn btn-light choose-lang-mobile"  @click="showModalLang = true"><b-icon-arrow-up-down></b-icon-arrow-up-down><span></span></button>
+        <button class="btn btn-light choose-lang-mobile"  @click="showModalLang = true"><span></span></button>
       </div>
     </header>
     <section v-if="!showModalLang">
@@ -264,7 +264,7 @@ export default {
   },
   data: function() {
     return {
-      version: '1.2.5',
+      version: '1.2.6',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),

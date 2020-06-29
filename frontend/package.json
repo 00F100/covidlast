@@ -1,7 +1,7 @@
 {
-  "name": "covid-frontend",
-  "version": "1.2.5",
-  "private": true,
+  "name": "covidlast",
+  "version": "1.2.6",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,8 +10,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
-    "bootstrap-vue": "^2.13.0",
-    "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
     "hex-to-rgba": "^2.0.1",
     "highcharts": "^8.1.0",
@@ -22,7 +20,6 @@
     "vue-cookie": "^1.1.4",
     "vue-loading-overlay": "^3.3.2",
     "vue-multiselect": "^2.1.6",
-    "vue-toast-notification": "^0.3.0",
     "vue-translate-plugin": "^1.3.1"
   },
   "devDependencies": {

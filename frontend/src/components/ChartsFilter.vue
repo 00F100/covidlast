@@ -33,7 +33,7 @@
       </multiselect>
     </div>
     <div class="col-md-2 d-none d-md-block">
-      <button class="btn btn-light choose-lang" @click="openModal"><b-icon-arrow-up-down></b-icon-arrow-up-down><span>{{ t(lang) }}</span></button>
+      <button class="btn btn-light choose-lang" @click="openModal"><span>{{ t(lang) }}</span></button>
     </div>
     <div class="col-md-12">
       <small class="last-update-text">{{ t('Last update') }}, {{ currentDate }}</small>
