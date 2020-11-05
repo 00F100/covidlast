@@ -40,15 +40,37 @@ export class CollectionCases extends Collection implements ICollectionsCases {
    * @return ICollectionsCases
    */
   public getByCountry = (collectionDatas: ICollectionsDatas): ICollectionsCases => {
+    let prevValueCases: number = 0
+    let prevValueDeaths: number = 0
+    let prevCountryId: number = 0
     const datas = collectionDatas.getData<IModelData>();
     datas.map((data: IModelData, index: number) => {
+      if (prevCountryId !== data.countryId) {
+        prevValueCases = 0
+        prevValueDeaths = 0
+        prevCountryId = data.countryId
+      }
+      // if (prevValueCases > data.cases) {
+      //   prevValueCases = 0
+      // }
+      const newCases = data.cases - prevValueCases
+      prevValueCases = data.cases
+
+      // if (prevValueDeaths > data.deaths) {
+      //   prevValueDeaths = 0
+      // }
+      const newDeaths = data.deaths - prevValueDeaths
+      prevValueDeaths = data.deaths
+
       const model = this.getModelByCountryId(data);
       const metricPopMi = +(data.population / 1000000).toFixed(2);
       const metricPopMiCases = +(data.cases / metricPopMi).toFixed(0);
+      const metricPopMiCasesNew = +(newCases / metricPopMi).toFixed(0);
+      const metricPopMiDeathsNew = +(newDeaths / metricPopMi).toFixed(0);
       const metricPopMiDeaths = +(data.deaths / metricPopMi).toFixed(0);
       const casesPercentage = +((data.cases * 100) / data.population).toFixed(5);
       const deathsPercentage = +((data.deaths * 100) / data.population).toFixed(5);
-      model.data.push([data.timestamp, [data.cases, data.deaths, data.active], [casesPercentage, deathsPercentage, 0], [metricPopMiCases, metricPopMiDeaths, 0]]);
+      model.data.push([data.timestamp, [data.cases, data.deaths, data.active, newCases, newDeaths], [casesPercentage, deathsPercentage, 0, 0, 0], [metricPopMiCases, metricPopMiDeaths, 0, metricPopMiCasesNew, metricPopMiDeathsNew]]);
     });
     this.sortDataByCountry();
     return this;
