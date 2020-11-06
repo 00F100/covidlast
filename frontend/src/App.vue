@@ -39,11 +39,11 @@
       </div>
       <div class="row">
         
-        <div class="col-12 col-sm-12 col-md-4">
+        <div class="col-12 col-sm-12 col-md-12">
           <chart-cases-population-new :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population-new>
         </div>
         <hr class="d-block d-sm-none">
-        <div class="col-12 col-sm-12 col-md-4">
+        <!-- <div class="col-12 col-sm-12 col-md-4">
           <chart-cases-population :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population>
         </div>
         <hr class="d-block d-sm-none">
@@ -61,7 +61,7 @@
         <hr class="d-block d-sm-none">
         <div class="col-12 col-sm-12 col-md-4">
           <chart-deaths-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-deaths-top-mi>
-        </div>
+        </div> -->
       </div>
     </section>
     
@@ -69,8 +69,8 @@
       <div class="row">
         <div class="col-6 col-sm-6 left">
           <p>{{ t('This is a open source project') }}</p>
-          <p>{{ t('Data source') }}: <a href="https://www.worldometers.info/coronavirus/?from=covidlast.com" target="_blank">worldometers.info/coronavirus</a></p>
-          <p>{{ t('Source code') }}: <a href="https://github.com/00F100/covid-chart" target="_blank">github.com/00F100/covid-chart</a></p>
+          <p><a href="https://www.worldometers.info/coronavirus/?from=covidlast.com" target="_blank">{{ t('Data source') }}</a></p>
+          <p><a href="https://github.com/00F100/covid-chart" target="_blank">{{ t('Source code') }}</a></p>
         </div>
         <div class="col-6 col-sm-6 right">
           <p>covidlast.com<br>{{ t('Version') }} {{ version }}<br>{{ currentYear }}</p>
@@ -140,6 +140,14 @@ export default {
         country.data.map((data, day) => {
           const label = `${moment(data[0] * 1000).utc().format(this.$translate.text('MM/DD/YYYY'))}<br>${this.$translate.text('day')}: ${day}`
           casesTotal.push([label, data[1][0]])
+          // casesTotalNew.push({
+          //   x: 0,
+          //   y: 5,
+          //   dataLabels: {
+          //     enabled: true,
+          //     format: 'teste'
+          //   }
+          // })
           casesTotalNew.push([label, data[1][3]])
           casesPercentage.push([label, data[2][0]])
           casesTopMi.push([label, data[3][0]])
@@ -306,12 +314,12 @@ export default {
   components: {
     'loading': () => import('vue-loading-overlay'),
     'charts-filter': () => import('./components/ChartsFilter'),
-    'chart-cases-population': () => import('./components/ChartCasesPopulation'),
+    // 'chart-cases-population': () => import('./components/ChartCasesPopulation'),
     'chart-cases-population-new': () => import('./components/ChartCasesPopulationNew'),
-    'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),
-    'chart-deaths-population': () => import('./components/ChartDeathsPopulation'),
-    'chart-deaths-population-new': () => import('./components/ChartDeathsPopulationNew'),
-    'chart-deaths-top-mi': () => import('./components/ChartDeathsTopMi'),
+    // 'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),
+    // 'chart-deaths-population': () => import('./components/ChartDeathsPopulation'),
+    // 'chart-deaths-population-new': () => import('./components/ChartDeathsPopulationNew'),
+    // 'chart-deaths-top-mi': () => import('./components/ChartDeathsTopMi'),
     'modal-language': () => import('./components/ModalLanguage')
   },
   locales: {
