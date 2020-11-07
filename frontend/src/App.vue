@@ -18,15 +18,39 @@
       :onSelect="this.fixCountriesName"></modal-language>
 
     <header>
-      <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
+      <!-- <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
       <div class="d-sm-block d-md-none">
         <button class="btn btn-light choose-lang-mobile"  @click="showModalLang = true"><span></span></button>
-      </div>
+      </div> -->
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#">Cases</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Deaths</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#">Total by day</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Sum since begin</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
     </header>
     <section v-if="!showModalLang">
       <div class="row">
         <div class="col" v-if="meta">
-          <charts-filter
+          <!-- <charts-filter
             :countriesList="countriesList"
             :options="countriesList"
             :countriesSelected.sync="countriesSelected"
@@ -34,7 +58,7 @@
             :forceUpdate="!showModalLang"
             :lang="lang"
             :modal.sync="showModalLang"
-          ></charts-filter>
+          ></charts-filter> -->
         </div>
       </div>
       <div class="row">
@@ -42,12 +66,12 @@
         <div class="col-12 col-sm-12 col-md-12">
           <chart-cases-population-new :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population-new>
         </div>
-        <hr class="d-block d-sm-none">
-        <!-- <div class="col-12 col-sm-12 col-md-4">
+        <!-- <hr class="d-block d-sm-none">
+        <div class="col-12 col-sm-12 col-md-12">
           <chart-cases-population :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population>
         </div>
         <hr class="d-block d-sm-none">
-        <div class="col-12 col-sm-12 col-md-4">
+        <div class="col-12 col-sm-12 col-md-12">
           <chart-cases-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-top-mi>
         </div>
         <hr>
@@ -313,7 +337,7 @@ export default {
   },
   components: {
     'loading': () => import('vue-loading-overlay'),
-    'charts-filter': () => import('./components/ChartsFilter'),
+    // 'charts-filter': () => import('./components/ChartsFilter'),
     // 'chart-cases-population': () => import('./components/ChartCasesPopulation'),
     'chart-cases-population-new': () => import('./components/ChartCasesPopulationNew'),
     // 'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),
@@ -599,5 +623,16 @@ footer {
 .right > p {
   text-align: right;
   margin: 0px 20px 0px 0px;
+}
+.country-label {
+  padding: 5px 8px;
+  position: absolute;
+  background-color: #FFF;
+  border-radius: 10px;
+  margin: -15px 0 0 -8px;
+  font-size: 12px;
+}
+.country-label b {
+  font-size: 15px;
 }
 </style>

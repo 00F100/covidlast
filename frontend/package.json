@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.18.1",
     "dotenv": "^8.2.0",
     "hex-to-rgba": "^2.0.1",
     "highcharts": "^8.1.0",

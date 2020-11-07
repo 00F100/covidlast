@@ -6,7 +6,9 @@ import VueTranslate from 'vue-translate-plugin'
 import App from './App.vue'
 import Api from './plugins/api'
 import Chart from './plugins/chart'
+// import { TablePlugin, DropdownPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 dotenv({
   debug: process.env.NODE_ENV === 'development' ? true : false
@@ -20,6 +22,8 @@ Vue.use(VueAnalytics, {
 
 Vue.use(VueCookie)
 Vue.use(VueTranslate)
+// Vue.use(DropdownPlugin)
+// Vue.use(TablePlugin)
 Vue.use(Chart)
 Vue.use(Api)
 
