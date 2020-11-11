@@ -1,6 +1,7 @@
 import * as sqlite3 from 'better-sqlite3';
 import { ICollectionIntegrationResult, ICollectionsDatas, IModelCountry, IModelData, IModelParseResultIntegration, Logger } from '..';
 import { Collection } from '../collection';
+import moment from 'moment';
 
 export class CollectionDatas extends Collection implements ICollectionsDatas {
 

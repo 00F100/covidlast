@@ -1,4 +1,5 @@
 import * as express from 'express';
+import moment from 'moment';
 import { ICollectionsCases, ICollectionsDatas, IControllerCases, IApplication, IRoute } from '..';
 import { Controller } from '../controller';
 
@@ -53,11 +54,26 @@ export class ControllerCases extends Controller implements IControllerCases {
     const returnData = [];
     const input: number[] | any = request.query.country;
     if (request.query.country && request.query.country.length > 0) {
-      context.cache.getData().map(model => {
+      const _data = JSON.parse(JSON.stringify(context.cache.getData()))
+
+      _data.map(model => {
         if (input.indexOf(model.countryId.toString()) > -1) {
+          model.data.map((a, i) => {
+            if (a[0] <= moment().unix() - (21 * 86400)) {
+              // model.data.splice(i, 1)
+              // model.data[i] = undefined
+            }
+          })
           returnData.push(model);
         }
       });
+      // if (returnData.length > 0) {
+        // returnData.map(data => {
+          // if (data.data.length > 20) {
+            // data.data.splice(0, 1)
+          // }
+        // })
+      // }
       context.response = { ...application.view().json(context.cache), data: returnData};
       context.response.meta.total = returnData.length;
     }

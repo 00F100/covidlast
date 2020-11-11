@@ -26,14 +26,15 @@ export class ControllerCountriesTop5 implements IControllerCountriesTop5 {
         countryName,
         countryPopulation,
         countryColor,
-        cases: data[data.length - 1][1][0]
+        newCases: data[data.length - 1][1][3],
+
       });
     });
     returnData.sort((a, b) => {
-      if (a.cases > b.cases){
+      if (a.newCases > b.newCases){
         return -1;
       }
-      if (a.cases < b.cases){
+      if (a.newCases < b.newCases){
         return 1;
       }
       return 0;
