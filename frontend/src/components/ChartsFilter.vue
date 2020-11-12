@@ -1,11 +1,12 @@
 <template>
   <div class="row">
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
       <div class="select-to-compare-text">
         <label>{{ t('Select the countries to compare') }}</label>
       </div>
-    </div>
-    <div class="col-md-10">
+    </div> -->
+    <div class="col-md-7">
+      <label for="">{{ t('Select the countries to compare') }}</label>
       <multiselect
         v-model="selected"
         :allow-empty="false"
@@ -32,7 +33,16 @@
         <span slot="noResult">{{ t('No country found. Consider changing the search query.') }}</span>
       </multiselect>
     </div>
-    <div class="col-md-2 d-none d-md-block">
+    <div class="col-md-3">
+      <label for="">{{ t('Chart view') }}</label>
+      <button class="btn btn-light choose-lang"><span>{{ t('Cases by day') }}</span></button>
+    </div>
+    <div class="col-md-1">
+      <label for="">{{ t('Show last days') }}</label>
+      <button class="btn btn-light choose-lang"><span>{{ limit }}</span></button>
+    </div>
+    <div class="col-md-1">
+      <label for="">{{ t('Language') }}</label>
       <button class="btn btn-light choose-lang" @click="openModal"><span>{{ t(lang) }}</span></button>
     </div>
     <div class="col-md-12">
@@ -54,7 +64,8 @@ export default {
     forceUpdate: Boolean,
     date: Number,
     lang: String,
-    modal: Boolean
+    modal: Boolean,
+    limit: Number
   },
   created: function() {
     this.selected = this.countriesSelected;
@@ -82,6 +93,9 @@ export default {
     }
   },
   watch: {
+    changeLimit: function() {
+      this.$emit('update:limit', +this.changeLimit);
+    },
     countriesSelected: function() {
       this.selected = this.countriesSelected
     },
@@ -109,9 +123,11 @@ export default {
   data: function() {
     return {
       selected: [],
+      changeLimit: null,
       lastUpdated: null,
       currentDate: null,
-      currentDateTimezoneLabel: null
+      currentDateTimezoneLabel: null,
+      isMobile: this.$device.isMobile()
     };
   },
   components: {

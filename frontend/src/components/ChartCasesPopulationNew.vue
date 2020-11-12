@@ -31,7 +31,7 @@ export default {
       this.$chart.generate(
         'chart-population-new',
         this.countriesSelected.populationCasesNew,
-        this.$translate.text('New cases by day'),
+        null,
         this.$translate.text('Number of cases')
       );
     }

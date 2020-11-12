@@ -38,9 +38,9 @@ const Api = {
       getCountriesTop5: (callback, callbackException) => {
         ApiDatasource.execute('countries/top5', callback, callbackException);
       },
-      getCases: (countries, callback, callbackException) => {
+      getCases: (countries, limit, callback, callbackException) => {
         ApiDatasource.execute('cases', callback, callbackException, {
-          query: {country: countries}
+          query: {country: countries, limit }
         });
       }
     };

@@ -13,17 +13,25 @@ const Chart = {
               title: {
                 text: null
               },
+              grid: {
+                enabled: true
+              }
           },
           xAxis: {
-            max: series[0] && series[0].data ? series[0].data.length + 30 : undefined
+            max: this.getXAxisMax(series, Vue.prototype.$device.isMobile() ? 30 : 10),
+            grid: {
+              enabled: true
+            }
+            // type: 'datetime'
           },
           credits: {
             text: 'covidlast.com',
             href: 'http://covidlast.com'
           },
           chart: {
-            height: window.innerHeight - 300,
-            type: 'spline',
+            height: window.innerHeight - 120,
+            width: window.innerWidth - (Vue.prototype.$device.isMobile() ? 30 : 50),
+            type: 'line',
             polar: false,
           },
           tooltip: {
@@ -41,7 +49,7 @@ const Chart = {
                 align: 'left',
                 useHTML: true,
                 formatter: function() {
-                  if ((this.series.data.length - 1) === this.x) {
+                  if ((this.series.data.length) === this.x) {
                     // const currentDate = moment().format(Vue.prototype.$translate.text('MM/DD/YYYY'))
                     const value = (new Intl.NumberFormat()).format(this.point.options.y)
                     return `<div class="country-label" style="background-color: ${this.series.color};">${this.series.name}<br><b>${value}</b></div>`
@@ -58,6 +66,14 @@ const Chart = {
       });
       }
     };
+  },
+
+  getXAxisMax(series, size) {
+    if (series[0] && series[0].data) {
+      const total = series[0].data.length
+      return (total + ((size * total) / 100)).toFixed(0)
+    }
+    return undefined
   }
 };
 

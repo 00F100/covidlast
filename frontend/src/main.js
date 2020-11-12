@@ -6,6 +6,7 @@ import VueTranslate from 'vue-translate-plugin'
 import App from './App.vue'
 import Api from './plugins/api'
 import Chart from './plugins/chart'
+import Device from './plugins/device'
 // import { TablePlugin, DropdownPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -24,6 +25,7 @@ Vue.use(VueCookie)
 Vue.use(VueTranslate)
 // Vue.use(DropdownPlugin)
 // Vue.use(TablePlugin)
+Vue.use(Device)
 Vue.use(Chart)
 Vue.use(Api)
 

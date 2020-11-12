@@ -22,7 +22,7 @@
       <div class="d-sm-block d-md-none">
         <button class="btn btn-light choose-lang-mobile"  @click="showModalLang = true"><span></span></button>
       </div> -->
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="nav nav-tabs">
                 <li class="nav-item">
@@ -45,20 +45,21 @@
                 </li>
               </ul>
             </div>
-          </nav>
+          </nav> -->
     </header>
     <section v-if="!showModalLang">
       <div class="row">
         <div class="col" v-if="meta">
-          <!-- <charts-filter
+          <charts-filter
             :countriesList="countriesList"
+            :limit.sync="limit"
             :options="countriesList"
             :countriesSelected.sync="countriesSelected"
             :date="meta.date"
             :forceUpdate="!showModalLang"
             :lang="lang"
             :modal.sync="showModalLang"
-          ></charts-filter> -->
+          ></charts-filter>
         </div>
       </div>
       <div class="row">
@@ -123,6 +124,15 @@ export default {
     countriesCases: function() {
       this.populateChartData()
     },
+    limit: function() {
+      if (this.timeoutLoadCasesApi) {
+        clearTimeout(this.timeoutLoadCasesApi)
+      }
+      this.timeoutLoadCasesApi = setTimeout(() => {
+        this.loadCases()
+        this.$ga.event('selectedCountries', 'change', 'countries', this.countriesSelected)
+      }, 100)
+    },
     countriesSelected: function() {
       if (this.timeoutLoadCasesApi) {
         clearTimeout(this.timeoutLoadCasesApi)
@@ -162,17 +172,15 @@ export default {
         const deathsPercentage = [];
         const deathsTopMi = [];
         country.data.map((data, day) => {
-          const label = `${moment(data[0] * 1000).utc().format(this.$translate.text('MM/DD/YYYY'))}<br>${this.$translate.text('day')}: ${day}`
+
+          const date = moment(data[0] * 1000).utc().format('MM/DD/YYYY')
+          const label = `${date}<br>${this.$translate.text('day')} ${day+1}`
           casesTotal.push([label, data[1][0]])
-          // casesTotalNew.push({
-          //   x: 0,
-          //   y: 5,
-          //   dataLabels: {
-          //     enabled: true,
-          //     format: 'teste'
-          //   }
-          // })
-          casesTotalNew.push([label, data[1][3]])
+          casesTotalNew.push({
+            name: label,
+            y: data[1][3],
+            x: day + 1
+          })
           casesPercentage.push([label, data[2][0]])
           casesTopMi.push([label, data[3][0]])
           deathsTotal.push([label, data[1][1]])
@@ -264,7 +272,7 @@ export default {
           country.countryColor = randomColor().hexString();
           countries.push(country.countryId)
         })
-        this.$api.getCases(countries,
+        this.$api.getCases(countries, this.limit,
           (response) => {
             this.countriesCases = response.data.data
             this.isLoading--
@@ -323,6 +331,7 @@ export default {
       lang: null,
       timeoutLoadCasesApi: null,
       countriesCases: [],
+      limit: this.$device.isMobile() ? 5 : 40,
       casesSeries: {
         populationCases: [],
         populationCasesNew: [],
@@ -337,7 +346,7 @@ export default {
   },
   components: {
     'loading': () => import('vue-loading-overlay'),
-    // 'charts-filter': () => import('./components/ChartsFilter'),
+    'charts-filter': () => import('./components/ChartsFilter'),
     // 'chart-cases-population': () => import('./components/ChartCasesPopulation'),
     'chart-cases-population-new': () => import('./components/ChartCasesPopulationNew'),
     // 'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),

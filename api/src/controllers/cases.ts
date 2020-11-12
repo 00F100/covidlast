@@ -53,17 +53,15 @@ export class ControllerCases extends Controller implements IControllerCases {
   public onExecute = (application: IApplication, context: IRoute, request: express.Request): void => {
     const returnData = [];
     const input: number[] | any = request.query.country;
-    if (request.query.country && request.query.country.length > 0) {
+    const limit: number | any = +request.query.limit
+    if (input && input.length > 0) {
       const _data = JSON.parse(JSON.stringify(context.cache.getData()))
 
       _data.map(model => {
         if (input.indexOf(model.countryId.toString()) > -1) {
-          model.data.map((a, i) => {
-            if (a[0] <= moment().unix() - (21 * 86400)) {
-              // model.data.splice(i, 1)
-              // model.data[i] = undefined
-            }
-          })
+          if (limit) {
+            model.data.splice(0, model.data.length - limit)
+          }
           returnData.push(model);
         }
       });
