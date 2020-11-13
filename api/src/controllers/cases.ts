@@ -65,13 +65,7 @@ export class ControllerCases extends Controller implements IControllerCases {
           returnData.push(model);
         }
       });
-      // if (returnData.length > 0) {
-        // returnData.map(data => {
-          // if (data.data.length > 20) {
-            // data.data.splice(0, 1)
-          // }
-        // })
-      // }
+
       context.response = { ...application.view().json(context.cache), data: returnData};
       context.response.meta.total = returnData.length;
     }

@@ -5,7 +5,7 @@
         <label>{{ t('Select the countries to compare') }}</label>
       </div>
     </div> -->
-    <div class="col-md-7">
+    <div class="col-md-8">
       <label for="">{{ t('Select the countries to compare') }}</label>
       <multiselect
         v-model="selected"
@@ -33,12 +33,12 @@
         <span slot="noResult">{{ t('No country found. Consider changing the search query.') }}</span>
       </multiselect>
     </div>
-    <div class="col-md-3">
-      <label for="">{{ t('Chart view') }}</label>
-      <button class="btn btn-light choose-lang"><span>{{ t('Cases by day') }}</span></button>
+    <div class="col-md-2">
+      <label for="">{{ t('Chart layout') }}</label>
+      <button class="btn btn-light choose-lang" @click="openModalChartsType"><span class="chart-layout-name" v-html="textChartLayout"></span></button>
     </div>
     <div class="col-md-1">
-      <label for="">{{ t('Show last days') }}</label>
+      <label for="">{{ t('Quantity days to see') }}</label>
       <button class="btn btn-light choose-lang"><span>{{ limit }}</span></button>
     </div>
     <div class="col-md-1">
@@ -65,7 +65,9 @@ export default {
     date: Number,
     lang: String,
     modal: Boolean,
-    limit: Number
+    modalChartsType: Boolean,
+    limit: Number,
+    selectedChart: Number
   },
   created: function() {
     this.selected = this.countriesSelected;
@@ -90,9 +92,27 @@ export default {
     },
     openModal: function() {
       this.$emit('update:modal', true);
+    },
+    openModalChartsType: function() {
+      this.$emit('update:modalChartsType', true)
     }
   },
   watch: {
+    modalChartsType: function() {
+      // console.log(this.modalChartsType)
+      if (this.selectedChart == 1) {
+        this.textChartLayout = 'Cases by day <small>not cumulative</small>';
+      }
+      if (this.selectedChart == 2) {
+        this.textChartLayout = `Cases by day <small>not cumulative</small> <small>per million</small>`;
+      }
+      if (this.selectedChart == 3) {
+        this.textChartLayout = `Cases by day <small>cumulative</small>`;
+      }
+      if (this.selectedChart == 4) {
+        this.textChartLayout = `Cases by day <small>cumulative</small> <small>per million</small>`;
+      }
+    },
     changeLimit: function() {
       this.$emit('update:limit', +this.changeLimit);
     },
@@ -127,7 +147,8 @@ export default {
       lastUpdated: null,
       currentDate: null,
       currentDateTimezoneLabel: null,
-      isMobile: this.$device.isMobile()
+      isMobile: this.$device.isMobile(),
+      textChartLayout: 'Cases by day <small>not cumulative</small>'
     };
   },
   components: {
@@ -218,5 +239,15 @@ export default {
   }
   .choose-lang span {
     padding: 0px 0px 0px 10px;
+  }
+  label {
+    font-size: 12px;
+    margin: 5px 0 0 0;
+  }
+  .multiselect__select {
+    top: 10px;
+  }
+  .chart-layout-name small {
+    display: block;
   }
 </style>

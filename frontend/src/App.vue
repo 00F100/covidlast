@@ -16,6 +16,14 @@
       :modal.sync="showModalLang"
       :update.sync="update"
       :onSelect="this.fixCountriesName"></modal-language>
+    
+    <modal-charts-type
+      v-if="showModalChartsType"
+      @close="showModalChartsType = false"
+      :modalChartsType.sync="showModalChartsType"
+      :selectedChart.sync="selectedChart"
+      :update.sync="update"
+    ></modal-charts-type>
 
     <header>
       <!-- <h1 class="title-page-text">{{ t('COVID-19 PANDEMIC') }}</h1>
@@ -59,19 +67,29 @@
             :forceUpdate="!showModalLang"
             :lang="lang"
             :modal.sync="showModalLang"
+            :modalChartsType.sync="showModalChartsType"
+            :selectedChart="selectedChart"
           ></charts-filter>
         </div>
       </div>
       <div class="row">
         
-        <div class="col-12 col-sm-12 col-md-12">
+        <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 1">
           <chart-cases-population-new :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population-new>
         </div>
-        <!-- <hr class="d-block d-sm-none">
-        <div class="col-12 col-sm-12 col-md-12">
+        
+        <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 2">
+          <chart-cases-population-new-per-million :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population-new-per-million>
+        </div>
+        
+        <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 3">
           <chart-cases-population :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-population>
         </div>
-        <hr class="d-block d-sm-none">
+        
+        <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 4">
+          <chart-cases-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-top-mi>
+        </div>
+        <!-- <hr class="d-block d-sm-none">
         <div class="col-12 col-sm-12 col-md-12">
           <chart-cases-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-top-mi>
         </div>
@@ -155,6 +173,7 @@ export default {
       this.casesSeries = {
         populationCases: [],
         populationCasesNew: [],
+        populationCasesNewPerMillion: [],
         populationPercentageCases: [],
         topMiCases: [],
         populationDeaths: [],
@@ -165,6 +184,7 @@ export default {
       this.countriesCases.map(country => {
         const casesTotal = [];
         const casesTotalNew = [];
+        const casesTotalNewPerMillion = [];
         const casesPercentage = [];
         const casesTopMi = [];
         const deathsTotal = [];
@@ -175,14 +195,28 @@ export default {
 
           const date = moment(data[0] * 1000).utc().format('MM/DD/YYYY')
           const label = `${date}<br>${this.$translate.text('day')} ${day+1}`
-          casesTotal.push([label, data[1][0]])
+          // casesTotal.push([label, data[1][0]])
+          casesTotal.push({
+            name: label,
+            y: data[1][0],
+            x: day + 1
+          })
           casesTotalNew.push({
             name: label,
             y: data[1][3],
             x: day + 1
           })
+          casesTotalNewPerMillion.push({
+            name: label,
+            y: data[3][3],
+            x: day + 1
+          })
           casesPercentage.push([label, data[2][0]])
-          casesTopMi.push([label, data[3][0]])
+          casesTopMi.push({
+            name: label, 
+            y: data[3][0],
+            x: day + 1
+          })
           deathsTotal.push([label, data[1][1]])
           deathsTotalNew.push([label, data[1][4]])
           deathsPercentage.push([label, data[2][1]])
@@ -199,6 +233,11 @@ export default {
           color: countryLabel.countryColor,
           name: this.$translate.text(sCountry.countryName),
           data: casesTotalNew
+        });
+        this.casesSeries.populationCasesNewPerMillion.push({
+          color: countryLabel.countryColor,
+          name: this.$translate.text(sCountry.countryName),
+          data: casesTotalNewPerMillion
         });
         this.casesSeries.populationPercentageCases.push({
           color: countryLabel.countryColor,
@@ -314,6 +353,7 @@ export default {
       if (this.haveCookie) {
         this.showModalLang = false
       }
+      this.showModalChartsType = false
       this.$translate.setLang(this.lang);
       this.loadCountries()
       this.isLoading--
@@ -321,13 +361,15 @@ export default {
   },
   data: function() {
     return {
-      version: '1.3.0',
+      version: '2.0.0',
       originalCountriesList: [],
       countriesList: [],
       currentYear: moment().format('YYYY'),
       meta: null,
       isLoading: 0,
       showModalLang: true,
+      showModalChartsType: true,
+      selectedChart: 1,
       lang: null,
       timeoutLoadCasesApi: null,
       countriesCases: [],
@@ -335,6 +377,7 @@ export default {
       casesSeries: {
         populationCases: [],
         populationCasesNew: [],
+        populationCasesNewPerMillion: [],
         populationPercentageCases: [],
         populationDeaths: [],
         populationDeathsNew: [],
@@ -347,13 +390,15 @@ export default {
   components: {
     'loading': () => import('vue-loading-overlay'),
     'charts-filter': () => import('./components/ChartsFilter'),
-    // 'chart-cases-population': () => import('./components/ChartCasesPopulation'),
+    'chart-cases-population': () => import('./components/ChartCasesPopulation'),
     'chart-cases-population-new': () => import('./components/ChartCasesPopulationNew'),
-    // 'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),
+    'chart-cases-population-new-per-million': () => import('./components/ChartCasesPopulationNewPerMillion'),
+    'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),
     // 'chart-deaths-population': () => import('./components/ChartDeathsPopulation'),
     // 'chart-deaths-population-new': () => import('./components/ChartDeathsPopulationNew'),
     // 'chart-deaths-top-mi': () => import('./components/ChartDeathsTopMi'),
-    'modal-language': () => import('./components/ModalLanguage')
+    'modal-language': () => import('./components/ModalLanguage'),
+    'modal-charts-type': () => import('./components/ModalChartsType')
   },
   locales: {
     en: {

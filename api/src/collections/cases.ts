@@ -50,15 +50,8 @@ export class CollectionCases extends Collection implements ICollectionsCases {
         prevValueDeaths = 0
         prevCountryId = data.countryId
       }
-      // if (prevValueCases > data.cases) {
-      //   prevValueCases = 0
-      // }
       const newCases = data.cases - prevValueCases
       prevValueCases = data.cases
-
-      // if (prevValueDeaths > data.deaths) {
-      //   prevValueDeaths = 0
-      // }
       const newDeaths = data.deaths - prevValueDeaths
       prevValueDeaths = data.deaths
 
