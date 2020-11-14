@@ -31,6 +31,9 @@
                 </div>
               </div>
             </slot>
+            <slot name="footer">
+              <a href="#" ref="cancel" class="btn btn-light" @click="closeModal()">Cancel</a>
+            </slot>
           </div>
         </div>
       </div>
@@ -45,11 +48,21 @@ export default {
     modalChartsType: Boolean,
     selectedChart: Number
   },
+  mounted: function() {
+    document.addEventListener('keydown', e => {
+      if (e.keyCode === 27) {
+        this.$emit('update:modalChartsType', null);
+      }
+    })
+  },
   methods: {
     change: function(selectedChart) {
-      this.$emit('update:modalChartsType', null);
       this.$emit('update:selectedChart', selectedChart);
       this.$emit('update:update', true);
+      this.closeModal()
+    },
+    closeModal: function() {
+      this.$emit('update:modalChartsType', null);
     }
   },
   locales: {

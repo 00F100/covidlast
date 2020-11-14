@@ -1,10 +1,15 @@
 import Highcharts from 'highcharts';
 
 const Chart = {
+  instance: null,
   install: function(Vue) {
     Vue.prototype.$chart = {
       generate: (id, series, title) => {
-        Highcharts.chart(id, {
+        if (Chart.instance && Chart.instance.destroy instanceof Function) {
+          console.log('destroy chart')
+          Chart.instance.destroy()
+        }
+        Chart.instance = Highcharts.chart(id, {
           series,
           title: {
               text: title

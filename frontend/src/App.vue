@@ -89,22 +89,22 @@
         <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 4">
           <chart-cases-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-top-mi>
         </div>
-        <!-- <hr class="d-block d-sm-none">
-        <div class="col-12 col-sm-12 col-md-12">
-          <chart-cases-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-cases-top-mi>
-        </div>
-        <hr>
-        <div class="col-12 col-sm-12 col-md-4">
+        
+        <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 5">
           <chart-deaths-population-new :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-deaths-population-new>
         </div>
-        <hr class="d-block d-sm-none">
-        <div class="col-12 col-sm-12 col-md-4">
+        
+        <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 6">
+          <chart-deaths-population-new-per-million :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-deaths-population-new-per-million>
+        </div>
+        
+        <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 7">
           <chart-deaths-population :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-deaths-population>
         </div>
-        <hr class="d-block d-sm-none">
-        <div class="col-12 col-sm-12 col-md-4">
+        
+        <div class="col-12 col-sm-12 col-md-12" v-if="selectedChart == 8">
           <chart-deaths-top-mi :countriesSelected="casesSeries" :forceUpdate="!showModalLang"></chart-deaths-top-mi>
-        </div> -->
+        </div>
       </div>
     </section>
     
@@ -178,6 +178,7 @@ export default {
         topMiCases: [],
         populationDeaths: [],
         populationDeathsNew: [],
+        populationDeathsNewPerMillion: [],
         populationPercentageDeaths: [],
         topMiDeaths: []
       }
@@ -189,13 +190,13 @@ export default {
         const casesTopMi = [];
         const deathsTotal = [];
         const deathsTotalNew = [];
+        const deathsTotalNewPerMillion = [];
         const deathsPercentage = [];
         const deathsTopMi = [];
         country.data.map((data, day) => {
 
           const date = moment(data[0] * 1000).utc().format('MM/DD/YYYY')
           const label = `${date}<br>${this.$translate.text('day')} ${day+1}`
-          // casesTotal.push([label, data[1][0]])
           casesTotal.push({
             name: label,
             y: data[1][0],
@@ -211,16 +212,41 @@ export default {
             y: data[3][3],
             x: day + 1
           })
-          casesPercentage.push([label, data[2][0]])
+          casesPercentage.push({
+            name: label,
+            y: data[2][0],
+            x: day + 1
+          })
           casesTopMi.push({
             name: label, 
             y: data[3][0],
             x: day + 1
           })
-          deathsTotal.push([label, data[1][1]])
-          deathsTotalNew.push([label, data[1][4]])
-          deathsPercentage.push([label, data[2][1]])
-          deathsTopMi.push([label, data[3][1]])
+          deathsTotal.push({
+            name: label,
+            y: data[1][1],
+            x: day + 1
+          })
+          deathsTotalNew.push({
+            name: label,
+            y: data[1][4],
+            x: day + 1
+          })
+          deathsTotalNewPerMillion.push({
+            name: label,
+            y: data[3][4],
+            x: day + 1
+          })
+          deathsPercentage.push({
+            name: label,
+            y: data[2][1],
+            x: day + 1
+          })
+          deathsTopMi.push({
+            name: label,
+            y: data[3][1],
+            x: day + 1
+          })
         })
         const sCountry = this.originalCountriesList.find(x => x.countryId === country.countryId)
         const countryLabel = this.countriesSelected.find(x => x.countryId === country.countryId);
@@ -258,6 +284,11 @@ export default {
           color: countryLabel.countryColor,
           name: this.$translate.text(sCountry.countryName),
           data: deathsTotalNew
+        });
+        this.casesSeries.populationDeathsNewPerMillion.push({
+          color: countryLabel.countryColor,
+          name: this.$translate.text(sCountry.countryName),
+          data: deathsTotalNewPerMillion
         });
         this.casesSeries.populationPercentageDeaths.push({
           color: countryLabel.countryColor,
@@ -373,7 +404,7 @@ export default {
       lang: null,
       timeoutLoadCasesApi: null,
       countriesCases: [],
-      limit: this.$device.isMobile() ? 5 : 40,
+      limit: this.$device.isMobile() ? 15 : 90,
       casesSeries: {
         populationCases: [],
         populationCasesNew: [],
@@ -381,6 +412,7 @@ export default {
         populationPercentageCases: [],
         populationDeaths: [],
         populationDeathsNew: [],
+        populationDeathsNewPerMillion: [],
         populationPercentageDeaths: []
       },
       update: false,
@@ -394,9 +426,10 @@ export default {
     'chart-cases-population-new': () => import('./components/ChartCasesPopulationNew'),
     'chart-cases-population-new-per-million': () => import('./components/ChartCasesPopulationNewPerMillion'),
     'chart-cases-top-mi': () => import('./components/ChartCasesTopMi'),
-    // 'chart-deaths-population': () => import('./components/ChartDeathsPopulation'),
-    // 'chart-deaths-population-new': () => import('./components/ChartDeathsPopulationNew'),
-    // 'chart-deaths-top-mi': () => import('./components/ChartDeathsTopMi'),
+    'chart-deaths-population': () => import('./components/ChartDeathsPopulation'),
+    'chart-deaths-population-new': () => import('./components/ChartDeathsPopulationNew'),
+    'chart-deaths-population-new-per-million': () => import('./components/ChartDeathsPopulationNewPerMillion'),
+    'chart-deaths-top-mi': () => import('./components/ChartDeathsTopMi'),
     'modal-language': () => import('./components/ModalLanguage'),
     'modal-charts-type': () => import('./components/ModalChartsType')
   },

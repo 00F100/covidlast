@@ -39,7 +39,8 @@
     </div>
     <div class="col-md-1">
       <label for="">{{ t('Quantity days to see') }}</label>
-      <button class="btn btn-light choose-lang"><span>{{ limit }}</span></button>
+      <span>{{ changeLimit === '365' ? 'All' : (changeLimit || limit) }}</span>
+      <input type="range" v-model="changeLimit" min="10" max="365" step="5">
     </div>
     <div class="col-md-1">
       <label for="">{{ t('Language') }}</label>
@@ -112,9 +113,32 @@ export default {
       if (this.selectedChart == 4) {
         this.textChartLayout = `Cases by day <small>cumulative</small> <small>per million</small>`;
       }
+      if (this.selectedChart == 5) {
+        this.textChartLayout = `Deaths by day <small>not cumulative</small>`;
+      }
+      if (this.selectedChart == 6) {
+        this.textChartLayout = `Deaths by day <small>not cumulative</small> <small>per million</small>`;
+      }
+      if (this.selectedChart == 7) {
+        this.textChartLayout = `Deaths by day <small>cumulative</small>`;
+      }
+      if (this.selectedChart == 8) {
+        this.textChartLayout = `Deaths by day <small>cumulative</small> <small>per million</small>`;
+      }
     },
     changeLimit: function() {
-      this.$emit('update:limit', +this.changeLimit);
+      if (this.timeoutChangeLimit) {
+        clearTimeout(this.timeoutChangeLimit)
+      }
+      this.timeoutChangeLimit = setTimeout(() => {
+        this.limitLabel = null
+        if (this.changeLimit === '365') {
+          this.limitLabel = 'All'
+          this.$emit('update:limit', 0);
+        } else {
+          this.$emit('update:limit', +this.changeLimit);
+        }
+      }, 500)
     },
     countriesSelected: function() {
       this.selected = this.countriesSelected
@@ -143,12 +167,14 @@ export default {
   data: function() {
     return {
       selected: [],
-      changeLimit: null,
+      changeLimit: this.limit,
       lastUpdated: null,
       currentDate: null,
       currentDateTimezoneLabel: null,
       isMobile: this.$device.isMobile(),
-      textChartLayout: 'Cases by day <small>not cumulative</small>'
+      textChartLayout: 'Cases by day <small>not cumulative</small>',
+      timeoutChangeLimit: null,
+      limitLabel: null
     };
   },
   components: {
