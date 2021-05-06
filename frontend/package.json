@@ -12,7 +12,7 @@
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
     "hex-to-rgba": "^2.0.1",
-    "highcharts": "^8.1.0",
+    "highcharts": "^9.0.0",
     "moment": "^2.25.3",
     "random-color": "^1.0.1",
     "vue": "^2.6.11",
