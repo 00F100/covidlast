@@ -18,7 +18,7 @@
     "express": "^4.17.1",
     "log4js": "^6.2.0",
     "md5": "^2.2.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "sprintf-js": "^1.1.2",
     "sqlite3": "^4.1.1",
     "sync-request": "^6.1.0",
